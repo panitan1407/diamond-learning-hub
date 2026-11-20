@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safari Adventure: Unit 5 Wild Animals Matching Game (น้องไดมอนด์ ป.2)</title>
+  <style>
+    :root {
+      --bg-grad-1: #eef9f0;
+      --bg-grad-2: #d8f3dc;
+      --primary: #1b4332;
+      --secondary: #2d6a4f;
+      --accent: #ff9f1c;
+      --accent-dark: #e07a00;
+      --blue: #1e6091;
+      --purple: #6a4c93;
+      --card-bg: #ffffff;
+      --success: #2b9348;
+      --danger: #d62828;
+      --text: #1b263b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', 'Prompt', 'Tahoma', sans-serif; }
+    body {
+      background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .app-container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 20px 24px;
+      box-shadow: 0 10px 25px rgba(27, 67, 50, 0.2);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .header-title h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-title p {
+      font-size: 0.95rem;
+      color: #d8f3dc;
+      margin-top: 4px;
+    }
+    .scoreboard {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 16px;
+      border-radius: 14px;
+      text-align: center;
+      min-width: 105px;
+    }
+    .stat-pill .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #b7e4c7; }
+    .stat-pill .val { font-size: 1.35rem; font-weight: 800; color: #ffd166; }
+
+    /* Mode Navigation */
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .mode-btn {
+      background: white;
+      border: 2px solid #b7e4c7;
+      border-radius: 16px;
+      padding: 14px 16px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    }
+    .mode-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--secondary);
+    }
+    .mode-btn.active {
+      background: linear-gradient(135deg, #ff9f1c 0%, #f77f00 100%);
+      color: white;
+      border-color: #f77f00;
+      box-shadow: 0 6px 16px rgba(247, 127, 0, 0.3);
+    }
+    .mode-btn .icon { font-size: 1.5rem; }
+
+    /* Category Filter Bar */
+    .filter-bar {
+      background: white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .filter-chip {
+      border: 2px solid #d8f3dc;
+      background: #f8fdf9;
+      color: var(--primary);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-chip:hover { background: #d8f3dc; }
+    .filter-chip.active {
+      background: var(--secondary);
+      color: white;
+      border-color: var(--secondary);
+    }
+    .action-btn {
+      background: var(--blue);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .action-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+
+    /* Main Arena */
+    .arena {
+      background: white;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      min-height: 500px;
+      position: relative;
+    }
+    .arena-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px dashed #e9f5ec;
+    }
+    .arena-header h2 { font-size: 1.3rem; color: var(--primary); }
+    .round-badge {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    /* MODE 1: LINE / CLICK MATCHING */
+    .match-columns {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 28px;
+      position: relative;
+    }
+    @media (max-width: 768px) {
+      .match-columns { grid-template-columns: 1fr; gap: 18px; }
+    }
+    .col-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--secondary);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .match-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .match-item {
+      border: 2.5px solid #e2ece9;
+      border-radius: 14px;
+      padding: 13px 16px;
+      background: #fafdfb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: all 0.18s ease;
+      user-select: none;
+    }
+    .match-item:hover:not(.matched) {
+      border-color: #52b788;
+      background: #f1faee;
+      transform: translateX(3px);
+    }
+    .match-item.selected {
+      border-color: #ff9f1c;
+      background: #fff8eb;
+      box-shadow: 0 0 0 4px rgba(255, 159, 28, 0.2);
+    }
+    .match-item.matched {
+      border-color: #2b9348;
+      background: #e8f8ed;
+      color: #1b4332;
+      cursor: default;
+      opacity: 0.85;
+    }
+    .match-item.wrong {
+      border-color: #d62828;
+      background: #ffe5e5;
+      animation: shake 0.4s ease;
+    }
+    .vocab-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .vocab-sub {
+      font-size: 0.85rem;
+      color: #5c677d;
+      font-weight: 600;
+    }
+    .keyword-text {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #1d3557;
+      line-height: 1.4;
+    }
+    .keyword-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .kw-pill {
+      background: #eef4fb;
+      border: 1px solid #cce0ff;
+      color: #1e6091;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+    .speak-mini {
+      background: #e9f5ec;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .speak-mini:hover { background: #b7e4c7; }
+
+    /* MODE 2: MEMORY FLIP CARDS */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+      gap: 14px;
+    }
+    .mem-card {
+      height: 135px;
+      perspective: 900px;
+      cursor: pointer;
+    }
+    .mem-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.45s;
+      transform-style: preserve-3d;
+    }
+    .mem-card.flipped .mem-inner,
+    .mem-card.matched .mem-inner {
+      transform: rotateY(180deg);
+    }
+    .mem-front, .mem-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+    }
+    .mem-front {
+      background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%);
+      color: white;
+      border: 3px solid #74c69d;
+    }
+    .mem-front .q-mark { font-size: 2.2rem; }
+    .mem-front .card-type-label {
+      font-size: 0.78rem;
+      margin-top: 4px;
+      background: rgba(255,255,255,0.2);
+      padding: 2px 10px;
+      border-radius: 99px;
+    }
+    .mem-back {
+      background: #ffffff;
+      border: 3px solid #ff9f1c;
+      transform: rotateY(180deg);
+      color: var(--text);
+    }
+    .mem-card.matched .mem-back {
+      border-color: #2b9348;
+      background: #e8f8ed;
+    }
+
+    /* MODE 3: SPEED SAFARI QUIZ */
+    .quiz-box {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .clue-stage {
+      background: linear-gradient(135deg, #fff8eb 0%, #ffedd5 100%);
+      border: 3px solid #ff9f1c;
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .clue-stage .clue-label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #c2410c;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .clue-stage .clue-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .clue-stage .big-kw {
+      background: white;
+      border: 2px solid #fb923c;
+      color: #9a3412;
+      padding: 10px 18px;
+      border-radius: 14px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      box-shadow: 0 4px 10px rgba(251, 146, 60, 0.15);
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 560px) {
+      .quiz-options { grid-template-columns: 1fr; }
+    }
+    .quiz-opt {
+      background: #f8fdf9;
+      border: 2.5px solid #b7e4c7;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .quiz-opt:hover {
+      background: #d8f3dc;
+      transform: translateY(-2px);
+    }
+    .quiz-opt.correct {
+      background: #2b9348;
+      color: white;
+      border-color: #2b9348;
+    }
+    .quiz-opt.wrong {
+      background: #d62828;
+      color: white;
+      border-color: #d62828;
+    }
+
+    /* MODE 4: MASTER FLASHCARD TABLE & AUDIO EXPLORER */
+    .flashcard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 16px;
+    }
+    .study-card {
+      border: 2px solid #d8f3dc;
+      border-radius: 16px;
+      padding: 16px;
+      background: #ffffff;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .study-card:hover {
+      border-color: #52b788;
+      box-shadow: 0 8px 20px rgba(45, 106, 79, 0.1);
+    }
+    .study-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .study-word {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .study-thai {
+      font-size: 0.9rem;
+      color: #495057;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .cat-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 99px;
+      background: #e9f5ec;
+      color: var(--secondary);
+      white-space: nowrap;
+    }
+
+    /* Feedback Banner */
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: #1b4332;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transform: translateY(120%);
+      transition: transform 0.25s ease;
+      z-index: 999;
+    }
+    .toast.show { transform: translateY(0); }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+<div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+  <a href="index.html" style="text-decoration:none;background:#1b4332;color:white;padding:10px 18px;border-radius:12px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,0.12);">🏠 กลับหน้าศูนย์กลางวิชา (Diamond Learning Hub)</a>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <a href="english_exam_quest.html" style="text-decoration:none;background:linear-gradient(135deg,#ff9f1c,#f77f00);color:white;padding:10px 18px;border-radius:12px;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(247,127,0,0.25);">🏆 ตะลุยด่านข้อสอบจริง 160 ข้อ (Exam Quest) ➔</a>
+    <a href="english_study_guide.html" style="text-decoration:none;background:#1e6091;color:white;padding:10px 16px;border-radius:12px;font-weight:800;display:inline-flex;align-items:center;gap:8px;">📖 คู่มือสรุป & กฎเหล็ก</a>
+  </div>
+</div>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-title">
+        <h1>🦁 Safari Keyword Match: Unit 5 Wild Animals</h1>
+        <p>เกมจับคู่คำศัพท์ & Keyword ครบทุกคำจากตารางสรุป Master Study Guide — สำหรับน้องไดมอนด์ ป.2 สาธิต มศว ประสานมิตร</p>
+      </div>
+      <div class="scoreboard">
+        <div class="stat-pill">
+          <div class="label">⭐ คะแนน (Score)</div>
+          <div class="val" id="scoreVal">0</div>
+        </div>
+        <div class="stat-pill">
+          <div class="label">🔥 คอมโบ (Streak)</div>
+          <div class="val" id="streakVal">0</div>
+        </div>
+        <div class="stat-pill">
+          <div class="label">🏆 จับคู่สำเร็จ</div>
+          <div class="val" id="matchedVal">0 / 30</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 4 GAME MODES -->
+    <nav class="mode-tabs">
+      <button class="mode-btn active" onclick="switchMode('match')" id="tab-match">
+        <span class="icon">🔗</span>
+        <div>
+          <div>โหมด 1: โยงจับคู่คีย์เวิร์ด</div>
+          <small style="font-weight:500;opacity:0.85;">คลิกคำศัพท์ซ้าย + Keyword ขวา</small>
+        </div>
+      </button>
+      <button class="mode-btn" onclick="switchMode('quiz')" id="tab-quiz">
+        <span class="icon">⚡</span>
+        <div>
+          <div>โหมด 2: ซาฟารีสายฟ้าแลบ</div>
+          <small style="font-weight:500;opacity:0.85;">อ่าน 3 Keywords แล้วทายคำศัพท์</small>
+        </div>
+      </button>
+      <button class="mode-btn" onclick="switchMode('memory')" id="tab-memory">
+        <span class="icon">🃏</span>
+        <div>
+          <div>โหมด 3: เปิดไพ่ความจำ</div>
+          <small style="font-weight:500;opacity:0.85;">พลิกไพ่จับคู่ Vocab กับ Keyword</small>
+        </div>
+      </button>
+      <button class="mode-btn" onclick="switchMode('explorer')" id="tab-explorer">
+        <span class="icon">🔊</span>
+        <div>
+          <div>โหมด 4: คลังการ์ดเสียงครบ 30 คู่</div>
+          <small style="font-weight:500;opacity:0.85;">กดฟังเสียงอ่าน + ทบทวนทุกตาราง</small>
+        </div>
+      </button>
+    </nav>
+
+    <!-- CATEGORY FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span style="font-weight:800;color:var(--primary);font-size:0.9rem;">📂 เลือกด่านจากตารางสรุป:</span>
+        <button class="filter-chip active" onclick="setCategory('all')" id="cat-all">🌟 ทั้งหมด (All 30 Items)</button>
+        <button class="filter-chip" onclick="setCategory('core')" id="cat-core">🦁 สัตว์ป่าหลัก (Lesson 1)</button>
+        <button class="filter-chip" onclick="setCategory('ext')" id="cat-ext">🦘 สัตว์ป่าเสริม (Lesson 4-5)</button>
+        <button class="filter-chip" onclick="setCategory('food')" id="cat-food">🌿 อาหารสัตว์ & พหูพจน์</button>
+        <button class="filter-chip" onclick="setCategory('grammar')" id="cat-grammar">⚡ ถิ่นที่อยู่ & กฎข้อสอบ</button>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="action-btn" onclick="shuffleCurrentRound()">🔀 สุ่มโจทย์ใหม่ (Shuffle)</button>
+      </div>
+    </div>
+
+    <!-- MAIN GAME ARENA -->
+    <main class="arena" id="gameArena"></main>
+  </div>
+
+  <div class="toast" id="toastMsg">🎉 ยอดเยี่ยมมากน้องไดมอนด์!</div>
+
+  <script>
+    // =========================================================================
+    // 100% COMPLETE DATASET FROM MASTER STUDY GUIDE TABLE (30 PAIRS)
+    // =========================================================================
+    const MASTER_DATA = [
+      // 1. Core Animals (Lesson 1) - 8 items
+      {
+        id: 'giraffe',
+        cat: 'core',
+        catLabel: 'สัตว์ป่าหลัก (Lesson 1)',
+        emoji: '🦒',
+        word: 'giraffe (giraffes)',
+        speakText: 'giraffe. giraffes.',
+        thai: 'ยีราฟ',
+        keywords: ['tall', 'long neck & long legs', 'eats leaves from tall trees', "can't climb trees"]
+      },
+      {
+        id: 'zebra',
+        cat: 'core',
+        catLabel: 'สัตว์ป่าหลัก (Lesson 1)',
+        emoji: '🦓',
+        word: 'zebra (zebras)',
+        speakText: 'zebra. zebras.',
+        thai: 'ม้าลาย',
+        keywords: ['black and white stripes', 'looks like a horse', 'lives on land', 'eats grass (not meat)']
+      },
+      {
+        id: 'elephant',
+        cat: 'core',
+        catLabel: 'สัตว์ป่าหลัก (Lesson 1)',
+        emoji: '🐘',
+        word: 'elephant (elephants)',
+        speakText: 'elephant. elephants.',
+        thai: 'ช้าง',
+        keywords: ['very big gray body', 'big ears & long trunk', "can walk & swim, CAN'T JUMP!", 'eats leaves & grass']
+      },
+      {
+        id: 'monkey',
+        cat: 'core',
+        catLabel: 'สัตว์ป่าหลัก (Lesson 1)',
+        emoji: '🐒',
+        word: 'monkey (monkeys)',
+        speakText: 'monkey. monkeys.',
+        thai: 'ลิง',
+        keywords: ['long tail & long arms', 'climbs trees', 'eats bananas, fruit, nuts, seeds', "doesn't eat meat"]
+      },
+      {
+        id: 'hippo',
+        cat: 'core',
+        catLabel: 'สัตว์ป่าหลัก (Lesson 1)',
+        emoji: '🦛',
+        word: 'hippo (hippos)',
+        speakText: 'hippo. hippos.',
+        thai: 'ฮิปโป',
+        keywords: ['big fat body & big mouth', 'short legs', 'lives on land AND in water', 'eats grass (not meat)']
+      },
+      {
+        id: 'dolphin',
+        cat: 'core',
+        catLabel: 'สัตว์ป่าหลัก (Lesson 1)',
+        emoji: '🐬',
+        word: 'dolphin (dolphins)',
+        speakText: 'dolphin. dolphins.',
+        thai: 'โลมา',
+        keywords: ['gray & friendly (not a fish)', 'lives ONLY in water (ocean)', 'can swim and jump high', 'eats fish']
+      },
+      {
+        id: 'tiger',
+        cat: 'core',
+        catLabel: 'สัตว์ป่าหลัก (Lesson 1)',
+        emoji: '🐯',
+        word: 'tiger (tigers)',
+        speakText: 'tiger. tigers.',
+        thai: 'เสือ',
+        keywords: ['orange and black stripes', 'runs fast, jumps & swims', 'eats meat (not seeds/grass)', 'eats ice cream in the story!']
+      },
+      {
+        id: 'penguin',
+        cat: 'core',
+        catLabel: 'สัตว์ป่าหลัก (Lesson 1)',
+        emoji: '🐧',
+        word: 'penguin (penguins)',
+        speakText: 'penguin. penguins.',
+        thai: 'เพนกวิน',
+        keywords: ["It's a bird, black & white", "CAN'T FLY!", 'lives on land & swims in water', 'eats fish']
+      },
+
+      // 2. Extended Animals (Lesson 4-5) - 8 items
+      {
+        id: 'crocodile',
+        cat: 'ext',
+        catLabel: 'สัตว์ป่าเสริม (Lesson 4-5)',
+        emoji: '🐊',
+        word: 'crocodile (crocodiles)',
+        speakText: 'crocodile. crocodiles.',
+        thai: 'จระเข้',
+        keywords: ['long tail & sharp teeth', 'lives on land AND in water', 'eats meat and fish', "Avi's favorite in Chennai!"]
+      },
+      {
+        id: 'kangaroo',
+        cat: 'ext',
+        catLabel: 'สัตว์ป่าเสริม (Lesson 4-5)',
+        emoji: '🦘',
+        word: 'kangaroo (kangaroos)',
+        speakText: 'kangaroo. kangaroos.',
+        thai: 'จิงโจ้',
+        keywords: ['lives on land in Australia', 'strong legs & long tail', 'can jump very high', 'eats grass and leaves']
+      },
+      {
+        id: 'koala',
+        cat: 'ext',
+        catLabel: 'สัตว์ป่าเสริม (Lesson 4-5)',
+        emoji: '🐨',
+        word: 'koala (koalas)',
+        speakText: 'koala. koalas.',
+        thai: 'โคอาล่า',
+        keywords: ['lives in Australia', 'small and gray', 'climbs tall trees & sleeps a lot', 'eats green leaves']
+      },
+      {
+        id: 'shark',
+        cat: 'ext',
+        catLabel: 'สัตว์ป่าเสริม (Lesson 4-5)',
+        emoji: '🦈',
+        word: 'shark (sharks)',
+        speakText: 'shark. sharks.',
+        thai: 'ฉลาม',
+        keywords: ['lives ONLY in water (ocean)', 'big mouth & sharp teeth', "can't walk on land", 'eats fish and meat']
+      },
+      {
+        id: 'turtle',
+        cat: 'ext',
+        catLabel: 'สัตว์ป่าเสริม (Lesson 4-5)',
+        emoji: '🐢',
+        word: 'turtle (turtles)',
+        speakText: 'turtle. turtles.',
+        thai: 'เต่า',
+        keywords: ['hard shell & four short legs', "small & slow, CAN'T RUN", 'can walk without stopping', 'wins the race against the tiger!']
+      },
+      {
+        id: 'snake',
+        cat: 'ext',
+        catLabel: 'สัตว์ป่าเสริม (Lesson 4-5)',
+        emoji: '🐍',
+        word: 'snake (snakes)',
+        speakText: 'snake. snakes.',
+        thai: 'งู',
+        keywords: ['long body', 'NO legs and NO arms', "can't walk or jump", "Jedda doesn't like snakes!"]
+      },
+      {
+        id: 'lizard',
+        cat: 'ext',
+        catLabel: 'สัตว์ป่าเสริม (Lesson 4-5)',
+        emoji: '🦎',
+        word: 'lizard (lizards)',
+        speakText: 'lizard. lizards.',
+        thai: 'กิ้งก่า',
+        keywords: ['small animal with four legs', 'lives on land in Australia', 'eats small insects', 'Jedda loves lizards!']
+      },
+      {
+        id: 'bird',
+        cat: 'ext',
+        catLabel: 'สัตว์ป่าเสริม (Lesson 4-5)',
+        emoji: '🐦',
+        word: 'bird (birds)',
+        speakText: 'bird. birds.',
+        thai: 'นก',
+        keywords: ['has wings and feathers', 'can fly in the sky', 'eats nuts, seeds, and insects', "doesn't eat sharks!"]
+      },
+
+      // 3. Animal Foods & Plurals (Lesson 3) - 7 items
+      {
+        id: 'grass',
+        cat: 'food',
+        catLabel: 'อาหารสัตว์ (Lesson 3)',
+        emoji: '🌿',
+        word: 'grass (นับไม่ได้)',
+        speakText: 'grass',
+        thai: 'หญ้า',
+        keywords: ['ห้ามเติม a หรือ -s เด็ดขาด!', 'green food on the ground', 'zebras, hippos, elephants & kangaroos eat it']
+      },
+      {
+        id: 'leaves',
+        cat: 'food',
+        catLabel: 'อาหารสัตว์ (Lesson 3)',
+        emoji: '🍃',
+        word: 'leaf ➔ leaves',
+        speakText: 'one leaf. many leaves.',
+        thai: 'ใบไม้ (เอกพจน์ ➔ พหูพจน์)',
+        keywords: ['เปลี่ยน f เป็น v แล้วเติม es!', 'green food on tall trees', 'giraffes, elephants & koalas eat them']
+      },
+      {
+        id: 'meat',
+        cat: 'food',
+        catLabel: 'อาหารสัตว์ (Lesson 3)',
+        emoji: '🥩',
+        word: 'meat (นับไม่ได้)',
+        speakText: 'meat',
+        thai: 'เนื้อสัตว์',
+        keywords: ['ห้ามเติม a หรือ -s เด็ดขาด!', 'food for carnivores', 'tigers, lions, crocodiles & sharks eat it']
+      },
+      {
+        id: 'fish',
+        cat: 'food',
+        catLabel: 'อาหารสัตว์ (Lesson 3)',
+        emoji: '🐟',
+        word: 'fish (รูปเดิมเสมอ)',
+        speakText: 'fish',
+        thai: 'ปลา',
+        keywords: ['ไม่เติม a และไม่เติม es เมื่อเป็นอาหาร', 'food in water', 'penguins, dolphins, sharks & crocodiles eat it']
+      },
+      {
+        id: 'insects',
+        cat: 'food',
+        catLabel: 'อาหารสัตว์ (Lesson 3)',
+        emoji: '🐞',
+        word: 'insects (เติม -s เสมอ)',
+        speakText: 'insects',
+        thai: 'แมลง',
+        keywords: ['small bugs', 'มักใช้รูปพหูพจน์เติม -s เสมอ', 'birds, monkeys & lizards eat them']
+      },
+      {
+        id: 'nuts',
+        cat: 'food',
+        catLabel: 'อาหารสัตว์ (Lesson 3)',
+        emoji: '🥜',
+        word: 'nuts (เติม -s เสมอ)',
+        speakText: 'nuts',
+        thai: 'ถั่วเปลือกแข็ง',
+        keywords: ['hard brown food', 'มักใช้รูปพหูพจน์เติม -s เสมอ', 'monkeys and birds eat them']
+      },
+      {
+        id: 'seeds',
+        cat: 'food',
+        catLabel: 'อาหารสัตว์ (Lesson 3)',
+        emoji: '🌻',
+        word: 'seeds (เติม -s เสมอ)',
+        speakText: 'seeds',
+        thai: 'เมล็ดพืช',
+        keywords: ['very small food from plants', '"Are they nuts? No, they\'re very small!"', 'birds and monkeys eat them']
+      },
+
+      // 4. Habitats, Grammar Rules & Reading Culture (7 items)
+      {
+        id: 'on_land',
+        cat: 'grammar',
+        catLabel: 'ถิ่นที่อยู่ & ไวยากรณ์',
+        emoji: '🏞️',
+        word: 'ON land',
+        speakText: 'on land. Tigers live on land.',
+        thai: 'อาศัยอยู่บนบก',
+        keywords: ['ต้องใช้บุพบท ON เสมอ (ห้ามใช้ in)', 'Tigers, giraffes, zebras & elephants live here']
+      },
+      {
+        id: 'in_water',
+        cat: 'grammar',
+        catLabel: 'ถิ่นที่อยู่ & ไวยากรณ์',
+        emoji: '🌊',
+        word: 'IN water / IN the ocean',
+        speakText: 'in water. Dolphins live in water.',
+        thai: 'อาศัยอยู่ในน้ำ / ในมหาสมุทร',
+        keywords: ['ต้องใช้บุพบท IN เสมอ (ห้ามใช้ on)', 'Dolphins and sharks live here']
+      },
+      {
+        id: 'both_hab',
+        cat: 'grammar',
+        catLabel: 'ถิ่นที่อยู่ & ไวยากรณ์',
+        emoji: '🐊🦛🐧',
+        word: 'on land AND in water',
+        speakText: 'on land and in water',
+        thai: 'สัตว์ 3 ตัวที่อยู่ทั้งบนบกและในน้ำ',
+        keywords: ['จำให้แม่น 3 ตัวหลักในบทนี้!', 'crocodiles, hippos, and penguins']
+      },
+      {
+        id: 'can_q',
+        cat: 'grammar',
+        catLabel: 'ถิ่นที่อยู่ & ไวยากรณ์',
+        emoji: '❓',
+        word: 'Can it swim? / Can they fly?',
+        speakText: 'Can it swim? Yes, it can. No, it cannot.',
+        thai: 'การถาม-ตอบความสามารถ (Can)',
+        keywords: ['ถามด้วย Can ต้องตอบด้วย Can เท่านั้น!', "Yes, it can. / No, it can't. (ห้ามตอบ does!)"]
+      },
+      {
+        id: 'do_q',
+        cat: 'grammar',
+        catLabel: 'ถิ่นที่อยู่ & ไวยากรณ์',
+        emoji: '💬',
+        word: 'Do they live...? / Does it eat...?',
+        speakText: 'Do they live on land? Yes, they do.',
+        thai: 'การถาม-ตอบกิจวัตร (Do / Does)',
+        keywords: ["พหูพจน์ (Do they) ➔ Yes, they do. / No, they don't.", "เอกพจน์ (Does a tiger) ➔ Yes, it does. / No, it doesn't."]
+      },
+      {
+        id: 'conj_rules',
+        cat: 'grammar',
+        catLabel: 'ถิ่นที่อยู่ & ไวยากรณ์',
+        emoji: '⚡',
+        word: 'but / or / too',
+        speakText: 'but. or. too.',
+        thai: '3 คำเชื่อมออกสอบบ่อย',
+        keywords: ['but = ขัดแย้งกัน (can swim, but can\'t fly)', 'or = ใช้ในประโยคปฏิเสธ (don\'t eat meat or fish)', 'too = ด้วยเหมือนกัน (วางท้ายประโยคหลังลูกน้ำ)']
+      },
+      {
+        id: 'india_aus',
+        cat: 'grammar',
+        catLabel: 'เนื้อเรื่อง Lesson 5',
+        emoji: '🌏',
+        word: 'India (Avi) & Australia (Jedda)',
+        speakText: 'Wild animals in India and Australia',
+        thai: 'สรุปสัตว์ป่าอินเดีย vs ออสเตรเลีย',
+        keywords: ['India (Avi): Indian Ocean, Chennai baby crocodile park', 'Australia (Jedda): kangaroos, koalas, loves lizards, hates snakes']
+      }
+    ];
+
+    // =========================================================================
+    // STATE & AUDIO HELPERS
+    // =========================================================================
+    let currentMode = 'match';
+    let currentCat = 'all';
+    let score = 0;
+    let streak = 0;
+    let matchedSet = new Set();
+
+    // Match Mode State
+    let matchPool = [];
+    let matchBatch = [];
+    let matchPageIndex = 0;
+    const BATCH_SIZE = 6;
+    let selectedLeftId = null;
+    let selectedRightId = null;
+    let roundMatchedIds = new Set();
+
+    // Quiz Mode State
+    let quizList = [];
+    let quizIdx = 0;
+    let quizLocked = false;
+
+    // Memory Mode State
+    let memCards = [];
+    let memFlipped = [];
+    let memMatchedIds = new Set();
+    let memLock = false;
+
+    // Web Audio Sound Effect Generator (No external files needed!)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTone(type) {
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        if (type === 'correct') {
+          [523.25, 659.25, 783.99].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.08);
+            gain.gain.setValueAtTime(0.18, now + i * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.25);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + i * 0.08);
+            osc.stop(now + i * 0.08 + 0.25);
+          });
+        } else if (type === 'wrong') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(190, now);
+          osc.frequency.linearRampToValueAtTime(130, now + 0.25);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        } else if (type === 'win') {
+          [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + i * 0.1);
+            gain.gain.setValueAtTime(0.2, now + i * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + i * 0.1);
+            osc.stop(now + i * 0.1 + 0.35);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function speakWord(text, ev) {
+      if (ev) ev.stopPropagation();
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'en-US';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toastMsg');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    function updateScoreUI() {
+      document.getElementById('scoreVal').textContent = score;
+      document.getElementById('streakVal').textContent = streak;
+      document.getElementById('matchedVal').textContent = `${matchedSet.size} / ${MASTER_DATA.length}`;
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function getFilteredData() {
+      if (currentCat === 'all') return [...MASTER_DATA];
+      return MASTER_DATA.filter(item => item.cat === currentCat);
+    }
+
+    // =========================================================================
+    // NAVIGATION & FILTERING
+    // =========================================================================
+    function switchMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`tab-${mode}`).classList.add('active');
+      initCurrentMode();
+    }
+
+    function setCategory(cat) {
+      currentCat = cat;
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      document.getElementById(`cat-${cat}`).classList.add('active');
+      initCurrentMode();
+    }
+
+    function shuffleCurrentRound() {
+      initCurrentMode(true);
+      showToast('🔀 สุ่มการ์ดชุดใหม่เรียบร้อย!');
+    }
+
+    function initCurrentMode(forceShuffle = false) {
+      if (currentMode === 'match') {
+        initMatchMode(forceShuffle);
+      } else if (currentMode === 'quiz') {
+        initQuizMode();
+      } else if (currentMode === 'memory') {
+        initMemoryMode();
+      } else if (currentMode === 'explorer') {
+        renderExplorerMode();
+      }
+    }
+
+    // =========================================================================
+    // MODE 1: CLICK / LINE MATCHING (Batch of 6-8 so lines/cards are super clean!)
+    // =========================================================================
+    function initMatchMode(forceShuffle = false) {
+      const pool = getFilteredData();
+      matchPool = forceShuffle ? shuffleArray(pool) : pool;
+      matchPageIndex = 0;
+      loadMatchBatch();
+    }
+
+    function loadMatchBatch() {
+      const start = matchPageIndex * BATCH_SIZE;
+      matchBatch = matchPool.slice(start, start + BATCH_SIZE);
+      if (matchBatch.length === 0 && matchPageIndex > 0) {
+        matchPageIndex = 0;
+        matchBatch = matchPool.slice(0, BATCH_SIZE);
+      }
+      selectedLeftId = null;
+      selectedRightId = null;
+      roundMatchedIds = new Set();
+      renderMatchArena();
+    }
+
+    function renderMatchArena() {
+      const arena = document.getElementById('gameArena');
+      const totalPages = Math.ceil(matchPool.length / BATCH_SIZE);
+      const leftItems = [...matchBatch];
+      const rightItems = shuffleArray([...matchBatch]);
+
+      arena.innerHTML = `
+        <div class="arena-header">
+          <div>
+            <h2>🔗 โหมด 1: จับคู่คำศัพท์กับ Keyword คู่ใจ (ด่านที่ ${matchPageIndex + 1} / ${totalPages})</h2>
+            <p style="font-size:0.9rem;color:#555;margin-top:3px;">คลิกการ์ดคำศัพท์ฝั่งซ้าย แล้วคลิกการ์ด Keyword ฝั่งขวาที่คู่กัน (กดปุ่ม 🔊 เพื่อฟังเสียงอ่านได้)</p>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="round-badge">ด่านนี้จับคู่แล้ว: <span id="batchProgress">0</span> / ${matchBatch.length}</span>
+            ${totalPages > 1 ? `<button class="action-btn" onclick="nextMatchBatch()">ด่านถัดไป ➔</button>` : ''}
+          </div>
+        </div>
+        <div class="match-columns">
+          <div>
+            <div class="col-title">👈 1. คำศัพท์ (Vocabulary)</div>
+            <div class="match-list" id="leftList"></div>
+          </div>
+          <div>
+            <div class="col-title">👉 2. คีย์เวิร์ดในข้อสอบ (Exam Keywords)</div>
+            <div class="match-list" id="rightList"></div>
+          </div>
+        </div>
+      `;
+
+      const leftList = document.getElementById('leftList');
+      const rightList = document.getElementById('rightList');
+
+      leftItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'match-item';
+        div.id = `left-${item.id}`;
+        div.onclick = () => selectLeftCard(item.id);
+        div.innerHTML = `
+          <div>
+            <div class="vocab-main"><span>${item.emoji}</span> <span>${item.word}</span></div>
+            <div class="vocab-sub">${item.thai} • <span style="color:#2d6a4f;">${item.catLabel}</span></div>
+          </div>
+          <button class="speak-mini" title="ฟังเสียงอ่าน" onclick="speakWord('${item.speakText.replace(/'/g, "\\'")}', event)">🔊</button>
+        `;
+        leftList.appendChild(div);
+      });
+
+      rightItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'match-item';
+        div.id = `right-${item.id}`;
+        div.onclick = () => selectRightCard(item.id);
+        const pills = item.keywords.map(k => `<span class="kw-pill">🔑 ${k}</span>`).join('');
+        div.innerHTML = `
+          <div class="keyword-tags">${pills}</div>
+        `;
+        rightList.appendChild(div);
+      });
+    }
+
+    function selectLeftCard(id) {
+      if (roundMatchedIds.has(id)) return;
+      document.querySelectorAll('#leftList .match-item').forEach(el => el.classList.remove('selected'));
+      selectedLeftId = id;
+      document.getElementById(`left-${id}`).classList.add('selected');
+      checkMatchAttempt();
+    }
+
+    function selectRightCard(id) {
+      if (roundMatchedIds.has(id)) return;
+      document.querySelectorAll('#rightList .match-item').forEach(el => el.classList.remove('selected'));
+      selectedRightId = id;
+      document.getElementById(`right-${id}`).classList.add('selected');
+      checkMatchAttempt();
+    }
+
+    function checkMatchAttempt() {
+      if (!selectedLeftId || !selectedRightId) return;
+      const leftEl = document.getElementById(`left-${selectedLeftId}`);
+      const rightEl = document.getElementById(`right-${selectedRightId}`);
+
+      if (selectedLeftId === selectedRightId) {
+        // Match Success!
+        playTone('correct');
+        const item = MASTER_DATA.find(x => x.id === selectedLeftId);
+        speakWord(item.speakText);
+        leftEl.classList.remove('selected');
+        rightEl.classList.remove('selected');
+        leftEl.classList.add('matched');
+        rightEl.classList.add('matched');
+
+        roundMatchedIds.add(selectedLeftId);
+        matchedSet.add(selectedLeftId);
+        streak++;
+        score += 10 + (streak * 2);
+        updateScoreUI();
+
+        document.getElementById('batchProgress').textContent = roundMatchedIds.size;
+        selectedLeftId = null;
+        selectedRightId = null;
+
+        if (roundMatchedIds.size === matchBatch.length) {
+          playTone('win');
+          const totalPages = Math.ceil(matchPool.length / BATCH_SIZE);
+          if (matchPageIndex + 1 < totalPages) {
+            showToast('🎉 เคลียร์ด่านนี้แล้ว! กำลังไปด่านถัดไป...');
+            setTimeout(() => nextMatchBatch(), 1200);
+          } else {
+            showToast('🏆 เก่งมากๆ น้องไดมอนด์! จับคู่ครบทุกด่านในหมวดนี้แล้ว!');
+          }
+        }
+      } else {
+        // Wrong Match
+        playTone('wrong');
+        streak = 0;
+        updateScoreUI();
+        leftEl.classList.add('wrong');
+        rightEl.classList.add('wrong');
+        const lTemp = leftEl;
+        const rTemp = rightEl;
+        selectedLeftId = null;
+        selectedRightId = null;
+        setTimeout(() => {
+          lTemp.classList.remove('wrong', 'selected');
+          rTemp.classList.remove('wrong', 'selected');
+        }, 450);
+      }
+    }
+
+    function nextMatchBatch() {
+      const totalPages = Math.ceil(matchPool.length / BATCH_SIZE);
+      matchPageIndex = (matchPageIndex + 1) % totalPages;
+      loadMatchBatch();
+    }
+
+    // =========================================================================
+    // MODE 2: SPEED SAFARI KEYWORD QUIZ
+    // =========================================================================
+    function initQuizMode() {
+      quizList = shuffleArray(getFilteredData());
+      quizIdx = 0;
+      quizLocked = false;
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const arena = document.getElementById('gameArena');
+      const current = quizList[quizIdx];
+      const distractors = shuffleArray(MASTER_DATA.filter(x => x.id !== current.id)).slice(0, 3);
+      const options = shuffleArray([current, ...distractors]);
+
+      const kwHtml = current.keywords.map(k => `<span class="big-kw">🔑 ${k}</span>`).join('');
+
+      arena.innerHTML = `
+        <div class="arena-header">
+          <div>
+            <h2>⚡ โหมด 2: ซาฟารีสายฟ้าแลบ (Speed Keyword Quiz)</h2>
+            <p style="font-size:0.9rem;color:#555;">อ่านคีย์เวิร์ดในกรอบสีส้ม แล้วทายว่าตรงกับคำศัพท์ข้อไหน!</p>
+          </div>
+          <span class="round-badge">ข้อที่ ${quizIdx + 1} / ${quizList.length}</span>
+        </div>
+        <div class="quiz-box">
+          <div class="clue-stage">
+            <div class="clue-label">🕵️‍♂️ CLUES & KEYWORDS FROM TABLE (${current.catLabel})</div>
+            <div class="clue-keywords">${kwHtml}</div>
+          </div>
+          <div class="quiz-options" id="quizOpts"></div>
+        </div>
+      `;
+
+      const optsContainer = document.getElementById('quizOpts');
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt';
+        btn.innerHTML = `<span>${opt.emoji}</span> <span>${opt.word}</span> <small style="font-weight:600;color:#666;">(${opt.thai})</small>`;
+        btn.onclick = () => handleQuizAnswer(btn, opt.id === current.id, current);
+        optsContainer.appendChild(btn);
+      });
+    }
+
+    function handleQuizAnswer(btn, isCorrect, currentItem) {
+      if (quizLocked) return;
+      quizLocked = true;
+
+      if (isCorrect) {
+        playTone('correct');
+        speakWord(currentItem.speakText);
+        btn.classList.add('correct');
+        streak++;
+        score += 15 + (streak * 2);
+        matchedSet.add(currentItem.id);
+        updateScoreUI();
+        showToast(`✅ ถูกต้อง! ${currentItem.emoji} ${currentItem.word}`);
+      } else {
+        playTone('wrong');
+        btn.classList.add('wrong');
+        streak = 0;
+        updateScoreUI();
+        showToast(`❌ ยังไม่ใช่นะ! คำตอบคือ ${currentItem.emoji} ${currentItem.word}`);
+      }
+
+      setTimeout(() => {
+        quizLocked = false;
+        quizIdx = (quizIdx + 1) % quizList.length;
+        renderQuizQuestion();
+      }, 1300);
+    }
+
+    // =========================================================================
+    // MODE 3: MEMORY FLIP GAME (6 Pairs = 12 Cards per round)
+    // =========================================================================
+    function initMemoryMode() {
+      const sample = shuffleArray(getFilteredData()).slice(0, 6);
+      memCards = [];
+      sample.forEach(item => {
+        memCards.push({
+          uid: `v-${item.id}`,
+          pairId: item.id,
+          type: 'VOCAB',
+          display: `<div style="font-size:2rem;">${item.emoji}</div><div style="font-size:1.05rem;font-weight:800;color:#1b4332;margin-top:4px;">${item.word}</div><div style="font-size:0.8rem;color:#666;">${item.thai}</div>`,
+          speakText: item.speakText
+        });
+        memCards.push({
+          uid: `k-${item.id}`,
+          pairId: item.id,
+          type: 'KEYWORD',
+          display: `<div style="font-size:0.82rem;font-weight:800;color:#1e6091;line-height:1.35;">🔑 ${item.keywords.slice(0, 3).join('<br>• ')}</div>`,
+          speakText: item.speakText
+        });
+      });
+      memCards = shuffleArray(memCards);
+      memFlipped = [];
+      memMatchedIds = new Set();
+      memLock = false;
+      renderMemoryArena();
+    }
+
+    function renderMemoryArena() {
+      const arena = document.getElementById('gameArena');
+      arena.innerHTML = `
+        <div class="arena-header">
+          <div>
+            <h2>🃏 โหมด 3: เกมเปิดไพ่ความจำซาฟารี (Safari Memory Flip - 6 คู่ 12 ใบ)</h2>
+            <p style="font-size:0.9rem;color:#555;">เปิดไพ่ทีละ 2 ใบ เพื่อจับคู่ "คำศัพท์ (VOCAB)" กับ "คีย์เวิร์ด (KEYWORD)"</p>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="round-badge">เปิดเจอแล้ว: <span id="memCount">0</span> / 6 คู่</span>
+            <button class="action-btn" onclick="initMemoryMode()">🔄 สุ่มไพ่กระดานใหม่</button>
+          </div>
+        </div>
+        <div class="memory-grid" id="memGrid"></div>
+      `;
+
+      const grid = document.getElementById('memGrid');
+      memCards.forEach((card, idx) => {
+        const div = document.createElement('div');
+        div.className = 'mem-card';
+        div.id = `mem-${idx}`;
+        div.onclick = () => flipMemCard(idx);
+        div.innerHTML = `
+          <div class="mem-inner">
+            <div class="mem-front">
+              <div class="q-mark">${card.type === 'VOCAB' ? '🦁' : '🔑'}</div>
+              <div class="card-type-label">${card.type === 'VOCAB' ? 'การ์ดคำศัพท์' : 'การ์ด Keyword'}</div>
+            </div>
+            <div class="mem-back">
+              ${card.display}
+            </div>
+          </div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function flipMemCard(idx) {
+      if (memLock) return;
+      const card = memCards[idx];
+      if (memMatchedIds.has(card.pairId)) return;
+      if (memFlipped.some(f => f.idx === idx)) return;
+
+      const el = document.getElementById(`mem-${idx}`);
+      el.classList.add('flipped');
+      memFlipped.push({ idx, card });
+
+      if (memFlipped.length === 2) {
+        memLock = true;
+        const [first, second] = memFlipped;
+        if (first.card.pairId === second.card.pairId) {
+          playTone('correct');
+          speakWord(first.card.speakText);
+          memMatchedIds.add(first.card.pairId);
+          matchedSet.add(first.card.pairId);
+          document.getElementById(`mem-${first.idx}`).classList.add('matched');
+          document.getElementById(`mem-${second.idx}`).classList.add('matched');
+          streak++;
+          score += 20;
+          updateScoreUI();
+          document.getElementById('memCount').textContent = memMatchedIds.size;
+          memFlipped = [];
+          memLock = false;
+          if (memMatchedIds.size === 6) {
+            playTone('win');
+            showToast('🏆 สุดยอดความจำ! เปิดไพ่ครบทั้ง 6 คู่แล้ว!');
+          }
+        } else {
+          playTone('wrong');
+          streak = 0;
+          updateScoreUI();
+          setTimeout(() => {
+            document.getElementById(`mem-${first.idx}`).classList.remove('flipped');
+            document.getElementById(`mem-${second.idx}`).classList.remove('flipped');
+            memFlipped = [];
+            memLock = false;
+          }, 950);
+        }
+      }
+    }
+
+    // =========================================================================
+    // MODE 4: MASTER FLASHCARD & AUDIO EXPLORER (All 30 Items)
+    // =========================================================================
+    function renderExplorerMode() {
+      const arena = document.getElementById('gameArena');
+      const items = getFilteredData();
+
+      arena.innerHTML = `
+        <div class="arena-header">
+          <div>
+            <h2>🔊 โหมด 4: คลังการ์ดคำศัพท์ & Keyword ครบทุกคำจากตารางสรุป (${items.length} รายการ)</h2>
+            <p style="font-size:0.9rem;color:#555;">กดที่ปุ่ม 🔊 บนการ์ดแต่ละใบเพื่อฟังสำเนียงภาษาอังกฤษ หรือใช้ทบทวนก่อนสอบ</p>
+          </div>
+        </div>
+        <div class="flashcard-grid" id="explorerGrid"></div>
+      `;
+
+      const grid = document.getElementById('explorerGrid');
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'study-card';
+        const kwPills = item.keywords.map(k => `<span class="kw-pill">🔑 ${k}</span>`).join('');
+        card.innerHTML = `
+          <div>
+            <div class="study-top">
+              <div>
+                <div class="study-word">${item.emoji} ${item.word}</div>
+                <div class="study-thai">${item.thai}</div>
+              </div>
+              <button class="speak-mini" onclick="speakWord('${item.speakText.replace(/'/g, "\\'")}', event)" title="ฟังเสียง">🔊</button>
+            </div>
+            <div style="margin-top:8px;"><span class="cat-tag">${item.catLabel}</span></div>
+          </div>
+          <div class="keyword-tags">${kwPills}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Start Game on Load
+    window.onload = () => {
+      updateScoreUI();
+      initMatchMode();
+    };
+  </script>
+</body>
+</html>
