@@ -3,17 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🌟 Diamond's Smart Learning Hub (ป.2 เทอม 2 สาธิต มศว ประสานมิตร)</title>
+  <title>🌟 Diamond's Smart Learning Hub (ป.2 เทอม 2 สาธิต มศว ประสานมิตร - ครบทุกวิชา 520 ข้อ)</title>
   <style>
     :root {
       --bg1: #f0f7ff;
       --bg2: #e6fcf5;
       --dark: #1b263b;
       --primary: #1e6091;
-      --green: #2b9348;
-      --orange: #f77f00;
-      --purple: #7209b7;
-      --teal: #0077b6;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', 'Prompt', 'Tahoma', sans-serif; }
     body {
@@ -35,22 +31,9 @@
       align-items: center;
       gap: 20px;
       margin-bottom: 26px;
-      position: relative;
-      overflow: hidden;
     }
-    .hero-left h1 {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .hero-left p {
-      font-size: 1.05rem;
-      color: #e0fbfc;
-      line-height: 1.5;
-    }
+    .hero-left h1 { font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+    .hero-left p { font-size: 1.03rem; color: #e0fbfc; line-height: 1.5; }
     .school-badge {
       display: inline-block;
       background: rgba(255, 209, 102, 0.22);
@@ -62,11 +45,7 @@
       font-size: 0.88rem;
       margin-bottom: 10px;
     }
-    .hero-stats {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
+    .hero-stats { display: flex; gap: 14px; flex-wrap: wrap; }
     .stat-card {
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(8px);
@@ -74,13 +53,13 @@
       padding: 14px 20px;
       border-radius: 18px;
       text-align: center;
-      min-width: 125px;
+      min-width: 130px;
     }
     .stat-card .lbl { font-size: 0.78rem; color: #caf0f8; text-transform: uppercase; font-weight: 700; }
     .stat-card .val { font-size: 1.65rem; font-weight: 900; color: #ffd166; margin-top: 2px; }
 
     .section-title {
-      font-size: 1.4rem;
+      font-size: 1.38rem;
       font-weight: 900;
       color: #1d3557;
       margin-bottom: 16px;
@@ -89,16 +68,13 @@
       gap: 10px;
     }
 
-    /* Subject Grid */
     .subjects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
       gap: 22px;
-      margin-bottom: 30px;
+      margin-bottom: 28px;
     }
-    @media (max-width: 640px) {
-      .subjects-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 640px) { .subjects-grid { grid-template-columns: 1fr; } }
     .subject-card {
       background: white;
       border-radius: 24px;
@@ -111,115 +87,74 @@
       justify-content: space-between;
       gap: 18px;
     }
-    .subject-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 36px rgba(0,0,0,0.1);
-    }
+    .subject-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(0,0,0,0.1); }
     .subject-card.eng { border-color: #52b788; background: linear-gradient(180deg, #ffffff 0%, #f4fbf7 100%); }
     .subject-card.math { border-color: #4ea8de; background: linear-gradient(180deg, #ffffff 0%, #f2f9ff 100%); }
     .subject-card.sci { border-color: #f4a261; background: linear-gradient(180deg, #ffffff 0%, #fffaf5 100%); }
-    .subject-card.soc { border-color: #b5838d; background: linear-gradient(180deg, #ffffff 0%, #fdf7f9 100%); }
+    .subject-card.soc { border-color: #b5838d; background: linear-gradient(180deg, #ffffff 0%, #fdf7ff 100%); }
 
-    .subj-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
+    .subj-header { display: flex; align-items: flex-start; gap: 16px; }
     .subj-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      flex-shrink: 0;
+      width: 64px; height: 64px; border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; flex-shrink: 0;
     }
     .eng .subj-icon { background: #d8f3dc; }
     .math .subj-icon { background: #caf0f8; }
     .sci .subj-icon { background: #ffedd5; }
     .soc .subj-icon { background: #f3e8ff; }
 
-    .subj-info h2 { font-size: 1.35rem; font-weight: 900; color: #1b263b; }
+    .subj-info h2 { font-size: 1.32rem; font-weight: 900; color: #1b263b; }
     .subj-info p { font-size: 0.92rem; color: #4a5568; margin-top: 4px; line-height: 1.45; }
 
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .pill {
-      font-size: 0.78rem;
-      font-weight: 800;
-      padding: 4px 11px;
-      border-radius: 99px;
-    }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .pill { font-size: 0.78rem; font-weight: 800; padding: 4px 11px; border-radius: 99px; }
     .pill.ready { background: #d8f3dc; color: #1b4332; }
     .pill.hot { background: #ffe5d9; color: #d62828; }
-    .pill.soon { background: #e2e8f0; color: #475569; }
+    .pill.diag { background: #e0f2fe; color: #0369a1; }
 
-    .activity-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .activity-list { display: flex; flex-direction: column; gap: 10px; }
     .act-btn {
       text-decoration: none;
       padding: 14px 18px;
       border-radius: 16px;
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 0.98rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       transition: all 0.18s;
-      border: 2px solid transparent;
-    }
-    .act-btn.primary-eng {
-      background: linear-gradient(135deg, #2b9348 0%, #1b4332 100%);
       color: white;
-      box-shadow: 0 6px 16px rgba(43, 147, 72, 0.25);
     }
-    .act-btn.orange-eng {
-      background: linear-gradient(135deg, #ff9f1c 0%, #e07a00 100%);
-      color: white;
-      box-shadow: 0 6px 16px rgba(247, 127, 0, 0.25);
-    }
-    .act-btn.blue-eng {
-      background: #eef4fb;
-      color: #1e6091;
-      border-color: #bde0fe;
-    }
-    .act-btn:hover { transform: scale(1.015); filter: brightness(1.05); }
-    .act-btn.disabled {
-      background: #f1f5f9;
-      color: #64748b;
-      border: 2px dashed #cbd5e1;
-      cursor: default;
-    }
-    .act-btn.disabled:hover { transform: none; filter: none; }
+    .act-btn:hover { transform: scale(1.015); filter: brightness(1.06); }
+    .btn-eng-1 { background: linear-gradient(135deg, #2b9348 0%, #1b4332 100%); box-shadow: 0 6px 16px rgba(43,147,72,0.25); }
+    .btn-eng-2 { background: linear-gradient(135deg, #ff9f1c 0%, #e07a00 100%); box-shadow: 0 6px 16px rgba(247,127,0,0.25); }
+    .btn-eng-3 { background: #eef4fb; color: #1e6091; border: 2px solid #bde0fe; }
+    .btn-math { background: linear-gradient(135deg, #0077b6 0%, #0d47a1 100%); box-shadow: 0 6px 16px rgba(0,119,182,0.25); }
+    .btn-sci { background: linear-gradient(135deg, #e07a00 0%, #9a3412 100%); box-shadow: 0 6px 16px rgba(224,122,0,0.25); }
+    .btn-soc { background: linear-gradient(135deg, #7209b7 0%, #4a148c 100%); box-shadow: 0 6px 16px rgba(114,9,183,0.25); }
 
-    .cloud-banner {
+    .history-card {
       background: white;
-      border-radius: 20px;
-      padding: 20px 24px;
-      border-left: 6px solid #2b9348;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
-      margin-top: 16px;
+      border-radius: 22px;
+      padding: 22px 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      margin-bottom: 22px;
     }
-    .cloud-banner h3 { font-size: 1.1rem; color: #1b4332; margin-bottom: 6px; }
-    .cloud-banner p { font-size: 0.92rem; color: #4a5568; line-height: 1.5; }
+    .history-card h3 { font-size: 1.2rem; color: #1d3557; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .hist-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    .hist-table th, .hist-table td { border: 1.5px solid #e2e8f0; padding: 10px 12px; text-align: left; }
+    .hist-table th { background: #f1f5f9; color: #1e293b; font-weight: 800; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- HERO HEADER -->
     <header class="hero">
       <div class="hero-left">
         <span class="school-badge">🏫 โรงเรียนสาธิต มศว ประสานมิตร (ฝ่ายประถม) • ชั้น ป.2 เทอม 2</span>
-        <h1>💎 Diamond's Smart Learning Hub</h1>
-        <p>ศูนย์รวมเกมฝึกทำข้อสอบ & พิชิตคำศัพท์แบบ Interactive ครบทุกวิชา — เรียนสนุกเหมือนเล่นเกม สะสมดาวและเหรียญรางวัล!</p>
+        <h1>💎 Diamond's Smart Learning Hub (ครบ 4 วิชา 520 ข้อ!)</h1>
+        <p>ศูนย์รวมเกมฝึกทำข้อสอบจริง + ระบบตรวจให้คะแนน + วิเคราะห์จุดบกพร่องรายทักษะ (Diagnostic Gap Analysis) พร้อมโหมดซ่อมเฉพาะข้อที่ผิด!</p>
       </div>
       <div class="hero-stats">
         <div class="stat-card">
@@ -227,122 +162,157 @@
           <div class="val" id="hubStars">0</div>
         </div>
         <div class="stat-card">
-          <div class="lbl">🏆 ด่านที่เคลียร์แล้ว</div>
-          <div class="val" id="hubCleared">0 / 7</div>
+          <div class="lbl">🏆 ด่านที่ผ่านเกณฑ์</div>
+          <div class="val" id="hubCleared">0 / 26</div>
         </div>
       </div>
     </header>
 
-    <div class="section-title">📚 เลือกวิชาที่น้องไดมอนด์ต้องการตะลุยด่าน (Select Subject)</div>
+    <div class="section-title">📚 เลือกวิชาที่น้องไดมอนด์ต้องการตะลุยด่าน & วิเคราะห์จุดอ่อน (All 4 Subjects Ready!)</div>
 
     <div class="subjects-grid">
-      <!-- SUBJECT 1: ENGLISH -->
+      <!-- 1. ENGLISH -->
       <div class="subject-card eng">
         <div class="subj-header">
           <div class="subj-icon">🦁</div>
           <div class="subj-info">
             <h2>1. วิชาภาษาอังกฤษ (Oxford Buzz 2 - Unit 5)</h2>
-            <p>เรื่อง <strong>Wild Animals</strong> ครบทุกชุดข้อสอบที่คุณพ่อเลือกไว้: เกมจับคู่ Keyword 30 คู่ + ข้อสอบ School Format 5 ชุด (100 ข้อ) + ข้อสอบปราบเซียน 60 ข้อ + คู่มือสรุป!</p>
+            <p>เรื่อง <strong>Wild Animals</strong>: รวมข้อสอบ School Format 5 ชุด (100 ข้อ) + ข้อสอบปราบเซียน Hard (60 ข้อ) + เกมจับคู่ Keyword 4 โหมด + คู่มือสรุป</p>
             <div class="badge-row">
-              <span class="pill ready">✅ พร้อมเล่นทันที 100%</span>
-              <span class="pill hot">🔥 รวมข้อสอบ 160 ข้อ + เกมจับคู่</span>
+              <span class="pill ready">✅ 160 ข้อ (8 ด่าน)</span>
+              <span class="pill diag">🩺 มีระบบวิเคราะห์จุดอ่อน & ซ่อมข้อผิด</span>
             </div>
           </div>
         </div>
         <div class="activity-list">
-          <a href="english_exam_quest.html" class="act-btn orange-eng">
-            <span>🎮 <strong>ด่าน 1: เกมตะลุยข้อสอบจริง 160 ข้อ (Interactive Exam Quest)</strong><br><small style="font-weight:600;opacity:0.95;">รวมชุดโรงเรียน 5 Sets (Set 1-5) + ชุด Hard 60 ข้อ แบบกดตอบมีเสียง & เฉลยทันที!</small></span>
-            <span>เริ่มเล่น ➔</span>
+          <a href="english_exam_quest.html" class="act-btn btn-eng-2">
+            <span>🎮 <strong>ตะลุยข้อสอบจริง 160 ข้อ (8 ด่าน + ตรวจวิเคราะห์จุดอ่อน)</strong><br><small style="font-weight:600;opacity:0.95;">School Sets 1-5 (100 ข้อ) + Hard Exam (60 ข้อ) พร้อมเสียงอ่านและเฉลยทันที</small></span>
+            <span>เริ่มสอบ ➔</span>
           </a>
-          <a href="english_matching_game.html" class="act-btn primary-eng">
-            <span>🔗 <strong>ด่าน 2: เกมจับคู่คำศัพท์ & Keyword ซาฟารี (4 โหมดเกม)</strong><br><small style="font-weight:600;opacity:0.95;">โยงจับคู่คีย์เวิร์ด + ซาฟารีสายฟ้าแลบ + เปิดไพ่ความจำ + เกมล่า 3 คีย์เวิร์ด & แยกค่ายสัตว์</small></span>
-            <span>เริ่มเล่น ➔</span>
+          <a href="english_matching_game.html" class="act-btn btn-eng-1">
+            <span>🔗 <strong>เกมจับคู่คำศัพท์ & Keyword ซาฟารี (4 โหมดเกม)</strong><br><small style="font-weight:600;opacity:0.95;">โยงจับคู่คีย์เวิร์ด + ซาฟารีสายฟ้าแลบ + เปิดไพ่ความจำ + คลังการ์ดเสียง 30 คู่</small></span>
+            <span>เล่นเกม ➔</span>
           </a>
-          <a href="english_study_guide.html" class="act-btn blue-eng">
-            <span>📖 <strong>ด่าน 3: คู่มือสรุปคำศัพท์ & กฎเหล็ก 4 ข้อ (Interactive Study Guide)</strong><br><small style="font-weight:600;">ตารางคำศัพท์กดฟังเสียงได้ + สรุปนิทาน The Tiger & the Turtle และสัตว์ป่า India/Australia</small></span>
+          <a href="english_study_guide.html" class="act-btn btn-eng-3">
+            <span>📖 <strong>คู่มือสรุปคำศัพท์ & กฎเหล็กไวยากรณ์ 4 ข้อ (Study Guide)</strong></span>
             <span>เปิดอ่าน ➔</span>
           </a>
         </div>
       </div>
 
-      <!-- SUBJECT 2: MATHEMATICS -->
+      <!-- 2. MATHEMATICS -->
       <div class="subject-card math">
         <div class="subj-header">
           <div class="subj-icon">🔢</div>
           <div class="subj-info">
-            <h2>2. วิชาคณิตศาสตร์ ป.2 เทอม 2</h2>
-            <p>หลักสูตรสาธิต มศว ประสานมิตร: <strong>การคูณ & การหาร (80 ข้อ)</strong> และ <strong>ปริมาตร ความจุ บวกลบคูณหารระคน & แผนภูมิรูปภาพ (80 ข้อ)</strong></p>
+            <h2>2. วิชาคณิตศาสตร์ ป.2 เทอม 2 (ครบ 160 ข้อ)</h2>
+            <p>ครบทั้ง <strong>สอบย่อยครั้งที่ 1 (การคูณ & การหาร 80 ข้อ)</strong> และ <strong>สอบย่อยครั้งที่ 2 + ปลายภาค (การวัดปริมาตร บวกลบคูณหารระคน & แผนภูมิรูปภาพ 80 ข้อ)</strong></p>
             <div class="badge-row">
-              <span class="pill soon">⏳ โครงสร้างพร้อมอัปเดตเกมชุดถัดไป</span>
+              <span class="pill ready">✅ 160 ข้อ (7 ด่านครบทุกหน่วย)</span>
+              <span class="pill diag">🩺 วิเคราะห์ความแม่นยำ 8 ทักษะคณิตศาสตร์</span>
             </div>
           </div>
         </div>
         <div class="activity-list">
-          <div class="act-btn disabled">
-            <span>🎯 <strong>สอบย่อยครั้งที่ 1: เกมตะลุยโจทย์การคูณ & การหาร (80 ข้อ)</strong><br><small>มีไฟล์ข้อสอบ Word พร้อมแล้ว • บอกให้สร้างเป็นเกมเว็บเพิ่มได้ทันทีครับ!</small></span>
-            <span>เร็วๆ นี้</span>
-          </div>
-          <div class="act-btn disabled">
-            <span>⚖️ <strong>สอบย่อยครั้งที่ 2 & ปลายภาค: ปริมาตร โจทย์ระคน & แผนภูมิ (80 ข้อ)</strong><br><small>มีไฟล์ข้อสอบ Word พร้อมแล้ว • บอกให้สร้างเป็นเกมเว็บเพิ่มได้ทันทีครับ!</small></span>
-            <span>เร็วๆ นี้</span>
-          </div>
+          <a href="math_exam_quest.html" class="act-btn btn-math">
+            <span>🔢 <strong>ตะลุยโจทย์คณิตศาสตร์ ป.2 เทอม 2 ครบ 160 ข้อ (7 ด่าน)</strong><br><small style="font-weight:600;opacity:0.95;">ด่าน 1-4: การคูณ & การหาร (80 ข้อ) | ด่าน 5-7: ปริมาตร โจทย์ระคน & แผนภูมิรูปภาพ (80 ข้อ) พร้อมตรวจและชี้จุดที่ต้องอุดช่องว่าง!</small></span>
+            <span>เริ่มสอบ ➔</span>
+          </a>
         </div>
       </div>
 
-      <!-- SUBJECT 3: SCIENCE -->
+      <!-- 3. SCIENCE -->
       <div class="subject-card sci">
         <div class="subj-header">
           <div class="subj-icon">🌱</div>
           <div class="subj-info">
-            <h2>3. วิชาวิทยาศาสตร์ ป.2 เทอม 2</h2>
-            <p>สอบย่อยครั้งที่ 1 (ประเมินผลครั้งที่ 3): เรื่อง <strong>ดินรอบตัวเรา (ส่วนประกอบของดิน ชนิดของดิน ดินร่วน ดินเหนียว ดินทราย และการใช้ประโยชน์ 100 ข้อ)</strong></p>
+            <h2>3. วิชาวิทยาศาสตร์ ป.2 เทอม 2 (ครบ 100 ข้อ)</h2>
+            <p>สอบย่อยครั้งที่ 1 (ประเมินผลครั้งที่ 3) หน่วยที่ 4 <strong>ดินรอบตัวเรา</strong>: ส่วนประกอบของดิน 4 ส่วน, การทดลอง สสวท., การจำแนกดินเหนียว/ดินร่วน/ดินทราย และการใช้ประโยชน์</p>
             <div class="badge-row">
-              <span class="pill soon">⏳ โครงสร้างพร้อมอัปเดตเกมชุดถัดไป</span>
+              <span class="pill ready">✅ 100 ข้อ (ปรนัย 60 + ถูกผิด 20 + เติมคำทดลอง 20)</span>
+              <span class="pill diag">🩺 วิเคราะห์จุดหลอก สสวท. & ใบงานโรงเรียน</span>
             </div>
           </div>
         </div>
         <div class="activity-list">
-          <div class="act-btn disabled">
-            <span>🔬 <strong>เกมนักวิทยาศาสตร์น้อย: ตะลุยข้อสอบเรื่องดินรอบตัวเรา (100 ข้อ)</strong><br><small>มีไฟล์ข้อสอบ Word พร้อมแล้ว • บอกให้แปลงเป็นเกมกดตอบบนเว็บได้ทันทีครับ!</small></span>
-            <span>เร็วๆ นี้</span>
-          </div>
+          <a href="science_exam_quest.html" class="act-btn btn-sci">
+            <span>🔬 <strong>ตะลุยข้อสอบวิทยาศาสตร์: ดินรอบตัวเรา ครบ 100 ข้อ (5 ด่าน)</strong><br><small style="font-weight:600;opacity:0.95;">ครบทั้งข้อสอบปรนัย 4 ตัวเลือก + ข้อสอบถูก/ผิดตามใบงานโรงเรียน + เติมคำวิเคราะห์ผลการทดลอง พร้อมใบรายงานจุดอ่อน!</small></span>
+            <span>เริ่มสอบ ➔</span>
+          </a>
         </div>
       </div>
 
-      <!-- SUBJECT 4: SOCIAL STUDIES -->
+      <!-- 4. SOCIAL STUDIES -->
       <div class="subject-card soc">
         <div class="subj-header">
           <div class="subj-icon">🏘️</div>
           <div class="subj-info">
-            <h2>4. วิชาสังคมศึกษา ป.2 เทอม 2</h2>
-            <p>สอบย่อยครั้งที่ 1: เรื่อง <strong>ชุมชนใกล้ตัวเรา (ความหมายของชุมชน บทบาทหน้าที่สมาชิก การมีส่วนร่วม และผู้นำชุมชน 100 ข้อ + คู่มือใบงาน)</strong></p>
+            <h2>4. วิชาสังคมศึกษา ป.2 เทอม 2 (ครบ 100 ข้อ)</h2>
+            <p>สอบย่อยครั้งที่ 1 (ประเมินผลครั้งที่ 3) หน่วยที่ 3 <strong>ชุมชนใกล้ตัวเรา</strong>: 1.สถานที่ในชุมชน 2.อาชีพในชุมชน 3.รายรับ-รายจ่ายของตนเองและการออม 4.การสร้างความปลอดภัย</p>
             <div class="badge-row">
-              <span class="pill soon">⏳ โครงสร้างพร้อมอัปเดตเกมชุดถัดไป</span>
+              <span class="pill ready">✅ 100 ข้อ (ปรนัย 60 + ถูกผิด 20 + บัญชีรายรับรายจ่าย 20)</span>
+              <span class="pill diag">🩺 วิเคราะห์จุดอ่อนครบทั้ง 4 หัวข้อคู่มือโรงเรียน</span>
             </div>
           </div>
         </div>
         <div class="activity-list">
-          <div class="act-btn disabled">
-            <span>🏛️ <strong>เกมคนดีศรีชุมชน: ตะลุยข้อสอบเรื่องชุมชนใกล้ตัวเรา (100 ข้อ)</strong><br><small>มีไฟล์ข้อสอบ Word พร้อมแล้ว • บอกให้แปลงเป็นเกมกดตอบบนเว็บได้ทันทีครับ!</small></span>
-            <span>เร็วๆ นี้</span>
-          </div>
+          <a href="social_exam_quest.html" class="act-btn btn-soc">
+            <span>🏛️ <strong>ตะลุยข้อสอบสังคมศึกษา: ชุมชนใกล้ตัวเรา ครบ 100 ข้อ (6 ด่าน)</strong><br><small style="font-weight:600;opacity:0.95;">ครบทั้งสถานที่สำคัญ อาชีพ 4 ประเภท สถานการณ์คำนวณบัญชีรายรับ-รายจ่าย และเบอร์ฉุกเฉิน 191/199/1669 พร้อมวิเคราะห์จุดอ่อน!</small></span>
+            <span>เริ่มสอบ ➔</span>
+          </a>
         </div>
       </div>
     </div>
 
-    <div class="cloud-banner">
-      <h3>☁️ ระบบบันทึกคะแนนอัตโนมัติบนเบราว์เซอร์ (100% Free Static Cloud Architecture)</h3>
-      <p>เว็บไซต์นี้ออกแบบเป็น <strong>Static HTML5/JS ล้วน 100%</strong> สำหรับโฮสต์บน <strong>GitHub Pages</strong> หรือ <strong>Cloudflare Pages</strong> (ฟรีตลอดชีพ 0 บาท ไม่ต้องใช้ฐานข้อมูล ไม่มีการคิดเงิน และแยกขาดจากระบบของ Morning Kiss 100%) คะแนนและดาวของน้องไดมอนด์จะถูกบันทึกไว้ในเครื่องอัตโนมัติ!</p>
+    <!-- EXAM SCORE & DIAGNOSTIC HISTORY FOR PARENTS -->
+    <div class="history-card">
+      <h3>
+        <span>📊 ประวัติผลการทำข้อสอบล่าสุดของน้องไดมอนด์ (Exam Score Log for Parents)</span>
+        <button onclick="clearHistory()" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:6px 12px;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:700;color:#475569;">🗑️ ล้างประวัติ</button>
+      </h3>
+      <div id="historyContainer"></div>
     </div>
   </div>
 
   <script>
-    window.onload = () => {
+    function renderHistory() {
       const savedStars = localStorage.getItem('diamond_total_stars') || '0';
       const savedCleared = JSON.parse(localStorage.getItem('diamond_cleared_quests') || '[]');
       document.getElementById('hubStars').textContent = savedStars;
-      document.getElementById('hubCleared').textContent = `${savedCleared.length} / 7`;
-    };
+      document.getElementById('hubCleared').textContent = `${savedCleared.length} / 26`;
+
+      const hist = JSON.parse(localStorage.getItem('diamond_exam_history') || '[]');
+      const container = document.getElementById('historyContainer');
+      if (hist.length === 0) {
+        container.innerHTML = `<p style="color:#64748b;font-size:0.95rem;">ยังไม่มีประวัติการส่งกระดาษคำตอบ เมื่อน้องไดมอนด์ทำข้อสอบในวิชาใดก็ตามแล้วกด <strong>"📊 ส่งตรวจ & วิเคราะห์จุดอ่อน"</strong> ผลคะแนนจะมาแสดงที่นี่โดยอัตโนมัติครับ!</p>`;
+        return;
+      }
+      let rows = hist.slice(0, 10).map(h => {
+        const badgeColor = h.pct >= 80 ? '#2b9348' : (h.pct >= 55 ? '#e07a00' : '#d62828');
+        return `<tr>
+          <td><strong>${h.title}</strong></td>
+          <td style="font-weight:900;color:${badgeColor};">${h.score} / ${h.total} ข้อ (${h.pct}%)</td>
+          <td>${h.time}</td>
+        </tr>`;
+      }).join('');
+      container.innerHTML = `
+        <div style="overflow-x:auto;">
+          <table class="hist-table">
+            <thead><tr><th>ชุดข้อสอบ / ด่านที่ทำ</th><th>คะแนนที่ได้ (Accuracy)</th><th>วัน-เวลาที่ส่งตรวจ</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function clearHistory() {
+      if (confirm('ต้องการล้างประวัติคะแนนสอบใช่หรือไม่?')) {
+        localStorage.removeItem('diamond_exam_history');
+        renderHistory();
+      }
+    }
+
+    window.onload = renderHistory;
   </script>
 </body>
 </html>
