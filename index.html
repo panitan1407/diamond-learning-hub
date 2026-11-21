@@ -21,19 +21,21 @@
     }
     .container { max-width: 1180px; margin: 0 auto; }
 
-    /* --- HERO COMMAND CENTER SHOWCASE CARD --- */
+    /* --- HERO COMMAND CENTER SHOWCASE CARD (AAA GAME STYLE) --- */
     .hero-command-card {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+      background: linear-gradient(135deg, #090d16 0%, #1e1b4b 50%, #1e293b 100%);
       color: white;
-      border-radius: 26px;
-      padding: 24px 28px;
+      border-radius: 28px;
+      padding: 24px 30px;
       margin-bottom: 24px;
-      box-shadow: 0 14px 35px rgba(15,23,42,0.3);
+      box-shadow: 0 16px 40px rgba(15,23,42,0.35), 0 0 30px rgba(99,102,241,0.25);
       display: grid;
       grid-template-columns: auto 1fr;
       align-items: center;
-      gap: 24px;
-      border: 2px solid rgba(255,255,255,0.15);
+      gap: 28px;
+      border: 2px solid rgba(99,102,241,0.35);
+      position: relative;
+      overflow: hidden;
     }
     @media (max-width: 768px) {
       .hero-command-card {
@@ -62,7 +64,7 @@
       color: #f8fafc;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
     }
     @media (max-width: 768px) {
@@ -75,9 +77,10 @@
       padding: 4px 14px;
       border-radius: 99px;
       font-weight: 800;
+      box-shadow: 0 0 12px rgba(59,130,246,0.5);
     }
     .hero-xp-track {
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.5);
       height: 14px;
       border-radius: 99px;
       overflow: hidden;
@@ -89,6 +92,7 @@
       height: 100%;
       border-radius: 99px;
       transition: width 0.3s ease;
+      box-shadow: 0 0 8px #38bdf8;
     }
     .hero-wallet-row {
       display: flex;
@@ -101,7 +105,7 @@
       .hero-wallet-row { justify-content: center; }
     }
     .wallet-chip {
-      background: rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.35);
       border: 1px solid rgba(255,255,255,0.3);
       padding: 8px 18px;
       border-radius: 14px;
@@ -288,11 +292,11 @@
 <body>
   <div class="container">
 
-    <!-- HERO COMMAND CENTER CARD -->
+    <!-- HERO COMMAND CENTER CARD (AAA GAME GRAPHICS) -->
     <div class="hero-command-card">
       <div class="hero-avatar-box">
         <div id="portalHeroAvatar"></div>
-        <div class="hero-tag-badge">ฮีโร่ประจำตัว</div>
+        <div class="hero-tag-badge">ฮีโร่ประจำตัวน้องไดมอนด์</div>
       </div>
 
       <div class="hero-details-box">
@@ -317,8 +321,8 @@
 
         <!-- WALLET -->
         <div class="hero-wallet-row">
-          <div class="wallet-chip">🪙 <span id="portalCoinsVal">50</span> เหรียญทอง</div>
-          <div class="wallet-chip">💎 <span id="portalGemsVal">2</span> เพชร</div>
+          <div class="wallet-chip">🪙 <span id="portalCoinsVal">100</span> เหรียญทอง</div>
+          <div class="wallet-chip">💎 <span id="portalGemsVal">3</span> เพชร</div>
         </div>
 
         <!-- HERO ACTION BUTTONS -->
@@ -354,7 +358,7 @@
         </div>
         <div class="stat-card">
           <div class="lbl">เหรียญทองสะสม</div>
-          <div class="val" id="hubStars">50</div>
+          <div class="val" id="hubStars">100</div>
         </div>
       </div>
     </header>
@@ -461,7 +465,9 @@
     <div class="history-card">
       <h3>
         <span>📊 ประวัติผลการทำข้อสอบล่าสุดของน้องไดมอนด์ (Exam Score Log for Parents)</span>
-        <button onclick="clearHistory()" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:6px 12px;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:700;color:#475569;">🗑️ ล้างประวัติ</button>
+        <div style="display:flex;gap:8px;">
+          <button onclick="handleResetTestHistory()" style="background:#fee2e2;border:1px solid #f87171;color:#b91c1c;padding:6px 12px;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:700;">🧹 ล้างประวัติสอบทั้งหมด</button>
+        </div>
       </h3>
       <div id="historyContainer"></div>
     </div>
@@ -473,7 +479,7 @@
       const save = DiamondEngine.getSave();
 
       const avBox = document.getElementById('portalHeroAvatar');
-      if (avBox) avBox.innerHTML = DiamondEngine.renderAvatarHTML(save.equipped, 'lg');
+      if (avBox) avBox.innerHTML = DiamondEngine.renderHeroSVG(save.equipped, 130);
 
       const nameEl = document.getElementById('portalHeroName');
       if (nameEl) nameEl.textContent = `${save.name} (อัศวินสาธิต มศว ประสานมิตร)`;
@@ -529,9 +535,9 @@
       `;
     }
 
-    function clearHistory() {
-      if (confirm('ต้องการล้างประวัติคะแนนสอบใช่หรือไม่?')) {
-        localStorage.removeItem('diamond_exam_history');
+    function handleResetTestHistory() {
+      if (confirm('ต้องการล้างประวัติคะแนนสอบ และรีเซ็ตข้อมูลทั้งหมดเพื่อเริ่มใหม่ใช่หรือไม่?')) {
+        DiamondEngine.resetAllData();
         renderHistory();
       }
     }
