@@ -9,15 +9,21 @@
   // --- 1. ITEM CATALOG WITH RARITY & METADATA ---
   const ITEMS = {
     // HERO BASES
-    'hero_boy': { id: 'hero_boy', slot: 'hero', rarity: 'common', name: 'ไดมอนด์เรนเจอร์', price: 0, gems: 0, desc: 'ฮีโร่ตัวจริง เสียงจริง พร้อมลุยทุกวิชา!' },
+    'hero_boy': { id: 'hero_boy', slot: 'hero', rarity: 'common', name: 'อัศวินไดมอนด์ (Diamond Ranger)', price: 0, gems: 0, desc: 'ฮีโร่ตัวจริง เสียงจริง พร้อมลุยทุกวิชา!' },
+    'hero_princess': { id: 'hero_princess', slot: 'hero', rarity: 'legendary', name: 'เจ้าหญิงไดมอนด์แสนสวย (Princess Diamond)', price: 0, gems: 0, desc: 'เจ้าหญิงแสนสง่างาม น่ารัก ฉลาด อบอุ่น พร้อมตะลุยทุกบทเรียน!' },
+    'hero_magical_girl': { id: 'hero_magical_girl', slot: 'hero', rarity: 'epic', name: 'สาวน้อยเวทมนตร์คริสตัล (Magical Star Girl)', price: 150, gems: 1, desc: 'สาวน้อยเวทมนตร์ชุดกะลาสีสีชมพูประกายคริสตัล' },
     'hero_safari': { id: 'hero_safari', slot: 'hero', name: 'ลอร์ดซาฟารี', rarity: 'rare', price: 80, gems: 0, desc: 'ผู้พิทักษ์สัตว์ป่าแห่งแอฟริกา' },
     'hero_knight': { id: 'hero_knight', slot: 'hero', name: 'อัศวินเกราะเงิน', rarity: 'epic', price: 150, gems: 1, desc: 'อัศวินผู้พิทักษ์ความรู้สาธิตฯ' },
     'hero_wizard': { id: 'hero_wizard', slot: 'hero', name: 'จอมเวทย์ดวงดาว', rarity: 'epic', price: 250, gems: 2, desc: 'ร่ายมนตร์ตอบถูกทุกข้อไม่มีพลาด!' },
     'hero_cyber': { id: 'hero_cyber', slot: 'hero', name: 'ไซเบอร์โรบอทเอไอ', rarity: 'epic', price: 400, gems: 5, desc: 'หุ่นยนต์อัจฉริยะคิดเลขเร็วแสง' },
     'hero_super': { id: 'hero_super', slot: 'hero', name: 'ซูเปอร์ไดมอนด์ทองคำ', rarity: 'legendary', price: 600, gems: 10, desc: 'ร่างอัลติเมททองคำเปล่งประกายไร้เทียมทาน!' },
 
-    // HATS & HEADWEAR
+    // HATS & HEADWEAR (TIARAS & CROWNS)
     'hat_cap': { id: 'hat_cap', slot: 'hat', rarity: 'common', name: 'หมวกแก๊ปสปอร์ต', price: 0, gems: 0, desc: 'หมวกแก๊ปเท่ สไตล์นักกีฬาสาธิตฯ' },
+    'hat_princess_tiara': { id: 'hat_princess_tiara', slot: 'hat', rarity: 'epic', name: 'มงกุฎเทียร่าเพชรแท้ประดับทับทิม', price: 0, gems: 0, desc: 'มงกุฎรัดเกล้าเจ้าหญิงเพชรแท้ ระยิบระยับสะกดทุกสายตา (ฟรีสำหรับเจ้าหญิง!)' },
+    'hat_flower_coronet': { id: 'hat_flower_coronet', slot: 'hat', rarity: 'rare', name: 'รัดเกล้าดอกไม้เอลฟ์ประกายแสง', price: 70, gems: 0, desc: 'มงกุฎดอกกุหลาบและดอกซากุระเรืองแสงน่ารักมาก' },
+    'hat_royal_veil': { id: 'hat_royal_veil', slot: 'hat', rarity: 'rare', name: 'ผ้าคลุมผมเจ้าหญิงประดับลูกไม้ทองคำ', price: 120, gems: 1, desc: 'ผ้าคลุมผมยาวสลวยสีชมพูอ่อนปักลูกไม้ทองคำ' },
+    'hat_crystal_crown': { id: 'hat_crystal_crown', slot: 'hat', rarity: 'legendary', name: 'มงกุฎคริสตัลราชินีหิมะ', price: 250, gems: 2, desc: 'มงกุฎผลึกแก้วคริสตัลบริสุทธิ์ส่องประกายเย็นตา' },
     'hat_cowboy': { id: 'hat_cowboy', slot: 'hat', rarity: 'rare', name: 'หมวกคาวบอยหนังแท้', price: 60, gems: 0, desc: 'หมวกนักผจญภัยแดนคาวบอย' },
     'hat_detective': { id: 'hat_detective', slot: 'hat', rarity: 'rare', name: 'หมวกนักสืบโคนัน', price: 90, gems: 0, desc: 'เพิ่มพลังการสังเกตจับผิดช้อยส์หลอก' },
     'hat_viking': { id: 'hat_viking', slot: 'hat', rarity: 'epic', name: 'หมวกไวกิ้งติดเขาคู่', price: 140, gems: 1, desc: 'พลังใจเข้มแข็งไม่กลัวข้อสอบยาก' },
@@ -26,29 +32,38 @@
     'hat_crown_gold': { id: 'hat_crown_gold', slot: 'hat', rarity: 'legendary', name: 'มงกุฎทองคำราชันย์', price: 400, gems: 5, desc: 'มงกุฎทองคำแท้ประดับทับทิมสีแดงสด' },
     'hat_crown_diamond': { id: 'hat_crown_diamond', slot: 'hat', rarity: 'legendary', name: 'มงกุฎเพชรเจิดจรัส', price: 650, gems: 12, desc: 'มงกุฎเพชรประกายสายรุ้งสำหรับน้องไดมอนด์!' },
 
-    // SUITS & CAPES
+    // SUITS & EXTRAVAGANT PRINCESS GOWNS
     'suit_student': { id: 'suit_student', slot: 'suit', rarity: 'common', name: 'ชุดนักเรียนสาธิตฯ', price: 0, gems: 0, desc: 'ชุดนักเรียนสุดเรียบร้อยพร้อมสอบ' },
+    'suit_princess_cinderella': { id: 'suit_princess_cinderella', slot: 'suit', rarity: 'legendary', name: 'ชุดราตรีเจ้าหญิงซินเดอเรลล่าประกายดาว', price: 0, gems: 0, desc: 'ชุดราตรีสีฟ้าครามระยิบระยับ พองฟูอลังการ ประดับเพชรประกายดาว (ฟรีชุดแรก!)' },
+    'suit_princess_aurora': { id: 'suit_princess_aurora', slot: 'suit', rarity: 'legendary', name: 'ชุดเจ้าหญิงกุหลาบแก้วโรสโกลด์', price: 180, gems: 1, desc: 'ชุดผ้าไหมสีชมพูกุหลาบขลิบทองคำ ชายกระโปรงระบาย 3 ชั้น สุดหรูหราอลังการ' },
+    'suit_princess_ice_crystal': { id: 'suit_princess_ice_crystal', slot: 'suit', rarity: 'legendary', name: 'ชุดราชินีหิมะคริสตัลเอลซ่า', price: 300, gems: 3, desc: 'ชุดราตรีผลึกน้ำแข็งคริสตัลโปร่งแสง มีผ้าคลุมเกล็ดหิมะทอประกายเพชร' },
+    'suit_princess_celestial': { id: 'suit_princess_celestial', slot: 'suit', rarity: 'legendary', name: 'ชุดจักรพรรดินีดวงดาวประกายรุ้ง 7 สี', price: 450, gems: 6, desc: 'ชุดเจ้าหญิงระดับไฮเอนด์ ประดับมรกต ทับทิม และดาวนำโชค 7 สี!' },
     'suit_adventurer': { id: 'suit_adventurer', slot: 'suit', rarity: 'rare', name: 'ชุดนักสำรวจซาฟารี', price: 50, gems: 0, desc: 'มีกระเป๋าใส่คีย์เวิร์ดรอบตัว' },
-    'suit_cape_red': { id: 'suit_cape_red', slot: 'suit', rarity: 'rare', name: 'ผ้าคลุมฮีโร่สีแดง', price: 110, gems: 1, desc: 'ผ้าคลุมพัดปลิวตามลม เพิ่มพลังโจมตี' },
-    'suit_armor': { id: 'suit_armor', slot: 'suit', rarity: 'epic', name: 'ชุดเกราะอัศวินเงิน', price: 200, gems: 2, desc: 'ป้องกันข้อหลอกได้ 100%' },
-    'suit_space': { id: 'suit_space', slot: 'suit', rarity: 'epic', name: 'ชุดอวกาศนีออน', price: 320, gems: 4, desc: 'ชุดนักบินอวกาศลุยจักรวาล' },
-    'suit_royal': { id: 'suit_royal', slot: 'suit', rarity: 'legendary', name: 'เสื้อคลุมราชันย์ขลิบทอง', price: 500, gems: 8, desc: 'ชุดของราชาผู้พิชิตคะแนนเต็มทุกวิชา' },
+    'suit_cape_red': { id: 'suit_cape_red', slot: 'suit', rarity: 'rare', name: 'ผ้าคลุมฮีโร่สีแดง', price: 110, gems: 1, desc: 'ผ้าคลุมพัดโบกสะบัดสง่างาม' },
+    'suit_royal': { id: 'suit_royal', slot: 'suit', rarity: 'epic', name: 'ชุดคลุมราชวงศ์สีม่วงทอง', price: 200, gems: 2, desc: 'ชุดคลุมกำมะหยี่สีม่วงเข้มขลิบดิ้นทองคำ' },
+    'suit_armor': { id: 'suit_armor', slot: 'suit', rarity: 'epic', name: 'เกราะเหล็กอัศวินพาลาดิน', price: 280, gems: 3, desc: 'เกราะเหล็กกล้าเงาวับป้องกันข้อผิดพลาด' },
+    'suit_space': { id: 'suit_space', slot: 'suit', rarity: 'legendary', name: 'ชุดอวกาศไฮเทคล้ำยุค', price: 500, gems: 7, desc: 'ชุดนักบินอวกาศมีออกซิเจนแห่งความฉลาด' },
 
-    // WEAPONS & HAND ITEMS
-    'wp_pencil': { id: 'wp_pencil', slot: 'weapon', rarity: 'common', name: 'ดินสอทองวิเศษ 2B', price: 0, gems: 0, desc: 'กาข้อไหนก็ถูกแน่นอน' },
-    'wp_magnifier': { id: 'wp_magnifier', slot: 'weapon', rarity: 'rare', name: 'แว่นขยายส่องจุดหลอก', price: 50, gems: 0, desc: 'ส่องเห็นคำตอบที่ถูกทันที' },
-    'wp_wand': { id: 'wp_wand', slot: 'weapon', rarity: 'rare', name: 'คทาดวงดาวเวทมนตร์', price: 100, gems: 1, desc: 'เสกคะแนนเต็มทุกชุด' },
-    'wp_sword': { id: 'wp_sword', slot: 'weapon', rarity: 'epic', name: 'ดาบเลเซอร์เซเบอร์', price: 220, gems: 2, desc: 'ฟันมอนสเตอร์ข้อสอบขาดกระจุย' },
-    'wp_hammer': { id: 'wp_hammer', slot: 'weapon', rarity: 'epic', name: 'ค้อนสายฟ้าทอร์', price: 350, gems: 4, desc: 'ฟาดทีเดียวบอสกระเด็น' },
-    'wp_trophy': { id: 'wp_trophy', slot: 'weapon', rarity: 'legendary', name: 'ถ้วยทองแชมเปียนสาธิต', price: 480, gems: 6, desc: 'สัญลักษณ์ของแชมป์ ป.2 เทอม 2' },
+    // WEAPONS & WANDS
+    'wp_pencil': { id: 'wp_pencil', slot: 'weapon', rarity: 'common', name: 'ดินสอ 2B มหัศจรรย์', price: 0, gems: 0, desc: 'ฝนคำตอบถูกทุกข้อแบบไม่หัก' },
+    'wp_magic_star_scepter': { id: 'wp_magic_star_scepter', slot: 'weapon', rarity: 'epic', name: 'คทาเวทมนตร์ดวงดาวคริสตัล', price: 0, gems: 0, desc: 'ร่ายมนตร์ยิงดาวตกช่วยทำลายเกราะบอส (ฟรีสำหรับเจ้าหญิง!)' },
+    'wp_sakura_wand': { id: 'wp_sakura_wand', slot: 'weapon', rarity: 'legendary', name: 'คทาหัวใจซากุระนางฟ้า', price: 190, gems: 2, desc: 'ส่งพลังความรักและความเมตตาตอบถูกทุกข้อ' },
+    'wp_diamond_heart': { id: 'wp_diamond_heart', slot: 'weapon', rarity: 'legendary', name: 'คทาเพชรหัวใจจักรพรรดินี', price: 350, gems: 4, desc: 'คทาทองคำฝังเพชรรูปหัวใจแท้ระดับพรีเมียม' },
+    'wp_magnifier': { id: 'wp_magnifier', slot: 'weapon', rarity: 'rare', name: 'แว่นขยายส่องคีย์เวิร์ด', price: 70, gems: 0, desc: 'ส่องเห็นคำตอบที่ซ่อนอยู่อย่างง่ายดาย' },
+    'wp_wand': { id: 'wp_wand', slot: 'weapon', rarity: 'epic', name: 'ไม้กายสิทธิ์ดวงดาว', price: 180, gems: 2, desc: 'เสกคะแนนเต็ม 100 ให้เป็นจริง' },
+    'wp_sword': { id: 'wp_sword', slot: 'weapon', rarity: 'epic', name: 'ดาบเลเซอร์พลังงานแสง', price: 260, gems: 3, desc: 'ฟันฝ่าโจทย์เลขและวิทย์ยากๆ ขาดกระจุย' },
+    'wp_hammer': { id: 'wp_hammer', slot: 'weapon', rarity: 'epic', name: 'ค้อนสายฟ้าทุบบอส', price: 350, gems: 4, desc: 'ทุบคะแนนบอสลดฮวบทีละ 2 หน่วย' },
+    'wp_trophy': { id: 'wp_trophy', slot: 'weapon', rarity: 'legendary', name: 'ถ้วยแชมป์เปี้ยนทองคำแท้', price: 550, gems: 8, desc: 'ถ้วยรางวัลเกียรติยศสูงสุดแห่งสาธิตฯ' },
 
-    // PETS
-    'pet_none': { id: 'pet_none', slot: 'pet', rarity: 'common', name: 'ยังไม่มีสัตว์เลี้ยง', price: 0, gems: 0, desc: '' },
-    'pet_dog': { id: 'pet_dog', slot: 'pet', rarity: 'rare', name: 'น้องหมาพุดเดิ้ล', price: 70, gems: 0, desc: 'เห่าเชียร์อัปเวลาตอบถูก' },
-    'pet_cat': { id: 'pet_cat', slot: 'pet', rarity: 'rare', name: 'แมวส้มจอมกวน', price: 90, gems: 0, desc: 'นั่งเฝ้าข้างๆ เวลาทำข้อสอบ' },
-    'pet_penguin': { id: 'pet_penguin', slot: 'pet', rarity: 'rare', name: 'เพนกวินซาฟารี', price: 150, gems: 1, desc: 'น่ารัก ว่ายน้ำเก่ง บินไม่ได้แต่นิสัยดี' },
-    'pet_lion': { id: 'pet_lion', slot: 'pet', rarity: 'epic', name: 'ลูกสิงโตเจ้าป่า', price: 240, gems: 2, desc: 'คำรามขู่บอสให้กลัว' },
-    'pet_dragon': { id: 'pet_dragon', slot: 'pet', rarity: 'legendary', name: 'ลูกมังกรไฟเบบี้', price: 380, gems: 5, desc: 'พ่นไฟช่วยโจมตีบอส' },
+    // PETS & COMPANIONS
+    'pet_none': { id: 'pet_none', slot: 'pet', rarity: 'common', name: 'ไม่มีสัตว์เลี้ยง', price: 0, gems: 0, desc: '' },
+    'pet_fairy': { id: 'pet_fairy', slot: 'pet', rarity: 'epic', name: 'ภูติน้อยคริสตัลประกายเพชร', price: 180, gems: 2, desc: 'ภูติตัวจิ๋วมีปีกโปร่งแสง บินเคียงข้างให้กำลังใจ' },
+    'pet_pegasus': { id: 'pet_pegasus', slot: 'pet', rarity: 'legendary', name: 'ม้าเพกาซัสน้อยมีปีกสายรุ้ง', price: 380, gems: 5, desc: 'ม้าบินขนสีขาวนุ่มมีปีกสีรุ้ง บินช่วยเก็บเหรียญ' },
+    'pet_dog': { id: 'pet_dog', slot: 'pet', rarity: 'rare', name: 'ลูกหมาปั๊กแสนรู้', price: 100, gems: 1, desc: 'เห่าให้กำลังใจตอนทำข้อสอบ' },
+    'pet_cat': { id: 'pet_cat', slot: 'pet', rarity: 'rare', name: 'แมวส้มอัจฉริยะ', price: 120, gems: 1, desc: 'ช่วยสะกิดเตือนถ้าตอบผิด' },
+    'pet_penguin': { id: 'pet_penguin', slot: 'pet', rarity: 'rare', name: 'เพนกวินสุภาพบุรุษ', price: 160, gems: 2, desc: 'ยืนปรบมือเมื่อทำข้อสอบถูก' },
+    'pet_lion': { id: 'pet_lion', slot: 'pet', rarity: 'epic', name: 'ลูกสิงโตเจ้าป่า', price: 250, gems: 3, desc: 'คำรามข่มขวัญบอสข้อสอบ' },
+    'pet_dragon': { id: 'pet_dragon', slot: 'pet', rarity: 'legendary', name: 'มังกรแดงตัวจิ๋ว', price: 380, gems: 5, desc: 'พ่นไฟช่วยโจมตีบอส' },
     'pet_unicorn': { id: 'pet_unicorn', slot: 'pet', rarity: 'legendary', name: 'ยูนิคอร์นสายรุ้ง', price: 550, gems: 8, desc: 'เปล่งประกายสีรุ้งนำโชค' },
 
     // AURAS
@@ -71,11 +86,12 @@
 
   // --- 3. STORAGE & STATE ENGINE ---
   // Using version 3 to reset old test data cleanly!
-  const STORAGE_KEY = 'diamond_hero_save_v3';
+  const STORAGE_KEY = 'diamond_hero_save_v4';
 
-  // Wipe old test caches on first v3 boot
+  // Wipe old test caches on first v4 boot
   (function initCleanState() {
     if (!localStorage.getItem(STORAGE_KEY)) {
+      localStorage.removeItem('diamond_hero_save_v3');
       localStorage.removeItem('diamond_hero_save_v2');
       localStorage.removeItem('diamond_hero_save_v1');
       localStorage.removeItem('diamond_exam_history');
@@ -89,17 +105,23 @@
       name: 'น้องไดมอนด์',
       level: 1,
       xp: 0,
-      coins: 100, // Welcoming starter bonus!
-      gems: 3,
+      coins: 150, // Welcoming starter bonus!
+      gems: 5,
       equipped: {
-        hero: 'hero_boy',
-        hat: 'hat_cap',
-        suit: 'suit_student',
-        weapon: 'wp_pencil',
+        hero: 'hero_princess', // Default to lovely Princess Diamond!
+        hat: 'hat_princess_tiara',
+        suit: 'suit_princess_cinderella',
+        weapon: 'wp_magic_star_scepter',
         pet: 'pet_none',
-        aura: 'aura_none'
+        aura: 'aura_sparkle'
       },
-      inventory: ['hero_boy', 'hat_cap', 'suit_student', 'wp_pencil', 'pet_none', 'aura_none'],
+      inventory: [
+        'hero_boy', 'hero_princess',
+        'hat_cap', 'hat_princess_tiara',
+        'suit_student', 'suit_princess_cinderella',
+        'wp_pencil', 'wp_magic_star_scepter',
+        'pet_none', 'aura_none', 'aura_sparkle'
+      ],
       redeemedCoupons: [],
       customCoupons: []
     };
@@ -286,6 +308,7 @@
     const uid = Math.random().toString(36).substring(2, 7);
 
     // Hero Base Skin & Hair Colors
+    let isFemale = (heroId === 'hero_princess' || heroId === 'hero_magical_girl');
     let hairColor = '#6b4226'; // Brown
     let hairHighlight = '#92400e';
     let skinColor = '#fed7aa'; // Cute warm anime skin
@@ -293,7 +316,19 @@
     let eyeColor = '#1e3a8a';
     let armorColor = '#94a3b8';
 
-    if (heroId === 'hero_safari') {
+    if (heroId === 'hero_princess') {
+      hairColor = '#d97706'; // Radiant honey golden amber hair
+      hairHighlight = '#fef08a';
+      skinColor = '#ffedd5'; // Soft fair porcelain skin
+      skinShadow = '#fed7aa';
+      eyeColor = '#7c3aed'; // Enchanting sparkling amethyst/violet eyes
+    } else if (heroId === 'hero_magical_girl') {
+      hairColor = '#f43f5e'; // Vibrant sakura pink
+      hairHighlight = '#fbcfe8';
+      skinColor = '#ffedd5';
+      skinShadow = '#fed7aa';
+      eyeColor = '#ec4899';
+    } else if (heroId === 'hero_safari') {
       hairColor = '#451a03'; hairHighlight = '#78350f';
     } else if (heroId === 'hero_knight') {
       hairColor = '#d97706'; hairHighlight = '#fef08a';
@@ -310,12 +345,14 @@
     let auraSVG = '';
     if (auraId === 'aura_sparkle') {
       auraSVG = `
-        <g opacity="0.85">
+        <g opacity="0.9">
           <path d="M 40 45 L 43 55 L 53 58 L 43 61 L 40 71 L 37 61 L 27 58 L 37 55 Z" fill="#fde047" />
           <path d="M 160 50 L 162 57 L 169 59 L 162 61 L 160 68 L 158 61 L 151 59 L 158 57 Z" fill="#facc15" />
           <path d="M 150 135 L 152 140 L 157 142 L 152 144 L 150 149 L 148 144 L 143 142 L 148 140 Z" fill="#67e8f9" />
-          <circle cx="50" cy="110" r="3" fill="#fde047" opacity="0.8"/>
-          <circle cx="165" cy="95" r="3.5" fill="#fde047" opacity="0.8"/>
+          <path d="M 45 130 L 47 134 L 51 136 L 47 138 L 45 142 L 43 138 L 39 136 L 43 134 Z" fill="#f472b6" />
+          <circle cx="50" cy="110" r="3.5" fill="#fde047" opacity="0.8"/>
+          <circle cx="165" cy="95" r="4" fill="#fbcfe8" opacity="0.8"/>
+          <circle cx="95" cy="25" r="3" fill="#67e8f9" opacity="0.9"/>
         </g>
       `;
     } else if (auraId === 'aura_fire') {
@@ -344,23 +381,146 @@
       `;
     }
 
-    // 2. CAPE / BACK SUIT LAYER
+    // 2. CAPE / BACK LAYER (BEHIND CHARACTER)
     let capeSVG = '';
     if (suitId === 'suit_cape_red') {
       capeSVG = `<path d="M 75 110 L 50 172 Q 100 185 150 172 L 125 110 Z" fill="#dc2626" stroke="#991b1b" stroke-width="2" />`;
     } else if (suitId === 'suit_royal') {
       capeSVG = `<path d="M 72 108 L 45 175 Q 100 190 155 175 L 128 108 Z" fill="#7e22ce" stroke="#facc15" stroke-width="3" />`;
+    } else if (suitId === 'suit_princess_ice_crystal') {
+      // Translucent Elsa snowflake cape
+      capeSVG = `
+        <g opacity="0.75">
+          <path d="M 74 110 L 32 185 Q 100 195 168 185 L 126 110 Z" fill="url(#iceCapeGrad_${uid})" stroke="#bae6fd" stroke-width="1.5"/>
+          <!-- Delicate Snowflake Glyphs on Cape -->
+          <circle cx="65" cy="155" r="2.5" fill="#ffffff" />
+          <circle cx="135" cy="155" r="2.5" fill="#ffffff" />
+          <polygon points="100,165 102,170 107,171 102,172 100,177 98,172 93,171 98,170" fill="#ffffff"/>
+        </g>
+      `;
     }
 
-    // 3. SUIT & TORSO LAYER
+    // 2.5 FEMALE HERO LONG FLOWING HAIR (BEHIND SHOULDERS)
+    let femaleBackHairSVG = '';
+    if (isFemale) {
+      if (heroId === 'hero_princess') {
+        femaleBackHairSVG = `
+          <!-- Princess Long Luxurious Flowing Hair -->
+          <g>
+            <!-- Left cascading locks -->
+            <path d="M 72 65 C 45 85 40 145 62 165 C 72 150 68 105 78 85 Z" fill="${hairColor}" />
+            <path d="M 60 85 C 50 115 52 145 62 158" stroke="${hairHighlight}" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- Right cascading locks -->
+            <path d="M 128 65 C 155 85 160 145 138 165 C 128 150 132 105 122 85 Z" fill="${hairColor}" />
+            <path d="M 140 85 C 150 115 148 145 138 158" stroke="${hairHighlight}" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </g>
+        `;
+      } else if (heroId === 'hero_magical_girl') {
+        femaleBackHairSVG = `
+          <!-- Cute Anime Twin-Tails -->
+          <g>
+            <!-- Left Twin-tail -->
+            <path d="M 68 70 C 40 80 32 135 52 155 C 60 140 55 100 70 85 Z" fill="${hairColor}" />
+            <circle cx="68" cy="74" r="5" fill="#f43f5e" /> <!-- Ribbon Bobble -->
+            <!-- Right Twin-tail -->
+            <path d="M 132 70 C 160 80 168 135 148 155 C 140 140 145 100 130 85 Z" fill="${hairColor}" />
+            <circle cx="132" cy="74" r="5" fill="#f43f5e" />
+          </g>
+        `;
+      }
+    }
+
+    // 3. SUIT & TORSO LAYER (EXTRAVAGANT PRINCESS GOWNS & HERO GEAR)
     let torsoSVG = '';
-    if (suitId === 'suit_student') {
+    let isBallgown = suitId.startsWith('suit_princess_');
+
+    if (suitId === 'suit_princess_cinderella') {
+      // 🌟 Cinderella Starlight Crystal Ballgown
+      torsoSVG = `
+        <!-- Off-shoulder Cloud Puffs -->
+        <ellipse cx="73" cy="112" rx="10" ry="7.5" fill="#bae6fd" stroke="#38bdf8" stroke-width="1.5"/>
+        <ellipse cx="127" cy="112" rx="10" ry="7.5" fill="#bae6fd" stroke="#38bdf8" stroke-width="1.5"/>
+        <!-- Royal Fitted Corset Bodice -->
+        <polygon points="80,105 120,105 114,136 86,136" fill="url(#cindBodice_${uid})" stroke="#0284c7" stroke-width="1.8"/>
+        <!-- Golden Center Gem & Embroidery -->
+        <circle cx="100" cy="118" r="4.5" fill="#facc15" stroke="#ca8a04" stroke-width="1"/>
+        <circle cx="100" cy="118" r="2.2" fill="#ffffff" />
+        <path d="M 94 107 Q 100 114 106 107" stroke="#ffffff" stroke-width="1.8" fill="none" opacity="0.9"/>
+        <!-- Huge Extravagant Puffy Layered Ballgown Skirt -->
+        <path d="M 86 136 C 60 145 28 160 32 180 C 65 192 135 192 168 180 C 172 160 140 145 114 136 Z" fill="url(#cindSkirt_${uid})" stroke="#0284c7" stroke-width="2.5"/>
+        <!-- Translucent Shimmering Peplum Petals -->
+        <path d="M 86 136 Q 66 156 84 162 Q 95 146 100 136 Z" fill="#e0f2fe" opacity="0.88" stroke="#bae6fd" stroke-width="1"/>
+        <path d="M 114 136 Q 134 156 116 162 Q 105 146 100 136 Z" fill="#e0f2fe" opacity="0.88" stroke="#bae6fd" stroke-width="1"/>
+        <!-- Double Scalloped Sparkling White Lace Trim -->
+        <path d="M 38 175 Q 54 167 70 175 Q 86 167 102 175 Q 118 167 134 175 Q 150 167 162 175" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+        <!-- Twinkling Diamond Star Sparkles -->
+        <polygon points="65,155 67,159 71,160 67,161 65,165 63,161 59,160 63,159" fill="#fef08a"/>
+        <polygon points="135,157 137,161 141,162 137,163 135,167 133,163 129,162 133,161" fill="#fef08a"/>
+        <polygon points="100,166 101.5,169 104.5,170 101.5,171 100,174 98.5,171 95.5,170 98.5,169" fill="#ffffff"/>
+      `;
+    } else if (suitId === 'suit_princess_aurora') {
+      // 🌹 Princess Aurora Rose-Gold & Ruby Royal Silk Gown
+      torsoSVG = `
+        <!-- Rose Silk Shoulder Ruffles -->
+        <ellipse cx="73" cy="112" rx="10" ry="7.5" fill="#fbcfe8" stroke="#f43f5e" stroke-width="1.5"/>
+        <ellipse cx="127" cy="112" rx="10" ry="7.5" fill="#fbcfe8" stroke="#f43f5e" stroke-width="1.5"/>
+        <!-- Gold Embroidered Pink Bodice -->
+        <polygon points="80,105 120,105 114,136 86,136" fill="url(#auroraBodice_${uid})" stroke="#be123c" stroke-width="1.8"/>
+        <!-- Ruby Heart Brooch -->
+        <polygon points="100,113 105,119 100,126 95,119" fill="#e11d48" stroke="#fde047" stroke-width="1.5"/>
+        <!-- 3-Tier Layered Rose Ballgown Skirt -->
+        <path d="M 86 136 C 60 145 28 160 32 180 C 65 192 135 192 168 180 C 172 160 140 145 114 136 Z" fill="url(#auroraSkirt_${uid})" stroke="#be123c" stroke-width="2.5"/>
+        <!-- Layer 2 Petal Swag -->
+        <path d="M 45 166 Q 72 152 100 166 Q 128 152 155 166" fill="none" stroke="#fde047" stroke-width="2.5"/>
+        <!-- Golden Rose Hem Lace -->
+        <path d="M 38 175 Q 54 168 70 175 Q 86 168 102 175 Q 118 168 134 175 Q 150 168 162 175" fill="none" stroke="#fef08a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="70" cy="155" r="3" fill="#fde047"/>
+        <circle cx="130" cy="155" r="3" fill="#fde047"/>
+      `;
+    } else if (suitId === 'suit_princess_ice_crystal') {
+      // ❄️ Elsa Ice Queen Crystal Gown
+      torsoSVG = `
+        <!-- Translucent Crystal Off-shoulder Straps -->
+        <ellipse cx="73" cy="112" rx="9" ry="7" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1.5"/>
+        <ellipse cx="127" cy="112" rx="9" ry="7" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1.5"/>
+        <!-- Ice Facet Bodice -->
+        <polygon points="80,105 120,105 114,136 86,136" fill="url(#iceBodice_${uid})" stroke="#0284c7" stroke-width="1.8"/>
+        <!-- Center Crystal Shard -->
+        <polygon points="100,111 104,118 100,126 96,118" fill="#ffffff" stroke="#38bdf8" stroke-width="1.5"/>
+        <!-- Flowing Crystal Skirt -->
+        <path d="M 86 136 C 60 145 28 160 32 180 C 65 192 135 192 168 180 C 172 160 140 145 114 136 Z" fill="url(#iceSkirt_${uid})" stroke="#0284c7" stroke-width="2.5"/>
+        <!-- Icy Crystal Flards along skirt -->
+        <polygon points="65,148 70,172 60,172" fill="#ffffff" opacity="0.6"/>
+        <polygon points="135,148 140,172 130,172" fill="#ffffff" opacity="0.6"/>
+        <polygon points="100,146 106,174 94,174" fill="#ffffff" opacity="0.65"/>
+        <path d="M 38 175 Q 54 167 70 175 Q 86 167 102 175 Q 118 167 134 175 Q 150 167 162 175" fill="none" stroke="#bae6fd" stroke-width="3" stroke-linecap="round"/>
+      `;
+    } else if (suitId === 'suit_princess_celestial') {
+      // 🌌 Celestial Rainbow Queen Gown
+      torsoSVG = `
+        <!-- Gold Solar Pauldrons -->
+        <circle cx="73" cy="112" r="8" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>
+        <circle cx="127" cy="112" r="8" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>
+        <!-- Galaxy Bodice -->
+        <polygon points="80,105 120,105 114,136 86,136" fill="url(#celestialBodice_${uid})" stroke="#eab308" stroke-width="2"/>
+        <polygon points="100,112 103,119 110,119 104,123 106,130 100,126 94,130 96,123 90,119 97,119" fill="#fde047"/>
+        <!-- Wide Rainbow Starlight Ballgown Skirt -->
+        <path d="M 86 136 C 60 145 28 160 32 180 C 65 192 135 192 168 180 C 172 160 140 145 114 136 Z" fill="url(#celestialSkirt_${uid})" stroke="#eab308" stroke-width="2.8"/>
+        <!-- Floating Gold Constellation Arc -->
+        <path d="M 45 166 Q 100 150 155 166" fill="none" stroke="#fde047" stroke-width="2.5" stroke-dasharray="6 4"/>
+        <circle cx="55" cy="164" r="2.8" fill="#fde047"/>
+        <circle cx="80" cy="158" r="2.8" fill="#fde047"/>
+        <circle cx="120" cy="158" r="2.8" fill="#fde047"/>
+        <circle cx="145" cy="164" r="2.8" fill="#fde047"/>
+        <path d="M 38 175 Q 54 167 70 175 Q 86 167 102 175 Q 118 167 134 175 Q 150 167 162 175" fill="none" stroke="#facc15" stroke-width="3" stroke-linecap="round"/>
+      `;
+    } else if (suitId === 'suit_student') {
       torsoSVG = `
         <!-- White Shirt & Tie -->
         <rect x="80" y="105" width="40" height="42" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
         <path d="M 96 105 L 100 120 L 104 105 Z" fill="#ef4444" />
         <polygon points="98,120 102,120 104,138 100,143 96,138" fill="#ef4444" />
-        <!-- Blue Shorts -->
+        <!-- Blue Shorts/Skirt -->
         <rect x="80" y="142" width="40" height="15" rx="3" fill="#1e3a8a" />
       `;
     } else if (suitId === 'suit_adventurer') {
@@ -397,50 +557,105 @@
       `;
     }
 
-    // 4. HATS & CROWNS LAYER
+    // 4. HATS, TIARAS & CROWNS LAYER
     let hatSVG = '';
-    if (hatId === 'hat_cap') {
+    if (hatId === 'hat_princess_tiara') {
+      // 👑 Diamond Princess Tiara
+      hatSVG = `
+        <g>
+          <!-- Ornate Golden Tiara Base Arch -->
+          <path d="M 74 62 Q 100 50 126 62" stroke="#facc15" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- 5 Diamond Crest Peaks -->
+          <polygon points="76,61 80,48 85,58" fill="url(#goldGrad_${uid})" stroke="#b45309" stroke-width="1.2"/>
+          <polygon points="85,58 92,42 98,55" fill="url(#goldGrad_${uid})" stroke="#b45309" stroke-width="1.2"/>
+          <polygon points="96,55 100,32 104,55" fill="url(#goldGrad_${uid})" stroke="#b45309" stroke-width="1.5"/>
+          <polygon points="102,55 108,42 115,58" fill="url(#goldGrad_${uid})" stroke="#b45309" stroke-width="1.2"/>
+          <polygon points="115,58 120,48 124,61" fill="url(#goldGrad_${uid})" stroke="#b45309" stroke-width="1.2"/>
+          <!-- Sparkling Gems -->
+          <circle cx="100" cy="34" r="3.2" fill="#ffffff" stroke="#38bdf8" stroke-width="1"/>
+          <!-- Ruby Heart Drop in center -->
+          <polygon points="100,44 103.5,49 100,55 96.5,49" fill="#e11d48" stroke="#facc15" stroke-width="1"/>
+          <circle cx="92" cy="44" r="2" fill="#38bdf8"/>
+          <circle cx="108" cy="44" r="2" fill="#38bdf8"/>
+          <circle cx="80" cy="50" r="1.8" fill="#ffffff"/>
+          <circle cx="120" cy="50" r="1.8" fill="#ffffff"/>
+        </g>
+      `;
+    } else if (hatId === 'hat_flower_coronet') {
+      // 🌸 Enchanted Flower Coronet
+      hatSVG = `
+        <g>
+          <path d="M 75 62 Q 100 52 125 62" stroke="#16a34a" stroke-width="2.5" fill="none"/>
+          <!-- Sakura & Rose Blossoms -->
+          <circle cx="80" cy="59" r="4.5" fill="#f472b6" />
+          <circle cx="80" cy="59" r="2" fill="#fde047" />
+          <circle cx="90" cy="55" r="4.5" fill="#fbcfe8" />
+          <circle cx="90" cy="55" r="2" fill="#f43f5e" />
+          <circle cx="100" cy="53" r="5.5" fill="#f43f5e" />
+          <circle cx="100" cy="53" r="2.5" fill="#fde047" />
+          <circle cx="110" cy="55" r="4.5" fill="#fbcfe8" />
+          <circle cx="110" cy="55" r="2" fill="#f43f5e" />
+          <circle cx="120" cy="59" r="4.5" fill="#f472b6" />
+          <circle cx="120" cy="59" r="2" fill="#fde047" />
+        </g>
+      `;
+    } else if (hatId === 'hat_royal_veil') {
+      // 👰 Golden Royal Veil
+      hatSVG = `
+        <g>
+          <!-- Flowing sheer pink/white veil draping behind -->
+          <path d="M 75 58 C 55 75 48 135 60 160 Q 100 170 140 160 C 152 135 145 75 125 58 Z" fill="#fdf2f8" opacity="0.65" stroke="#fbcfe8" stroke-width="1.5"/>
+          <path d="M 75 60 Q 100 50 125 60" stroke="#facc15" stroke-width="3" fill="none"/>
+          <circle cx="100" cy="54" r="3.5" fill="#facc15"/>
+          <circle cx="88" cy="56" r="2.5" fill="#fbcfe8"/>
+          <circle cx="112" cy="56" r="2.5" fill="#fbcfe8"/>
+        </g>
+      `;
+    } else if (hatId === 'hat_crystal_crown') {
+      // ❄️ Ice Crystal Queen Crown
+      hatSVG = `
+        <g>
+          <polygon points="76,62 82,36 90,52 100,26 110,52 118,36 124,62" fill="url(#iceCrownGrad_${uid})" stroke="#38bdf8" stroke-width="1.8" />
+          <polygon points="98,34 100,28 102,34 100,44" fill="#ffffff" />
+          <circle cx="100" cy="48" r="3.5" fill="#0284c7" stroke="#ffffff" stroke-width="1"/>
+          <circle cx="85" cy="54" r="2" fill="#ffffff"/>
+          <circle cx="115" cy="54" r="2" fill="#ffffff"/>
+        </g>
+      `;
+    } else if (hatId === 'hat_cap') {
       hatSVG = `
         <!-- Sport Baseball Cap -->
         <path d="M 78 62 Q 100 40 122 62 Q 120 70 80 70 Z" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
-        <!-- Cap Brim -->
         <path d="M 80 66 Q 100 68 135 62 Q 120 74 85 70 Z" fill="#b91c1c" />
         <circle cx="100" cy="46" r="3" fill="#fde047" />
       `;
     } else if (hatId === 'hat_cowboy') {
       hatSVG = `
-        <!-- Felt Cowboy Hat -->
         <path d="M 82 56 Q 100 32 118 56 Z" fill="#92400e" stroke="#78350f" stroke-width="2"/>
-        <!-- Wide Brim -->
         <path d="M 60 62 Q 100 52 140 62 Q 135 70 65 70 Z" fill="#78350f" />
         <rect x="84" y="54" width="32" height="4" fill="#f59e0b" />
         <polygon points="100,53 102,56 105,56 102,58 103,61 100,59 97,61 98,58 95,56 98,56" fill="#fef08a" />
       `;
     } else if (hatId === 'hat_detective') {
       hatSVG = `
-        <!-- Tweed Detective Deerstalker -->
         <path d="M 76 64 Q 100 42 124 64 Z" fill="#78716c" stroke="#44403c" stroke-width="2"/>
         <path d="M 68 66 Q 100 58 132 66 Q 126 72 74 72 Z" fill="#57534e" />
         <ellipse cx="100" cy="48" rx="4" ry="2" fill="#a8a29e" />
       `;
     } else if (hatId === 'hat_viking') {
       hatSVG = `
-        <!-- Iron Viking Helmet with Horns -->
         <path d="M 76 65 Q 100 48 124 65 Z" fill="url(#metalGrad_${uid})" stroke="#334155" stroke-width="2"/>
         <line x1="78" y1="65" x2="122" y2="65" stroke="#eab308" stroke-width="3"/>
-        <!-- Horns -->
         <path d="M 78 58 Q 60 55 58 35 Q 68 45 80 54 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5" />
         <path d="M 122 58 Q 140 55 142 35 Q 132 45 120 54 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5" />
       `;
     } else if (hatId === 'hat_chef') {
       hatSVG = `
-        <!-- Chef Toque -->
         <path d="M 80 62 C 65 30 135 30 120 62 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
         <rect x="82" y="58" width="36" height="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/>
       `;
     } else if (hatId === 'hat_crown_silver') {
       hatSVG = `
-        <!-- Silver Sapphire Crown -->
         <polygon points="76,64 80,44 90,54 100,38 110,54 120,44 124,64" fill="url(#silverGrad_${uid})" stroke="#475569" stroke-width="2" />
         <circle cx="100" cy="54" r="3.5" fill="#0284c7" stroke="#38bdf8" stroke-width="1"/>
         <circle cx="85" cy="58" r="2" fill="#0284c7"/>
@@ -448,7 +663,6 @@
       `;
     } else if (hatId === 'hat_crown_gold') {
       hatSVG = `
-        <!-- Golden Ruby King Crown -->
         <polygon points="74,65 78,40 90,52 100,34 110,52 122,40 126,65" fill="url(#goldGrad_${uid})" stroke="#b45309" stroke-width="2" />
         <circle cx="100" cy="52" r="4.5" fill="#dc2626" stroke="#fde047" stroke-width="1.5"/>
         <circle cx="86" cy="57" r="2.8" fill="#16a34a"/>
@@ -456,7 +670,6 @@
       `;
     } else if (hatId === 'hat_crown_diamond') {
       hatSVG = `
-        <!-- Sparkling Crystal Diamond Crown -->
         <polygon points="74,65 77,38 90,50 100,32 110,50 123,38 126,65" fill="url(#diamondGrad_${uid})" stroke="#0284c7" stroke-width="2" />
         <polygon points="95,48 100,42 105,48 100,56" fill="#ffffff" opacity="0.9" />
         <circle cx="78" cy="38" r="2.5" fill="#fde047"/>
@@ -465,23 +678,57 @@
       `;
     }
 
-    // 5. WEAPON LAYER (RIGHT HAND)
+    // 5. WEAPONS, SCEPTERS & WANDS (HELD IN RIGHT HAND)
     let weaponSVG = '';
-    if (wpId === 'wp_pencil') {
+    if (wpId === 'wp_magic_star_scepter') {
+      // 🌟 Crystal Star Royal Scepter
       weaponSVG = `
-        <!-- Magical Golden 2B Pencil -->
+        <g transform="translate(130, 80) rotate(16)">
+          <line x1="12" y1="20" x2="12" y2="70" stroke="url(#goldGrad_${uid})" stroke-width="4.5" stroke-linecap="round"/>
+          <!-- Crystal Wing Accents on Staff -->
+          <path d="M 6 25 Q 0 16 6 12 Q 12 18 12 25" fill="#bae6fd" stroke="#38bdf8" stroke-width="1.2"/>
+          <path d="M 18 25 Q 24 16 18 12 Q 12 18 12 25" fill="#bae6fd" stroke="#38bdf8" stroke-width="1.2"/>
+          <!-- Brilliant 5-Point Crystal Star -->
+          <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="#fde047" stroke="#eab308" stroke-width="1.5"/>
+          <circle cx="12" cy="11" r="3.5" fill="#ffffff" />
+          <circle cx="12" cy="70" r="3" fill="#facc15" />
+        </g>
+      `;
+    } else if (wpId === 'wp_sakura_wand') {
+      // 🌸 Sakura Heart Wand
+      weaponSVG = `
+        <g transform="translate(130, 80) rotate(18)">
+          <line x1="12" y1="20" x2="12" y2="68" stroke="#f472b6" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 12 22 Q 4 14 6 6 Q 12 6 12 14 Q 12 6 18 6 Q 20 14 12 22 Z" fill="#ec4899" stroke="#be123c" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="3" fill="#fde047"/>
+          <path d="M 8 26 Q 4 34 10 38" stroke="#fbcfe8" stroke-width="2" fill="none"/>
+          <path d="M 16 26 Q 20 34 14 38" stroke="#fbcfe8" stroke-width="2" fill="none"/>
+        </g>
+      `;
+    } else if (wpId === 'wp_diamond_heart') {
+      // 💎 Imperial Diamond Heart Scepter
+      weaponSVG = `
+        <g transform="translate(128, 76) rotate(15)">
+          <line x1="14" y1="24" x2="14" y2="74" stroke="url(#goldGrad_${uid})" stroke-width="5" stroke-linecap="round"/>
+          <!-- Giant Faceted Diamond Heart -->
+          <path d="M 14 24 C 2 12 2 -4 14 8 C 26 -4 26 12 14 24 Z" fill="url(#diamondGrad_${uid})" stroke="#0284c7" stroke-width="2"/>
+          <polygon points="14,2 17,8 14,14 11,8" fill="#ffffff" opacity="0.9"/>
+          <circle cx="14" cy="24" r="3.5" fill="#facc15" stroke="#ca8a04" stroke-width="1"/>
+          <circle cx="14" cy="74" r="3.5" fill="#facc15"/>
+        </g>
+      `;
+    } else if (wpId === 'wp_pencil') {
+      weaponSVG = `
         <g transform="translate(132, 90) rotate(22)">
           <polygon points="6,0 12,0 9,12" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
           <rect x="6" y="12" width="6" height="38" fill="#eab308" stroke="#78350f" stroke-width="1"/>
           <rect x="6" y="50" width="6" height="8" fill="#cbd5e1"/>
           <rect x="6" y="58" width="6" height="8" rx="2" fill="#f43f5e"/>
-          <!-- Star Sparkle at tip -->
           <polygon points="9,-4 11,-1 14,-1 11,2 13,5 9,3 6,5 7,2 5,-1 8,-1" fill="#fde047"/>
         </g>
       `;
     } else if (wpId === 'wp_magnifier') {
       weaponSVG = `
-        <!-- Detective Lens -->
         <g transform="translate(132, 95)">
           <circle cx="14" cy="14" r="12" fill="#38bdf8" opacity="0.6" stroke="#eab308" stroke-width="3"/>
           <path d="M 8 10 Q 14 6 18 10" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.8"/>
@@ -490,7 +737,6 @@
       `;
     } else if (wpId === 'wp_wand') {
       weaponSVG = `
-        <!-- Magic Star Wand -->
         <g transform="translate(132, 85) rotate(18)">
           <line x1="10" y1="18" x2="10" y2="60" stroke="#78350f" stroke-width="4" stroke-linecap="round"/>
           <polygon points="10,4 13,11 20,11 15,16 17,23 10,19 4,23 6,16 1,11 8,11" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>
@@ -499,12 +745,9 @@
       `;
     } else if (wpId === 'wp_sword') {
       weaponSVG = `
-        <!-- Glowing Energy Laser Saber -->
         <g transform="translate(132, 75) rotate(24)">
-          <!-- Blade -->
           <rect x="8" y="-5" width="6" height="52" rx="3" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5" />
           <line x1="11" y1="-2" x2="11" y2="44" stroke="#ffffff" stroke-width="2"/>
-          <!-- Guard & Handle -->
           <rect x="2" y="47" width="18" height="5" rx="2" fill="#eab308"/>
           <rect x="8" y="52" width="6" height="14" fill="#475569"/>
           <circle cx="11" cy="68" r="3.5" fill="#eab308"/>
@@ -512,17 +755,14 @@
       `;
     } else if (wpId === 'wp_hammer') {
       weaponSVG = `
-        <!-- Thor Thunder Hammer -->
         <g transform="translate(130, 80) rotate(20)">
           <rect x="0" y="8" width="28" height="18" rx="3" fill="url(#metalGrad_${uid})" stroke="#334155" stroke-width="2"/>
           <line x1="14" y1="26" x2="14" y2="60" stroke="#78350f" stroke-width="4" stroke-linecap="round"/>
-          <!-- Lightning Rune -->
           <polygon points="14,11 10,17 14,17 13,23 18,16 14,16" fill="#fde047"/>
         </g>
       `;
     } else if (wpId === 'wp_trophy') {
       weaponSVG = `
-        <!-- Golden Champion Cup -->
         <g transform="translate(126, 92)">
           <path d="M 6 4 Q 6 22 18 22 Q 30 22 30 4 Z" fill="url(#goldGrad_${uid})" stroke="#b45309" stroke-width="2"/>
           <path d="M 6 8 Q -1 12 6 16" fill="none" stroke="#b45309" stroke-width="2.5"/>
@@ -534,22 +774,52 @@
       `;
     }
 
-    // 6. PET LAYER (STANDING TO THE LEFT)
+    // 6. PET COMPANIONS LAYER
     let petSVG = '';
-    if (petId === 'pet_dog') {
+    if (petId === 'pet_fairy') {
+      // 🧚 Sparkle Crystal Fairy
+      petSVG = `
+        <g transform="translate(26, 118)">
+          <!-- Glowing Aura & Wings -->
+          <ellipse cx="20" cy="18" rx="10" ry="16" fill="#bae6fd" opacity="0.65" transform="rotate(-25, 20, 18)"/>
+          <ellipse cx="28" cy="18" rx="10" ry="16" fill="#bae6fd" opacity="0.65" transform="rotate(25, 28, 18)"/>
+          <!-- Fairy Body & Little Dress -->
+          <circle cx="24" cy="16" r="6" fill="#fef08a" stroke="#f59e0b" stroke-width="1"/>
+          <circle cx="24" cy="10" r="5" fill="#ffedd5"/>
+          <circle cx="22" cy="9" r="0.8" fill="#000"/>
+          <circle cx="26" cy="9" r="0.8" fill="#000"/>
+          <polygon points="21,14 27,14 24,22" fill="#f472b6"/>
+          <!-- Fairy Tiny Star Wand -->
+          <line x1="28" y1="12" x2="36" y2="6" stroke="#facc15" stroke-width="1.5"/>
+          <polygon points="36,4 37,6 39,6 37.5,7.5 38,9.5 36,8 34,9.5 34.5,7.5 33,6 35,6" fill="#fde047"/>
+        </g>
+      `;
+    } else if (petId === 'pet_pegasus') {
+      // 🦄 Baby Rainbow Pegasus
+      petSVG = `
+        <g transform="translate(26, 122)">
+          <ellipse cx="22" cy="28" rx="14" ry="12" fill="#ffffff" stroke="#fbcfe8" stroke-width="1.5"/>
+          <circle cx="18" cy="15" r="9.5" fill="#ffffff" stroke="#fbcfe8" stroke-width="1"/>
+          <!-- Little Pegasus Wings -->
+          <path d="M 24 22 C 22 10 36 6 38 18 C 36 24 30 24 24 22 Z" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1.2"/>
+          <!-- Rainbow Golden Horn -->
+          <polygon points="17,8 20,-3 22,8" fill="#facc15" stroke="#f59e0b" stroke-width="1"/>
+          <!-- Pastel Rainbow Mane -->
+          <path d="M 22 8 Q 28 12 25 22" stroke="#f472b6" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="16" cy="14" r="1.5" fill="#701a75"/>
+          <circle cx="16" cy="13.5" r="0.6" fill="#ffffff"/>
+        </g>
+      `;
+    } else if (petId === 'pet_dog') {
       petSVG = `
         <g transform="translate(32, 130)">
-          <!-- Puppy Body -->
           <ellipse cx="20" cy="24" rx="14" ry="12" fill="#d97706" />
           <circle cx="18" cy="12" r="10" fill="#f59e0b" />
-          <!-- Floppy Ears -->
           <ellipse cx="9" cy="14" rx="4" ry="8" fill="#b45309" />
           <ellipse cx="27" cy="14" rx="4" ry="8" fill="#b45309" />
-          <!-- Eyes & Nose -->
           <circle cx="15" cy="10" r="1.5" fill="#000" />
           <circle cx="21" cy="10" r="1.5" fill="#000" />
           <circle cx="18" cy="14" r="1.8" fill="#451a03" />
-          <!-- Tail -->
           <path d="M 32 20 Q 38 12 34 8" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
         </g>
       `;
@@ -558,7 +828,6 @@
         <g transform="translate(32, 130)">
           <ellipse cx="20" cy="24" rx="13" ry="11" fill="#ea580c" />
           <circle cx="19" cy="13" r="9.5" fill="#f97316" />
-          <!-- Pointy Ears -->
           <polygon points="11,10 13,2 17,8" fill="#c2410c" />
           <polygon points="21,8 25,2 27,10" fill="#c2410c" />
           <circle cx="16" cy="12" r="1.5" fill="#000" />
@@ -575,13 +844,13 @@
           <circle cx="15" cy="14" r="1.5" fill="#000"/>
           <circle cx="21" cy="14" r="1.5" fill="#000"/>
           <polygon points="16,16 20,16 18,19" fill="#f59e0b"/>
-          <polygon points="16,24 20,24 18,26" fill="#ef4444"/> <!-- bow tie -->
+          <polygon points="16,24 20,24 18,26" fill="#ef4444"/>
         </g>
       `;
     } else if (petId === 'pet_lion') {
       petSVG = `
         <g transform="translate(30, 126)">
-          <circle cx="20" cy="14" r="14" fill="#b45309" /> <!-- Mane -->
+          <circle cx="20" cy="14" r="14" fill="#b45309" />
           <ellipse cx="20" cy="26" rx="13" ry="11" fill="#f59e0b" />
           <circle cx="20" cy="14" r="9.5" fill="#fbbf24" />
           <circle cx="17" cy="12" r="1.5" fill="#000"/>
@@ -596,11 +865,9 @@
           <circle cx="18" cy="14" r="10" fill="#ef4444" />
           <polygon points="12,8 14,2 17,7" fill="#facc15" />
           <polygon points="20,7 23,2 25,8" fill="#facc15" />
-          <!-- Little Wing -->
           <path d="M 28 22 Q 40 14 36 26 Z" fill="#b91c1c" />
           <circle cx="15" cy="13" r="1.8" fill="#fde047"/>
           <circle cx="15" cy="13" r="0.9" fill="#000"/>
-          <!-- Tiny flame puff -->
           <circle cx="8" cy="15" r="2.5" fill="#f59e0b" opacity="0.8"/>
         </g>
       `;
@@ -609,9 +876,7 @@
         <g transform="translate(30, 124)">
           <ellipse cx="20" cy="26" rx="13" ry="12" fill="#fdf4ff" stroke="#e879f9" stroke-width="1.5"/>
           <circle cx="18" cy="14" r="9.5" fill="#ffffff" stroke="#e879f9" stroke-width="1"/>
-          <!-- Glowing Rainbow Horn -->
           <polygon points="17,8 20,-3 22,8" fill="#facc15" stroke="#f59e0b" stroke-width="1"/>
-          <!-- Pastel Mane -->
           <path d="M 22 8 Q 28 12 24 22" stroke="#38bdf8" stroke-width="3" fill="none" stroke-linecap="round"/>
           <circle cx="16" cy="13" r="1.6" fill="#701a75"/>
         </g>
@@ -654,11 +919,67 @@
             <stop offset="60%" stop-color="#f97316"/>
             <stop offset="100%" stop-color="#fde047"/>
           </linearGradient>
+
+          <!-- PRINCESS EXTRAVAGANT GOWN GRADIENTS -->
+          <linearGradient id="cindBodice_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#7dd3fc"/>
+            <stop offset="50%" stop-color="#0284c7"/>
+            <stop offset="100%" stop-color="#0369a1"/>
+          </linearGradient>
+          <linearGradient id="cindSkirt_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#bae6fd"/>
+            <stop offset="40%" stop-color="#38bdf8"/>
+            <stop offset="85%" stop-color="#0284c7"/>
+            <stop offset="100%" stop-color="#075985"/>
+          </linearGradient>
+          <linearGradient id="auroraBodice_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fda4af"/>
+            <stop offset="60%" stop-color="#e11d48"/>
+            <stop offset="100%" stop-color="#9f1239"/>
+          </linearGradient>
+          <linearGradient id="auroraSkirt_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffe4e6"/>
+            <stop offset="40%" stop-color="#fb7185"/>
+            <stop offset="80%" stop-color="#e11d48"/>
+            <stop offset="100%" stop-color="#881337"/>
+          </linearGradient>
+          <linearGradient id="iceBodice_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="60%" stop-color="#38bdf8"/>
+            <stop offset="100%" stop-color="#0284c7"/>
+          </linearGradient>
+          <linearGradient id="iceSkirt_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f0f9ff"/>
+            <stop offset="45%" stop-color="#7dd3fc"/>
+            <stop offset="85%" stop-color="#0284c7"/>
+            <stop offset="100%" stop-color="#0369a1"/>
+          </linearGradient>
+          <linearGradient id="iceCapeGrad_${uid}" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+            <stop offset="50%" stop-color="#bae6fd" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.2"/>
+          </linearGradient>
+          <linearGradient id="iceCrownGrad_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="50%" stop-color="#7dd3fc"/>
+            <stop offset="100%" stop-color="#0284c7"/>
+          </linearGradient>
+          <linearGradient id="celestialBodice_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f43f5e"/>
+            <stop offset="50%" stop-color="#8b5cf6"/>
+            <stop offset="100%" stop-color="#3b82f6"/>
+          </linearGradient>
+          <linearGradient id="celestialSkirt_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fbcfe8"/>
+            <stop offset="30%" stop-color="#c084fc"/>
+            <stop offset="65%" stop-color="#60a5fa"/>
+            <stop offset="100%" stop-color="#1e1b4b"/>
+          </linearGradient>
         </defs>
 
         <!-- Pedestal / Rune Ring -->
-        <ellipse cx="100" cy="172" rx="55" ry="14" fill="url(#runeGrad_${uid})" stroke="#38bdf8" stroke-width="1.5"/>
-        <ellipse cx="100" cy="172" rx="42" ry="9" fill="none" stroke="#67e8f9" stroke-dasharray="4 3" stroke-width="1.5"/>
+        <ellipse cx="100" cy="172" rx="58" ry="15" fill="url(#runeGrad_${uid})" stroke="#38bdf8" stroke-width="1.5"/>
+        <ellipse cx="100" cy="172" rx="44" ry="10" fill="none" stroke="#67e8f9" stroke-dasharray="4 3" stroke-width="1.5"/>
 
         <!-- AURA (Behind) -->
         ${auraSVG}
@@ -666,28 +987,46 @@
         <!-- CAPE (Behind) -->
         ${capeSVG}
 
+        <!-- FEMALE LONG HAIR (Behind Shoulders) -->
+        ${femaleBackHairSVG}
+
         <!-- PET COMPANION (Left side) -->
         ${petSVG}
 
         <!-- HERO CHARACTER BODY -->
-        <!-- Legs & Shoes -->
-        <rect x="85" y="152" width="12" height="18" rx="4" fill="#0284c7" />
-        <rect x="103" y="152" width="12" height="18" rx="4" fill="#0284c7" />
-        <ellipse cx="91" cy="170" rx="8" ry="4.5" fill="#0f172a" />
-        <ellipse cx="109" cy="170" rx="8" ry="4.5" fill="#0f172a" />
+        ${!isBallgown ? `
+          <!-- Normal Legs & Shoes for Boy / Adventurer / Armor -->
+          <rect x="85" y="152" width="12" height="18" rx="4" fill="#0284c7" />
+          <rect x="103" y="152" width="12" height="18" rx="4" fill="#0284c7" />
+          <ellipse cx="91" cy="170" rx="8" ry="4.5" fill="#0f172a" />
+          <ellipse cx="109" cy="170" rx="8" ry="4.5" fill="#0f172a" />
+        ` : `
+          <!-- Sparkling Glass Slippers peek under ballgown -->
+          <ellipse cx="89" cy="175" rx="5.5" ry="3" fill="#bae6fd" stroke="#38bdf8" stroke-width="1"/>
+          <ellipse cx="111" cy="175" rx="5.5" ry="3" fill="#bae6fd" stroke="#38bdf8" stroke-width="1"/>
+        `}
 
-        <!-- Torso & Suit -->
+        <!-- Torso & Suit / Ballgown -->
         ${torsoSVG}
 
         <!-- Arms & Hands -->
-        <!-- Left arm on hip -->
-        <path d="M 80 112 Q 68 125 78 138" stroke="${skinColor}" stroke-width="8" stroke-linecap="round" fill="none"/>
-        <circle cx="78" cy="138" r="4.5" fill="${skinColor}" />
-        <!-- Right arm forward holding weapon -->
-        <path d="M 120 112 Q 132 122 135 130" stroke="${skinColor}" stroke-width="8" stroke-linecap="round" fill="none"/>
-        <circle cx="135" cy="130" r="4.5" fill="${skinColor}" />
+        ${isFemale ? `
+          <!-- Graceful Princess Arms with Sweet Hands -->
+          <path d="M 80 112 Q 66 126 76 138" stroke="${skinColor}" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <circle cx="76" cy="138" r="4" fill="${skinColor}" />
+          <!-- Right arm holding Scepter/Wand -->
+          <path d="M 120 112 Q 132 124 134 130" stroke="${skinColor}" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <circle cx="134" cy="130" r="4" fill="${skinColor}" />
+        ` : `
+          <!-- Left arm on hip -->
+          <path d="M 80 112 Q 68 125 78 138" stroke="${skinColor}" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <circle cx="78" cy="138" r="4.5" fill="${skinColor}" />
+          <!-- Right arm forward holding weapon -->
+          <path d="M 120 112 Q 132 122 135 130" stroke="${skinColor}" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <circle cx="135" cy="130" r="4.5" fill="${skinColor}" />
+        `}
 
-        <!-- WEAPON (Held in Right Hand) -->
+        <!-- WEAPON / SCEPTER (Held in Right Hand) -->
         ${weaponSVG}
 
         <!-- CHIBI HEAD & FACE -->
@@ -695,36 +1034,70 @@
         <rect x="94" y="98" width="12" height="10" rx="2" fill="${skinShadow}" />
         <!-- Head base -->
         <circle cx="100" cy="74" r="28" fill="${skinColor}" stroke="${skinShadow}" stroke-width="1.5"/>
+        
         <!-- Cute Blushing Cheeks -->
-        <ellipse cx="84" cy="82" rx="5" ry="3" fill="#f43f5e" opacity="0.45" />
-        <ellipse cx="116" cy="82" rx="5" ry="3" fill="#f43f5e" opacity="0.45" />
+        <ellipse cx="84" cy="82" rx="${isFemale ? '6' : '5'}" ry="3.5" fill="#f43f5e" opacity="${isFemale ? '0.6' : '0.45'}" />
+        <ellipse cx="116" cy="82" rx="${isFemale ? '6' : '5'}" ry="3.5" fill="#f43f5e" opacity="${isFemale ? '0.6' : '0.45'}" />
+
         <!-- Anime Big Eyes -->
-        <!-- Left Eye -->
-        <ellipse cx="88" cy="74" rx="4.5" ry="6.5" fill="${eyeColor}" />
-        <circle cx="87" cy="71" r="2" fill="#ffffff" />
-        <circle cx="89" cy="76" r="1" fill="#ffffff" />
-        <!-- Right Eye -->
-        <ellipse cx="112" cy="74" rx="4.5" ry="6.5" fill="${eyeColor}" />
-        <circle cx="111" cy="71" r="2" fill="#ffffff" />
-        <circle cx="113" cy="76" r="1" fill="#ffffff" />
-        <!-- Cute Happy Smile -->
-        <path d="M 95 83 Q 100 88 105 83" fill="none" stroke="#78350f" stroke-width="2.2" stroke-linecap="round" />
+        ${isFemale ? `
+          <!-- Princess Sparkling Anime Eyes with Eyelashes -->
+          <g>
+            <!-- Eyelashes -->
+            <path d="M 81 69 Q 88 64 94 69" stroke="#451a03" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M 81 68 L 78 65" stroke="#451a03" stroke-width="2" stroke-linecap="round"/>
+            <path d="M 106 69 Q 112 64 119 69" stroke="#451a03" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M 119 68 L 122 65" stroke="#451a03" stroke-width="2" stroke-linecap="round"/>
+            <!-- Left Eye -->
+            <ellipse cx="88" cy="74" rx="5" ry="7" fill="${eyeColor}" />
+            <circle cx="87" cy="71" r="2.4" fill="#ffffff" />
+            <circle cx="90" cy="76" r="1.3" fill="#ffffff" />
+            <circle cx="86" cy="77" r="0.8" fill="#fbcfe8" />
+            <!-- Right Eye -->
+            <ellipse cx="112" cy="74" rx="5" ry="7" fill="${eyeColor}" />
+            <circle cx="111" cy="71" r="2.4" fill="#ffffff" />
+            <circle cx="114" cy="76" r="1.3" fill="#ffffff" />
+            <circle cx="110" cy="77" r="0.8" fill="#fbcfe8" />
+            <!-- Sweet Princess Smile -->
+            <path d="M 96 83 Q 100 87 104 83" fill="#f43f5e" stroke="#be123c" stroke-width="1.8" stroke-linecap="round" />
+          </g>
+        ` : `
+          <!-- Boy Eyes -->
+          <ellipse cx="88" cy="74" rx="4.5" ry="6.5" fill="${eyeColor}" />
+          <circle cx="87" cy="71" r="2" fill="#ffffff" />
+          <circle cx="89" cy="76" r="1" fill="#ffffff" />
+          <ellipse cx="112" cy="74" rx="4.5" ry="6.5" fill="${eyeColor}" />
+          <circle cx="111" cy="71" r="2" fill="#ffffff" />
+          <circle cx="113" cy="76" r="1" fill="#ffffff" />
+          <!-- Cute Happy Smile -->
+          <path d="M 95 83 Q 100 88 105 83" fill="none" stroke="#78350f" stroke-width="2.2" stroke-linecap="round" />
+        `}
 
-        <!-- ANIME HAIR -->
-        <path d="M 72 68 Q 70 42 100 42 Q 130 42 128 68 C 122 60 114 55 100 55 C 86 55 78 60 72 68 Z" fill="${hairColor}" />
-        <!-- Spiky front bangs -->
-        <polygon points="80,56 86,66 92,54" fill="${hairHighlight}" />
-        <polygon points="90,54 98,70 104,54" fill="${hairHighlight}" />
-        <polygon points="102,54 110,67 116,56" fill="${hairHighlight}" />
+        <!-- ANIME FRONT HAIR / BANGS -->
+        ${isFemale ? `
+          <!-- Princess Elegant Curving Bangs -->
+          <g>
+            <path d="M 72 65 Q 100 44 128 65 C 122 56 112 50 100 50 C 88 50 78 56 72 65 Z" fill="${hairColor}" />
+            <!-- Soft Side Bangs Framing Face -->
+            <path d="M 73 63 Q 78 78 80 88 Q 74 76 72 65 Z" fill="${hairColor}" />
+            <path d="M 127 63 Q 122 78 120 88 Q 126 76 128 65 Z" fill="${hairColor}" />
+            <!-- Center Curving Bang Strands -->
+            <path d="M 86 52 Q 95 68 100 56 Q 105 68 114 52" stroke="${hairHighlight}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </g>
+        ` : `
+          <!-- Boy Hair -->
+          <path d="M 72 68 Q 70 42 100 42 Q 130 42 128 68 C 122 60 114 55 100 55 C 86 55 78 60 72 68 Z" fill="${hairColor}" />
+          <!-- Spiky front bangs -->
+          <polygon points="80,56 86,66 92,54" fill="${hairHighlight}" />
+          <polygon points="90,54 98,70 104,54" fill="${hairHighlight}" />
+          <polygon points="102,54 110,67 116,56" fill="${hairHighlight}" />
+        `}
 
-        <!-- HAT / CROWN OVERLAY -->
+        <!-- HAT / TIARA / CROWN OVERLAY -->
         ${hatSVG}
       </svg>
     `;
-  }
-
-  // --- 7. PURE VECTOR SVG RPG BOSS GENERATOR ---
-  function renderBossSVG(bossName, size = 110) {
+  }function renderBossSVG(bossName, size = 110) {
     const uid = Math.random().toString(36).substring(2, 7);
 
     // Detect boss type by name keywords

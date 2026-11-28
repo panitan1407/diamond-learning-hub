@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎁 Buzz 2 Unit 6: My Favorite Things (100 ข้อ + ระบบตรวจ & วิเคราะห์จุดอ่อน)</title>
+  <script src="diamond_game_engine.js"></script>
+  <style>
+    :root {
+      --primary: #86198f;
+      --secondary: #a21caf;
+      --light: #f5d0fe;
+      --accent: #ff9f1c;
+      --success: #2b9348;
+      --danger: #d62828;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', 'Prompt', 'Tahoma', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
+      color: #1b263b;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .container { max-width: 1160px; margin: 0 auto; }
+
+    /* --- HERO TOP BAR WITH WALLET & SHOP TRIGGER --- */
+    .hero-top-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #172554 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 10px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border: 1.5px solid rgba(255,255,255,0.18);
+      box-shadow: 0 8px 24px rgba(15,23,42,0.3);
+    }
+    .hero-info-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-info-group .name {
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: #f8fafc;
+    }
+    .hero-info-group .lvl {
+      font-size: 0.82rem;
+      color: #93c5fd;
+      font-weight: 700;
+    }
+    .hero-wallet-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .wallet-tag {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #ffd166;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .shop-btn-glow {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(245,158,11,0.4);
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .shop-btn-glow:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .nav-btn {
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover { transform: translateY(-2px); }
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      border-radius: 22px;
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.16);
+    }
+    .header h1 { font-size: 1.5rem; font-weight: 900; }
+    .header p { color: rgba(255,255,255,0.88); font-size: 0.93rem; margin-top: 4px; }
+    .stats { display: flex; gap: 10px; flex-wrap: wrap; }
+    .stat-box {
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 8px 14px;
+      border-radius: 14px;
+      text-align: center;
+      min-width: 95px;
+    }
+    .stat-box .lbl { font-size: 0.72rem; color: rgba(255,255,255,0.85); text-transform: uppercase; }
+    .stat-box .val { font-size: 1.3rem; font-weight: 900; color: #ffd166; }
+
+    /* --- AAA RPG BOSS BATTLE ARENA (SCI-FI / FANTASY STADIUM) --- */
+    .boss-arena-box {
+      background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #0f172a 70%, #020617 100%);
+      color: white;
+      border-radius: 26px;
+      padding: 20px 26px;
+      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 18px;
+      border: 2px solid rgba(99, 102, 241, 0.4);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), inset 0 0 30px rgba(99, 102, 241, 0.2);
+      position: relative;
+      overflow: visible;
+    }
+    @media (max-width: 768px) {
+      .boss-arena-box {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 14px;
+      }
+    }
+    .fighter-side {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+    .hero-side { justify-content: flex-start; }
+    .boss-side { justify-content: flex-end; flex-direction: row-reverse; }
+    @media (max-width: 768px) {
+      .hero-side, .boss-side { justify-content: center; flex-direction: row; }
+    }
+    .fighter-meta { display: flex; flex-direction: column; gap: 5px; }
+    .fighter-name { font-weight: 900; font-size: 1.1rem; }
+    .hero-side .fighter-name { color: #93c5fd; text-shadow: 0 0 10px rgba(147,197,253,0.5); }
+    .boss-side .fighter-name { color: #fca5a5; text-shadow: 0 0 10px rgba(252,165,165,0.5); }
+
+    /* Authentic Fighting Game HP Bar with Metallic Chrome/Gold Borders */
+    .hp-frame {
+      background: #020617;
+      border: 2px solid #3b82f6;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
+      border-radius: 99px;
+      height: 16px;
+      width: 155px;
+      overflow: hidden;
+      padding: 2px;
+    }
+    .hp-frame.boss {
+      border-color: #ef4444;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+    }
+    .hp-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+      transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 0 10px #10b981;
+    }
+    .hp-bar-fill.boss {
+      background: linear-gradient(90deg, #dc2626 0%, #f87171 50%, #fca5a5 100%);
+      box-shadow: 0 0 10px #dc2626;
+    }
+    .hearts-row { font-size: 1.15rem; letter-spacing: 2px; }
+
+    /* Center VS Medallion */
+    .battle-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+    }
+    .vs-medallion {
+      width: 54px; height: 54px;
+      background: radial-gradient(circle, #dc2626 0%, #7f1d1d 100%);
+      border: 3px solid #facc15;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.15rem; color: #fef08a;
+      box-shadow: 0 0 20px rgba(220, 38, 38, 0.7), inset 0 2px 6px rgba(255, 255, 255, 0.4);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+    .battle-round-text { font-size: 0.82rem; color: #cbd5e1; font-weight: 700; }
+
+    /* Visual Slash Effect */
+    .slash-effect {
+      position: absolute;
+      top: 25%; right: 18%;
+      width: 130px; height: 6px;
+      background: linear-gradient(90deg, transparent, #38bdf8, #ffffff, #38bdf8, transparent);
+      transform: rotate(-35deg) scaleX(0);
+      box-shadow: 0 0 22px #38bdf8, 0 0 35px #ffffff;
+      border-radius: 99px;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .slash-active {
+      animation: slashAnim 0.35s ease-out forwards;
+    }
+    @keyframes slashAnim {
+      0% { transform: rotate(-35deg) scaleX(0) translateX(-50px); opacity: 1; }
+      50% { transform: rotate(-35deg) scaleX(1.4) translateX(0); opacity: 1; }
+      100% { transform: rotate(-35deg) scaleX(1.8) translateX(60px); opacity: 0; }
+    }
+
+    /* Attack & Hit Animations */
+    .hero-attack { animation: heroAttackAnim 0.4s ease; }
+    .boss-attack { animation: bossAttackAnim 0.4s ease; }
+    .boss-hit { animation: bossHitAnim 0.4s ease; }
+    .hero-hit { animation: heroHitAnim 0.4s ease; }
+    .boss-defeated { animation: bossDefeatedAnim 0.6s ease forwards; }
+
+    @keyframes heroAttackAnim {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(45px) scale(1.18); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes bossAttackAnim {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(-45px) scale(1.18); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes bossHitAnim {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(0.9) rotate(-14deg); filter: brightness(2) drop-shadow(0 0 20px red); }
+      75% { transform: scale(0.9) rotate(14deg); }
+    }
+    @keyframes heroHitAnim {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(0.9) rotate(10deg); filter: brightness(1.7) drop-shadow(0 0 15px red); }
+      75% { transform: scale(0.9) rotate(-10deg); }
+    }
+    @keyframes bossDefeatedAnim {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4) rotate(180deg); filter: brightness(3); }
+      100% { transform: scale(0) rotate(360deg); opacity: 0; }
+    }
+
+    /* Floating numbers */
+    .float-number {
+      position: absolute;
+      font-weight: 900;
+      font-size: 1.35rem;
+      pointer-events: none;
+      animation: floatFadeAnim 0.95s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      z-index: 9999;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+    .float-loot { color: #fde047; }
+    .float-dmg { color: #f87171; }
+    .float-miss { color: #cbd5e1; }
+
+    @keyframes floatFadeAnim {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-55px); opacity: 0; }
+    }
+
+    /* Boss Victory Modal with Chest Opening */
+    .boss-victory-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 16px;
+    }
+    .boss-victory-card {
+      background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+      border: 2px solid #f59e0b;
+      color: white;
+      border-radius: 28px;
+      max-width: 480px;
+      width: 100%;
+      padding: 32px 26px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 35px rgba(245,158,11,0.4);
+      animation: popInAnim 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popInAnim {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Quest Selector */
+    .quest-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .quest-card {
+      background: white;
+      border: 2.5px solid var(--light);
+      border-radius: 16px;
+      padding: 12px 15px;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-align: left;
+    }
+    .quest-card:hover { transform: translateY(-2px); border-color: var(--secondary); }
+    .quest-card.active {
+      background: linear-gradient(135deg, #ff9f1c 0%, #f77f00 100%);
+      color: white;
+      border-color: #f77f00;
+      box-shadow: 0 6px 16px rgba(247,127,0,0.3);
+    }
+    .quest-card .q-badge { font-size: 0.76rem; font-weight: 800; opacity: 0.9; margin-bottom: 3px; }
+    .quest-card .q-title { font-size: 0.96rem; font-weight: 800; line-height: 1.3; }
+
+    /* Quiz Arena */
+    .arena {
+      background: white;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+    }
+    .progress-bar-wrap {
+      background: #edf2f7;
+      height: 12px;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .part-tag {
+      background: #eef4fb;
+      color: #1e6091;
+      border: 1px solid #bde0fe;
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-weight: 800;
+      font-size: 0.88rem;
+    }
+    .q-counter { font-weight: 900; color: var(--primary); font-size: 1.02rem; }
+
+    .clue-banner {
+      background: #fff8eb;
+      border: 2px solid #ff9f1c;
+      color: #9a3412;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 1.04rem;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .story-box {
+      background: #f8fdf9;
+      border: 2px solid #95d5b2;
+      padding: 16px 20px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      line-height: 1.65;
+      font-size: 1.02rem;
+    }
+    .story-box h4 { color: #1b4332; margin-bottom: 8px; font-size: 1.12rem; }
+    .mini-tbl {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 0.96rem;
+    }
+    .mini-tbl th, .mini-tbl td {
+      border: 1.5px solid #cbd5e1;
+      padding: 9px 12px;
+      text-align: center;
+    }
+    .mini-tbl th { background: var(--light); color: var(--primary); font-weight: 800; }
+
+    .question-box {
+      background: #f8fafc;
+      border-left: 6px solid var(--secondary);
+      padding: 18px 20px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+    .question-text {
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: #1b263b;
+      line-height: 1.48;
+    }
+    .speak-btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .speak-btn:hover { transform: scale(1.08); }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .opt-btn {
+      background: #ffffff;
+      border: 2.5px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: #1b263b;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.16s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      line-height: 1.4;
+    }
+    .opt-btn:hover:not(:disabled) {
+      border-color: var(--secondary);
+      background: #f0fdf4;
+      transform: translateY(-2px);
+    }
+    .opt-btn.correct {
+      background: #2b9348 !important;
+      color: white !important;
+      border-color: #1b4332 !important;
+      box-shadow: 0 6px 16px rgba(43,147,72,0.3);
+    }
+    .opt-btn.wrong {
+      background: #d62828 !important;
+      color: white !important;
+      border-color: #9b2226 !important;
+    }
+
+    .feedback-box {
+      display: none;
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-top: 12px;
+      line-height: 1.55;
+    }
+    .feedback-box.show { display: block; }
+    .feedback-box.ok { background: #e8f8ed; border: 2px solid #2b9348; color: #1b4332; }
+    .feedback-box.err { background: #ffe5e5; border: 2px solid #d62828; color: #780000; }
+
+    .nav-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 2px dashed #e2e8f0;
+    }
+    .ctrl-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 0.98rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .ctrl-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+    .ctrl-btn.next { background: linear-gradient(135deg, #ff9f1c, #e07a00); font-size: 1.05rem; }
+    .ctrl-btn.report { background: #6a4c93; }
+
+    /* DIAGNOSTIC REPORT CARD & GAP ANALYSIS STYLES */
+    .report-card { padding: 10px; }
+    .report-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .grade-badge {
+      display: inline-block;
+      background: #ffd166;
+      color: #1b263b;
+      font-weight: 900;
+      font-size: 1.25rem;
+      padding: 8px 22px;
+      border-radius: 99px;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    .diag-box {
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 18px;
+      background: #f8fafc;
+    }
+    .diag-box h3 {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .skill-row { margin-bottom: 12px; }
+    .skill-top {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 0.92rem;
+      margin-bottom: 4px;
+    }
+    .skill-bar-bg {
+      background: #e2e8f0;
+      height: 11px;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+    .gap-alert {
+      background: #fff3cd;
+      border-left: 5px solid #f77f00;
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+    .gap-good {
+      background: #d8f3dc;
+      border-left: 5px solid #2b9348;
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+    .wrong-item {
+      border: 1.5px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .wrong-item .wq { font-weight: 800; color: #991b1b; margin-bottom: 6px; }
+
+    /* QUEST MEMORY & PROGRESS RESUME STYLES */
+    .quest-memory-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #eff6ff;
+      border: 1.5px solid #93c5fd;
+      border-radius: 12px;
+      padding: 8px 14px;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #1e40af;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .reset-q-btn {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #f87171;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .reset-q-btn:hover {
+      background: #ef4444;
+      color: white;
+      transform: scale(1.04);
+    }
+    .quest-status-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 99px;
+      margin-top: 4px;
+    }
+    .quest-status-badge.done { background: #dcfce7; color: #15803d; }
+    .quest-status-badge.playing { background: #fef3c7; color: #b45309; }
+    .quest-status-badge.new { background: #e0f2fe; color: #0369a1; }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HERO STATUS TOP BAR -->
+    <div class="hero-top-banner">
+      <div class="hero-info-group">
+        <div id="topHeroAvatar"></div>
+        <div>
+          <div class="name" id="topHeroName">น้องไดมอนด์ (ฮีโร่สาธิตฯ)</div>
+          <div class="lvl" id="topHeroLevel">Level 1 • 0 XP</div>
+        </div>
+      </div>
+      <div class="hero-wallet-group">
+        <div class="wallet-tag">🪙 <span id="topCoinsVal">100</span></div>
+        <div class="wallet-tag">💎 <span id="topGemsVal">3</span></div>
+        <button onclick="DiamondEngine.openShopModal('hat')" class="shop-btn-glow">👑 แต่งตัวฮีโร่</button>
+        <button onclick="DiamondEngine.openShopModal('coupons')" class="shop-btn-glow" style="background:linear-gradient(135deg, #10b981, #059669);">🎁 แลกคูปอง</button>
+      </div>
+    </div>
+
+    <div class="top-bar">
+      <a href="index.html" class="nav-btn" style="background:#1b263b;color:white;">🏠 กลับหน้าศูนย์กลางวิชา (Main Hub)</a>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="english_exam_quest.html" class="nav-btn" style="background:#1b4332;color:white;">🦁 กลับไป Unit 5 (Wild Animals)</a><a href="english_matching_game.html" class="nav-btn" style="background:#ff9f1c;color:#1b263b;">🔗 เกมจับคู่ Keyword</a>
+        <a href="english_exam_quest.html" class="nav-btn" style="background:#2b9348;color:white;">🦁 อังกฤษ</a>
+        <a href="math_exam_quest.html" class="nav-btn" style="background:#0077b6;color:white;">🔢 คณิต</a>
+        <a href="science_exam_quest.html" class="nav-btn" style="background:#e07a00;color:white;">🌱 วิทย์</a>
+        <a href="social_exam_quest.html" class="nav-btn" style="background:#7209b7;color:white;">🏘️ สังคม</a>
+      </div>
+    </div>
+
+    <header class="header">
+      <div>
+        <h1>🎁 English Unit 6: My Favorite Things (100 ข้อ 5 ด่าน)</h1>
+        <p>Oxford Buzz 2 ป.2 — คำศัพท์สิ่งของ, Whose is it?, Possessive Pronouns (mine, yours, his, hers, ours, theirs), เสื้อผ้า & Present Continuous, นิทาน The Prince's Toys</p>
+      </div>
+      <div class="stats">
+        <div class="stat-box">
+          <div class="lbl">⭐ แต้มสะสม</div>
+          <div class="val" id="starVal">100</div>
+        </div>
+        <div class="stat-box">
+          <div class="lbl">🔥 คอมโบ</div>
+          <div class="val" id="streakVal">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="lbl">🎯 คะแนนด่านนี้</div>
+          <div class="val" id="setScoreVal">0 / 0</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="quest-selector" id="questTabs"></div>
+
+    <main class="arena" id="quizArena"></main>
+  </div>
+
+  <script>
+    const ALL_QUESTS = [{"id": "quest_buzz6_1", "title": "🎁 ด่านที่ 1: คลังคำศัพท์สิ่งของสุดโปรด (Favorite Things Vocab)", "subtitle": "ฝึกจำคำศัพท์สิ่งของ ของเล่น เครื่องประดับ และเครื่องดนตรี Unit 6", "bossName": "หุ่นเชิดปีศาจยักษ์ (Giant Shadow Puppet)", "bossSub": "บอสหุ่นเชิดช่างแกล้ง ท่องคีย์เวิร์ดกำจัดมัน!", "bossIcon": "🧸", "bossMaxHp": 5, "questions": [{"num": 1, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคีย์เวิร์ด: guitar = เครื่องดนตรีมีสาย (musical instrument with strings) ที่ใช้ดีดบรรเลงเพลง", "q": "Look at the clue: 'It is a musical instrument with strings. You can strum it and play music.' What is it?", "choices": ["a guitar", "a helicopter", "a trophy", "a bracelet"], "answer": "a guitar", "exp": "ถูกต้อง! guitar คือกีตาร์ มีสาย (strings) ใช้ดีดบรรเลงดนตรี", "options": ["a guitar", "a helicopter", "a trophy", "a bracelet"]}, {"num": 2, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคีย์เวิร์ด: watch = นาฬิกาข้อมือ (wear on your wrist to tell time)", "q": "You wear this on your wrist to tell the time. What is it?", "choices": ["a watch", "a poster", "a puppet", "a video game"], "answer": "a watch", "exp": "ถูกต้อง! watch คือนาฬิกาข้อมือ ใช้ดูเวลา", "options": ["a watch", "a poster", "a puppet", "a video game"]}, {"num": 3, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคีย์เวิร์ด: bracelet = กำไลข้อมือ (pretty jewelry worn around your wrist)", "q": "Emma is wearing pretty jewelry around her wrist. What is she wearing?", "choices": ["a bracelet", "a trophy", "a helicopter", "a guitar"], "answer": "a bracelet", "exp": "ถูกต้อง! bracelet คือกำไลข้อมือ สวมใส่ที่ข้อมือเป็นเครื่องประดับ", "options": ["a bracelet", "a trophy", "a helicopter", "a guitar"]}, {"num": 4, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคีย์เวิร์ด: trophy = ถ้วยรางวัล (golden cup won in sports or contest)", "q": "Our school team won the soccer championship! What prize did we get?", "choices": ["a trophy", "a poster", "a watch", "a puppet"], "answer": "a trophy", "exp": "ถูกต้อง! trophy คือถ้วยรางวัล ได้รับเมื่อชนะการแข่งขัน", "options": ["a trophy", "a poster", "a watch", "a puppet"]}, {"num": 5, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคีย์เวิร์ด: puppet = หุ่นชัก/หุ่นเชิด (moved with hands or strings)", "q": "This toy looks like a character or animal. You move it with strings or your hand. What is it?", "choices": ["a puppet", "a video game", "a watch", "a trophy"], "answer": "a puppet", "exp": "ถูกต้อง! puppet คือหุ่นเชิด/หุ่นชัก ใช้มือหรือเชือกขยับ", "options": ["a puppet", "a video game", "a watch", "a trophy"]}, {"num": 6, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคีย์เวิร์ด: helicopter = เฮลิคอปเตอร์ (flies in the sky with spinning blades/rotors)", "q": "It can fly in the sky, and it has spinning blades on top. What is it?", "choices": ["a helicopter", "a guitar", "a bracelet", "a poster"], "answer": "a helicopter", "exp": "ถูกต้อง! helicopter คือเฮลิคอปเตอร์ บินได้และมีใบพัดหมุนด้านบน", "options": ["a helicopter", "a guitar", "a bracelet", "a poster"]}, {"num": 7, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคีย์เวิร์ด: video game = เกมกด/วิดีโอเกม (play on a screen with controllers)", "q": "Ben is holding a controller and looking at the TV screen. What is he playing?", "choices": ["a video game", "a bracelet", "a watch", "a trophy"], "answer": "a video game", "exp": "ถูกต้อง! video game คือวิดีโอเกม เล่นบนหน้าจอด้วยจอยคอนโทรลเลอร์", "options": ["a video game", "a bracelet", "a watch", "a trophy"]}, {"num": 8, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคีย์เวิร์ด: poster = โปสเตอร์ภาพขนาดใหญ่ (large picture on the wall)", "q": "Diamond put a big picture of a soccer star on his bedroom wall. What is it?", "choices": ["a poster", "a puppet", "a guitar", "a watch"], "answer": "a poster", "exp": "ถูกต้อง! poster คือภาพพิมพ์แผ่นใหญ่ติดผนัง", "options": ["a poster", "a puppet", "a guitar", "a watch"]}, {"num": 9, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำบทสนทนา: 'Is this Sam's bracelet?' -> 'No, it isn't. It's Eva's bracelet.'", "q": "Teacher: 'Is this Sam's bracelet?' \nStudent: 'No, it isn't. It's ________ bracelet.'", "choices": ["Eva's", "Evas", "Eva", "Evas's"], "answer": "Eva's", "exp": "ถูกต้อง! แสดงความเป็นเจ้าของของบุคคลต้องใส่ apostrophe-s (Eva's)", "options": ["Eva's", "Evas", "Eva", "Evas's"]}, {"num": 10, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคำศัพท์วัสดุ: strings = เส้นเชือก/สายดนตรี (used to play guitar or move puppets)", "q": "A guitar and a puppet both use ________.", "choices": ["strings", "screens", "batteries", "wheels"], "answer": "strings", "exp": "ถูกต้อง! ทั้งกีตาร์และหุ่นชักต่างใช้ strings (สายกีตาร์ / เชือกเชิด)", "options": ["strings", "screens", "batteries", "wheels"]}, {"num": 11, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคำศัพท์วัสดุ: ribbon = ริบบิ้น (thin strip of silk tied in a bow)", "q": "There is a pretty gray ________ tied around the teddy bear's neck.", "choices": ["ribbon", "helicopter", "video game", "trophy"], "answer": "ribbon", "exp": "ถูกต้อง! ribbon คือริบบิ้นผูกโบว์รอบคอตุ๊กตาหมี", "options": ["ribbon", "helicopter", "video game", "trophy"]}, {"num": 12, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำคำศัพท์วัสดุ: material = ผ้า/วัสดุสิ่งทอ (cloth used to make clothes)", "q": "Most clothes are made of cloth or fabric. Another word for cloth is ________.", "choices": ["material", "metal", "stone", "paper"], "answer": "material", "exp": "ถูกต้อง! material ในบทเรียน Buzz 2 หมายถึงเนื้อผ้าสิ่งทอที่ใช้ตัดเย็บเสื้อผ้า", "options": ["material", "metal", "stone", "paper"]}, {"num": 13, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำการถาม-ตอบ ใช่/ไม่ใช่: 'Is it a guitar?' -> 'Yes, it is.' / 'No, it isn't.'", "q": "'Is it a guitar?' -> 'Yes, ________.'", "choices": ["it is", "it isn't", "they are", "I do"], "answer": "it is", "exp": "ถูกต้อง! ถาม Is it ตอบรับด้วย Yes, it is.", "options": ["it is", "it isn't", "they are", "I do"]}, {"num": 14, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำกลุ่มของเล่น vs กลุ่มเครื่องดนตรี: puppet, video game = toys / guitar = musical instrument", "q": "Which of these is a MUSICAL INSTRUMENT?", "choices": ["a guitar", "a puppet", "a watch", "a poster"], "answer": "a guitar", "exp": "ถูกต้อง! guitar เป็นเครื่องดนตรี (musical instrument)", "options": ["a guitar", "a puppet", "a watch", "a poster"]}, {"num": 15, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "จำสิ่งของที่สวมใส่ได้ (wearable): watch และ bracelet สวมใส่ที่ข้อมือ (wrist)", "q": "Which TWO things do you WEAR on your wrist?", "choices": ["a watch and a bracelet", "a guitar and a trophy", "a poster and a puppet", "a video game and a helicopter"], "answer": "a watch and a bracelet", "exp": "ถูกต้อง! ทั้ง watch (นาฬิกา) และ bracelet (กำไล) สวมใส่บนข้อมือ (wrist)", "options": ["a watch and a bracelet", "a guitar and a trophy", "a poster and a puppet", "a video game and a helicopter"]}, {"num": 16, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "สะกดคำศัพท์: h-e-l-i-c-o-p-t-e-r", "q": "Spell the word correctly: 'h - e - l - i - c - o - p - t - e - r'", "choices": ["helicopter", "hellicopter", "helicoptor", "halicopter"], "answer": "helicopter", "exp": "ถูกต้อง! helicopter สะกดด้วย h-e-l-i-c-o-p-t-e-r", "options": ["helicopter", "hellicopter", "helicoptor", "halicopter"]}, {"num": 17, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "สะกดคำศัพท์: b-r-a-c-e-l-e-t", "q": "Which word is spelled correctly for 'กำไลข้อมือ'?", "choices": ["bracelet", "braclet", "bracelete", "braslet"], "answer": "bracelet", "exp": "ถูกต้อง! bracelet สะกด b-r-a-c-e-l-e-t", "options": ["bracelet", "braclet", "bracelete", "braslet"]}, {"num": 18, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "สะกดคำศัพท์: t-r-o-p-h-y", "q": "Which word is spelled correctly for 'ถ้วยรางวัล'?", "choices": ["trophy", "troffy", "tropy", "trouphy"], "answer": "trophy", "exp": "ถูกต้อง! trophy สะกด t-r-o-p-h-y", "options": ["trophy", "troffy", "tropy", "trouphy"]}, {"num": 19, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "คำตรงข้าม / สิ่งของที่ไม่เข้าพวก (Odd one out)", "q": "Find the odd one out (คำที่ไม่เข้าพวก):", "choices": ["sandals", "guitar", "watch", "bracelet"], "answer": "sandals", "exp": "ถูกต้อง! sandals คือรองเท้าแตะ (หมวดเสื้อผ้า) ส่วนข้ออื่นคือสิ่งของ/ของใช้ใน Lesson 1", "options": ["sandals", "guitar", "watch", "bracelet"]}, {"num": 20, "part": "Unit 6 - Lesson 1 Words", "skill": "🎁 ทักษะที่ 1: คำศัพท์สิ่งของโปรด & ของใช้ส่วนตัว (Favorite Things Vocabulary)", "remedy": "โครงสร้างบอกของโปรด: 'My favorite thing is my helicopter. It's red. I love it!'", "q": "'What's your favorite thing?' -> 'My favorite thing is my ________. I can fly it outside!'", "choices": ["helicopter", "pajamas", "bracelet", "watch"], "answer": "helicopter", "exp": "ถูกต้อง! บินเล่นข้างนอกได้คือ helicopter", "options": ["helicopter", "pajamas", "bracelet", "watch"]}], "badge": "🧸 🎁 ด่านที่ 1"}, {"id": "quest_buzz6_2", "title": "👑 ด่านที่ 2: เจ้าแห่งไวยากรณ์ Whose is it? & Possessive Pronouns", "subtitle": "ฝึกแยกแยะ mine, yours, his, hers, ours, theirs แม่นยำ 100%", "bossName": "ราชันย์เกราะทองคำจอมหวงของ (The Greedy Golden King)", "bossSub": "บอสจอมหวงของทุกอย่าง ใช้กฎสรรพนามปลดล็อคสมบัติ!", "bossIcon": "👑", "bossMaxHp": 5, "questions": [{"num": 1, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "การถามหาเจ้าของสิ่งของ ใช้ 'Whose' (ของใคร) เสมอ", "q": "________ puppet is it? -> It's mine.", "choices": ["Whose", "Who", "Who's", "Where"], "answer": "Whose", "exp": "ถูกต้อง! Whose แปลว่า 'ของใคร' ใช้ถามหาเจ้าของ (อย่าสับสนกับ Who's = Who is)", "options": ["Whose", "Who", "Who's", "Where"]}, {"num": 2, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "กฎเปลี่ยนสรรพนาม: my + noun เปลี่ยนเป็น 'mine' เมื่ออยู่โดดเดี่ยวท้ายประโยค", "q": "This is my watch. It is ________.", "choices": ["mine", "my", "me", "I"], "answer": "mine", "exp": "ถูกต้อง! เมื่อไม่มีคำนามตามหลัง ให้ใช้ mine (ของฉัน)", "options": ["mine", "my", "me", "I"]}, {"num": 3, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "กฎเปลี่ยนสรรพนาม: your + noun เปลี่ยนเป็น 'yours'", "q": "Here is your boat, prince. It's ________.", "choices": ["yours", "your", "you", "you're"], "answer": "yours", "exp": "ถูกต้อง! อยู่โดดเดี่ยวท้ายประโยคใช้ yours (ของคุณ)", "options": ["yours", "your", "you", "you're"]}, {"num": 4, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "กฎสรรพนาม: his คงรูปเดิมคือ 'his' (ทั้งหน้าคำนามและโดดเดี่ยว)", "q": "That is Ken's helicopter. It's ________.", "choices": ["his", "him", "he", "he's"], "answer": "his", "exp": "ถูกต้อง! ของเขาผู้ชายใช้ his เสมอ (he's = he is ไม่ใช่ความเป็นเจ้าของ)", "options": ["his", "him", "he", "he's"]}, {"num": 5, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "กฎเปลี่ยนสรรพนาม: her + noun เปลี่ยนเป็น 'hers'", "q": "That is Eva's bracelet. It's ________.", "choices": ["hers", "her", "she", "she's"], "answer": "hers", "exp": "ถูกต้อง! อยู่โดดเดี่ยวท้ายประโยคของเธอผู้หญิงใช้ hers (เติม s)", "options": ["hers", "her", "she", "she's"]}, {"num": 6, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "กฎเปลี่ยนสรรพนามพหูพจน์: our + noun เปลี่ยนเป็น 'ours' (ของพวกเรา)", "q": "This is our soccer ball! It's ________!", "choices": ["ours", "our", "us", "we"], "answer": "ours", "exp": "ถูกต้อง! our ball -> ours (ของพวกเรา)", "options": ["ours", "our", "us", "we"]}, {"num": 7, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "กฎเปลี่ยนสรรพนามพหูพจน์: their + noun เปลี่ยนเป็น 'theirs' (ของพวกเขา)", "q": "They bought a new video game. It's ________.", "choices": ["theirs", "their", "them", "they"], "answer": "theirs", "exp": "ถูกต้อง! their game -> theirs (ของพวกเขา)", "options": ["theirs", "their", "them", "they"]}, {"num": 8, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "โครงสร้างคำถาม: Whose + สิ่งของเอกพจน์ + is it? ตอบ It's ...", "q": "'Whose guitar is it?' -> '________ hers.'", "choices": ["It's", "They're", "Its", "There's"], "answer": "It's", "exp": "ถูกต้อง! guitar สิ่งเดียวถาม is it ตอบ It's (It is)", "options": ["It's", "They're", "Its", "There's"]}, {"num": 9, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "โครงสร้างคำถามพหูพจน์: Whose + สิ่งของพหูพจน์ + are they? ตอบ They're ...", "q": "'Whose toys are they?' -> '________ ours.'", "choices": ["They're", "It's", "Their", "There"], "answer": "They're", "exp": "ถูกต้อง! toys เติม s เป็นพหูพจน์ ต้องตอบ They're (They are)", "options": ["They're", "It's", "Their", "There"]}, {"num": 10, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "แยกแยะ: my + คำนาม VS mine โดดเดี่ยว", "q": "This is ________ guitar, but that one is ________.", "choices": ["my / yours", "mine / your", "me / you", "my / your"], "answer": "my / yours", "exp": "ถูกต้อง! หน้าคำนามใช้ my guitar และท้ายประโยคโดดเดี่ยวใช้ yours", "options": ["my / yours", "mine / your", "me / you", "my / your"]}, {"num": 11, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "จับคู่สรรพนาม: We -> our (adj) -> ours (pronoun)", "q": "We have a golden trophy. The trophy is ________.", "choices": ["ours", "our", "us", "we're"], "answer": "ours", "exp": "ถูกต้อง! We คู่กับ ours", "options": ["ours", "our", "us", "we're"]}, {"num": 12, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "จับคู่สรรพนาม: You -> your (adj) -> yours (pronoun)", "q": "You have a fast helicopter. It's ________.", "choices": ["yours", "your", "you're", "you"], "answer": "yours", "exp": "ถูกต้อง! You คู่กับ yours", "options": ["yours", "your", "you're", "you"]}, {"num": 13, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "จับคู่สรรพนาม: She -> her (adj) -> hers (pronoun)", "q": "Mary has a red coat. The red coat is ________.", "choices": ["hers", "her", "she", "she's"], "answer": "hers", "exp": "ถูกต้อง! Mary (She) คู่กับ hers", "options": ["hers", "her", "she", "she's"]}, {"num": 14, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "จับคู่สรรพนาม: He -> his (adj) -> his (pronoun)", "q": "Tom has a blue hoodie. The blue hoodie is ________.", "choices": ["his", "him", "he's", "he"], "answer": "his", "exp": "ถูกต้อง! Tom (He) คู่กับ his", "options": ["his", "him", "he's", "he"]}, {"num": 15, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "คำถามถามความเป็นเจ้าของด้วยชื่อ: 'Whose watch is it?' -> 'It's Sam's.'", "q": "'Whose watch is it?' -> 'It's ________.'", "choices": ["Sam's", "Sams", "Sam", "Sams'"], "answer": "Sam's", "exp": "ถูกต้อง! นาฬิกาของแซม ต้องเขียน Sam's", "options": ["Sam's", "Sams", "Sam", "Sams'"]}, {"num": 16, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "ความแตกต่างระหว่าง 'It's' (It is) กับ 'Its' (ของมัน)", "q": "'Whose bracelet is it?' -> '________ mine.'", "choices": ["It's", "Its", "Is", "Its'"], "answer": "It's", "exp": "ถูกต้อง! It's = It is (มันคือของฉัน)", "options": ["It's", "Its", "Is", "Its'"]}, {"num": 17, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "ระวังข้อที่ผิดไวยากรณ์: ห้ามเขียน 'It's mines' เด็ดขาด (mine ไม่มี s!)", "q": "Which sentence is CORRECT?", "choices": ["The pencil is mine.", "The pencil is mines.", "The pencil is my.", "The pencil is me."], "answer": "The pencil is mine.", "exp": "ถูกต้อง! mine ไม่มี s และอยู่โดดเดี่ยวท้ายประโยค", "options": ["The pencil is mine.", "The pencil is mines.", "The pencil is my.", "The pencil is me."]}, {"num": 18, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "ประโยคปฏิเสธ: 'No, it isn't hers. It's mine.'", "q": "'Is this her puppet?' -> 'No, it isn't ________. It's ________.'", "choices": ["hers / mine", "her / my", "she / me", "hers / my"], "answer": "hers / mine", "exp": "ถูกต้อง! ท้ายประโยคไม่มีคำนามตามหลังทั้งคู่ ใช้ hers และ mine", "options": ["hers / mine", "her / my", "she / me", "hers / my"]}, {"num": 19, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "เรียงประโยค: Whose / poster / is / it / ?", "q": "Unscramble the question: 'poster / is / Whose / it / ?'", "choices": ["Whose poster is it?", "Whose is poster it?", "Is it whose poster?", "Poster whose is it?"], "answer": "Whose poster is it?", "exp": "ถูกต้อง! โครงสร้างคือ Whose + noun + is it?", "options": ["Whose poster is it?", "Whose is poster it?", "Is it whose poster?", "Poster whose is it?"]}, {"num": 20, "part": "Unit 6 - Lesson 2 Grammar", "skill": "👑 ทักษะที่ 2: ไวยากรณ์แสดงความเป็นเจ้าของ (Whose is it? & Possessive Pronouns)", "remedy": "ความหมาย: 'All these toys are mine.' = ของเล่นทั้งหมดนี้เป็นของฉัน", "q": "The prince said: 'All these toys are ________. But I don't have any friends.'", "choices": ["mine", "my", "me", "mines"], "answer": "mine", "exp": "ถูกต้อง! are mine (เป็นของฉันทั้งหมด)", "options": ["mine", "my", "me", "mines"]}], "badge": "👑 👑 ด่านที่ 2"}, {"id": "quest_buzz6_3", "title": "👗 ด่านที่ 3: ดีไซเนอร์ชุดสวย & What Are You Wearing?", "subtitle": "เรียนรู้เสื้อผ้า hoodie, jeans, coat, sandals, boots และการบอกชุดที่สวมใส่", "bossName": "ปีศาจตู้เสื้อผ้าป่วนเมือง (The Chaotic Wardrobe Golem)", "bossSub": "บอสขว้างปาเสื้อผ้าใส่ เลือกชุดให้ถูกต้องเพื่อปราบมัน!", "bossIcon": "👗", "bossMaxHp": 5, "questions": [{"num": 1, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "จำคีย์เวิร์ด: hoodie = เสื้อกันหนาวมีหมวกคลุมศีรษะ (jacket with a hood)", "q": "A warm jacket with a hood over your head is called a ________.", "choices": ["hoodie", "sandals", "bracelet", "trophy"], "answer": "hoodie", "exp": "ถูกต้อง! hoodie คือเสื้อกันหนาวมีฮู้ดคลุมหัว", "options": ["hoodie", "sandals", "bracelet", "trophy"]}, {"num": 2, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "จำคีย์เวิร์ด: jeans = กางเกงยีนส์ (กางเกงขายาวผ้าเดนิม เป็นพหูพจน์เสมอ ห้ามใส่ a)", "q": "Blue pants made of strong denim cloth are called ________.", "choices": ["jeans", "a coat", "a hoodie", "sandals"], "answer": "jeans", "exp": "ถูกต้อง! jeans คือกางเกงยีนส์ มี 2 ขา เป็นรูปพหูพจน์เสมอ", "options": ["jeans", "a coat", "a hoodie", "sandals"]}, {"num": 3, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "จำคีย์เวิร์ด: sandals = รองเท้าแตะเปิดนิ้วเท้า (open shoes worn in warm weather)", "q": "Open shoes you wear when it is hot or at the beach are called ________.", "choices": ["sandals", "boots", "coat", "hoodie"], "answer": "sandals", "exp": "ถูกต้อง! sandals คือรองเท้าแตะสวมตอนอากาศร้อนหรือไปทะเล", "options": ["sandals", "boots", "coat", "hoodie"]}, {"num": 4, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "จำคีย์เวิร์ด: boots = รองเท้าบูทหุ้มข้อ/แข้ง (strong high shoes worn in rain/snow)", "q": "High shoes you wear when it rains or in the snow are called ________.", "choices": ["boots", "sandals", "pajamas", "watch"], "answer": "boots", "exp": "ถูกต้อง! boots คือรองเท้าบูท", "options": ["boots", "sandals", "pajamas", "watch"]}, {"num": 5, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "จำคีย์เวิร์ด: pajamas = ชุดนอน (comfortable clothes worn in bed)", "q": "Soft clothes you wear when you go to sleep at night are called ________.", "choices": ["pajamas", "a coat", "jeans", "boots"], "answer": "pajamas", "exp": "ถูกต้อง! pajamas คือชุดนอน (เป็นรูปพหูพจน์เสมอ)", "options": ["pajamas", "a coat", "jeans", "boots"]}, {"num": 6, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "จำคีย์เวิร์ด: coat = เสื้อโค้ตกันหนาวตัวยาว (long heavy warm jacket)", "q": "It is freezing cold outside. You should wear a warm, heavy ________.", "choices": ["coat", "sandals", "bracelet", "shorts"], "answer": "coat", "exp": "ถูกต้อง! coat คือเสื้อโค้ตหนาช่วยกันหนาว", "options": ["coat", "sandals", "bracelet", "shorts"]}, {"num": 7, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "ถาม-ตอบ Present Continuous: 'What are you wearing?' -> 'I'm wearing a coat.'", "q": "Teacher: 'What are you wearing today, Lisa?' \nLisa: 'I'm wearing ________.'", "choices": ["a coat", "a jeans", "a boots", "a sandals"], "answer": "a coat", "exp": "ถูกต้อง! coat เป็นเอกพจน์ใส่ a coat ส่วน jeans, boots, sandals เป็นพหูพจน์ห้ามใส่ a!", "options": ["a coat", "a jeans", "a boots", "a sandals"]}, {"num": 8, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "กฎเหล็ก: jeans, boots, sandals, pajamas ห้ามใส่ 'a' นำหน้าเด็ดขาด!", "q": "Which sentence is grammatically CORRECT?", "choices": ["I'm wearing boots.", "I'm wearing a boots.", "I'm wearing a jeans.", "I'm wearing a pajamas."], "answer": "I'm wearing boots.", "exp": "ถูกต้อง! boots มี 2 ข้าง เป็นพหูพจน์ ห้ามใส่ 'a'", "options": ["I'm wearing boots.", "I'm wearing a boots.", "I'm wearing a jeans.", "I'm wearing a pajamas."]}, {"num": 9, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "ถาม Do you have...?: ถาม Do ตอบ do/don't", "q": "'Do you have a hoodie?' -> 'Yes, ________.'", "choices": ["I do", "I don't", "I am", "I have"], "answer": "I do", "exp": "ถูกต้อง! ถาม Do you have ตอบรับ Yes, I do.", "options": ["I do", "I don't", "I am", "I have"]}, {"num": 10, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "ถาม Do you have...?: ตอบปฏิเสธ No, I don't.", "q": "'Do you have jeans?' -> 'No, ________.'", "choices": ["I don't", "I do", "I'm not", "I haven't"], "answer": "I don't", "exp": "ถูกต้อง! ปฏิเสธใช้ No, I don't.", "options": ["I don't", "I do", "I'm not", "I haven't"]}, {"num": 11, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "เชื่อมโยงกับสภาพอากาศ: cold weather -> warm clothes (coat, hoodie, boots)", "q": "It's cold today! I'm wearing a ________ and ________.", "choices": ["hoodie / boots", "sandals / shorts", "swimsuit / sunglasses", "pajamas / sandals"], "answer": "hoodie / boots", "exp": "ถูกต้อง! อากาศหนาว (cold) ต้องสวม hoodie และ boots เพื่อความอบอุ่น", "options": ["hoodie / boots", "sandals / shorts", "swimsuit / sunglasses", "pajamas / sandals"]}, {"num": 12, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "เชื่อมโยงกับสภาพอากาศ: hot weather -> cool clothes (sandals, shorts)", "q": "It's hot today! I'm wearing ________ and ________.", "choices": ["sandals / shorts", "coat / boots", "hoodie / gloves", "pajamas / scarf"], "answer": "sandals / shorts", "exp": "ถูกต้อง! อากาศร้อน (hot) ต้องสวม sandals และ shorts", "options": ["sandals / shorts", "coat / boots", "hoodie / gloves", "pajamas / scarf"]}, {"num": 13, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "เนื้อเพลง What Are You Wearing?: 'It's cold today! And I'm ready to play!'", "q": "Complete the Unit 6 song: 'I'm wearing a hoodie. It's cold today! And I'm ready to ________!'", "choices": ["play", "sleep", "eat", "cry"], "answer": "play", "exp": "ถูกต้อง! ในเพลงร้องว่า 'And I'm ready to play!'", "options": ["play", "sleep", "eat", "cry"]}, {"num": 14, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "แยกแยะสิ่งที่สวมที่เท้า (feet): boots และ sandals สวมที่เท้า", "q": "Which of these clothes do you wear on your FEET?", "choices": ["sandals and boots", "hoodie and coat", "jeans and pajamas", "hat and watch"], "answer": "sandals and boots", "exp": "ถูกต้อง! sandals และ boots สวมที่เท้า (feet)", "options": ["sandals and boots", "hoodie and coat", "jeans and pajamas", "hat and watch"]}, {"num": 15, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "แยกแยะสิ่งที่สวมที่ขา (legs): jeans, shorts, pajama pants", "q": "Which of these clothes do you wear on your LEGS?", "choices": ["jeans", "a hoodie", "a hat", "boots"], "answer": "jeans", "exp": "ถูกต้อง! jeans สวมที่ขา (legs)", "options": ["jeans", "a hoodie", "a hat", "boots"]}, {"num": 16, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "การแต่งกายสำหรับนอน: 'It's bedtime!' -> wear pajamas", "q": "Mother: 'Diamond, it's 9:00 PM! Time for bed.' \nDiamond: 'Okay! I'm wearing my ________.'", "choices": ["pajamas", "boots", "coat", "jeans"], "answer": "pajamas", "exp": "ถูกต้อง! เวลาเข้านอนต้องสวม pajamas (ชุดนอน)", "options": ["pajamas", "boots", "coat", "jeans"]}, {"num": 17, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "สะกดคำศัพท์: p-a-j-a-m-a-s", "q": "Which is the correct spelling for 'ชุดนอน'?", "choices": ["pajamas", "pyjammas", "pajamas'", "pajamaes"], "answer": "pajamas", "exp": "ถูกต้อง! pajamas สะกด p-a-j-a-m-a-s", "options": ["pajamas", "pyjammas", "pajamas'", "pajamaes"]}, {"num": 18, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "สะกดคำศัพท์: s-a-n-d-a-l-s", "q": "Which is the correct spelling for 'รองเท้าแตะ'?", "choices": ["sandals", "sandels", "sendals", "sandles"], "answer": "sandals", "exp": "ถูกต้อง! sandals สะกด s-a-n-d-a-l-s", "options": ["sandals", "sandels", "sendals", "sandles"]}, {"num": 19, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "การใช้ 'too' ท้ายประโยคบอกเล่า: 'I'm wearing boots, too.' (ฉันก็ใส่รองเท้าบูทเหมือนกัน)", "q": "Anna: 'I'm wearing a coat.' \nBen: 'I'm wearing a coat, ________!'", "choices": ["too", "to", "two", "either"], "answer": "too", "exp": "ถูกต้อง! too วางท้ายประโยคแปลว่า 'เช่นกัน/เหมือนกัน'", "options": ["too", "to", "two", "either"]}, {"num": 20, "part": "Unit 6 - Lesson 3 Clothes", "skill": "👗 ทักษะที่ 3: คำศัพท์เสื้อผ้า & การบอกเครื่องแต่งกาย (Clothes & Wearing)", "remedy": "สังเกตความหมาย: 'It's time for sports club! Let's go!' -> wear sports clothes", "q": "In the Buzz book story, why was wearing pajamas and a hat funny for sports club?", "choices": ["Because you don't wear pajamas to play sports!", "Because pajamas are too warm for swimming.", "Because pajamas are only for teachers.", "Because pajamas are made of metal."], "answer": "Because you don't wear pajamas to play sports!", "exp": "ถูกต้อง! ในหนังสือตลกเพราะใส่ชุดนอนไปเล่นชมรมกีฬา ซึ่งไม่ใช่ชุดกีฬา", "options": ["Because you don't wear pajamas to play sports!", "Because pajamas are too warm for swimming.", "Because pajamas are only for teachers.", "Because pajamas are made of metal."]}], "badge": "👗 👗 ด่านที่ 3"}, {"id": "quest_buzz6_4", "title": "📖 ด่านที่ 4: นิทานของเล่นเจ้าชาย & มิตรภาพ (The Prince's Toys)", "subtitle": "ฝึกอ่านจับใจความเนื้อเรื่อง The Prince's Toys และ Bobby the doll from London", "bossName": "จอมเวทย์เงาผู้โดดเดี่ยว (The Lonely Shadow Mage)", "bossSub": "บอสเวทมนตร์ผู้ไม่เคยมีเพื่อน สอนบทเรียนการแบ่งปันให้เขา!", "bossIcon": "📖", "bossMaxHp": 5, "questions": [{"num": 1, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "ชื่อเรื่องนิทาน Unit 6 คือ 'The Prince's Toys' (ของเล่นของเจ้าชาย)", "q": "What is the title of the Unit 6 story in Buzz 2?", "choices": ["The Prince's Toys", "The Tiger and the Turtle", "Come to the Farm!", "The Red Kite"], "answer": "The Prince's Toys", "exp": "ถูกต้อง! นิทานบทที่ 6 ชื่อเรื่อง 'The Prince's Toys'", "options": ["The Prince's Toys", "The Tiger and the Turtle", "Come to the Farm!", "The Red Kite"]}, {"num": 2, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "เหตุการณ์ตอนแรก: เจ้าชายเห็นเด็กเล่นเรือ 'I want that boat!'", "q": "When the prince was in the carriage, what did he see first and want?", "choices": ["a toy boat", "a red ball", "a bicycle", "a helicopter"], "answer": "a toy boat", "exp": "ถูกต้อง! เจ้าชายเห็นเด็กผู้ชายเล่นเรือของเล่นจึงพูดว่า 'I want that boat!'", "options": ["a toy boat", "a red ball", "a bicycle", "a helicopter"]}, {"num": 3, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "คำพูดของผู้ติดตาม: 'You can't have it. It's his.' (เอาของเขามาไม่ได้ มันเป็นของเด็กคนนั้น)", "q": "What did the helper tell the prince when he pointed at the boy's boat?", "choices": ["'You can't have it. It's his.'", "'Take it right now!'", "'It's yours, Prince.'", "'The boat is broken.'"], "answer": "'You can't have it. It's his.'", "exp": "ถูกต้อง! ผู้ติดตามบอกว่า 'You can't have it. It's his.'", "options": ["'You can't have it. It's his.'", "'Take it right now!'", "'It's yours, Prince.'", "'The boat is broken.'"]}, {"num": 4, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "ร้านของเล่น: ซื้อเรือใหม่ให้เจ้าชาย 'Here's a boat. It's yours.'", "q": "What did the man give the prince at the toy store?", "choices": ["A new boat: 'Here's a boat. It's yours.'", "A real car", "A live puppy", "A pair of boots"], "answer": "A new boat: 'Here's a boat. It's yours.'", "exp": "ถูกต้อง! ซื้อเรือของเล่นลำใหม่ให้เจ้าชายที่ร้านของเล่น", "options": ["A new boat: 'Here's a boat. It's yours.'", "A real car", "A live puppy", "A pair of boots"]}, {"num": 5, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "สิ่งของชิ้นที่ 2 ที่เจ้าชายอยากได้: หุ่นเชิดของเด็กผู้หญิง (a puppet)", "q": "Next, the prince saw a girl and said: 'I want that ________!'", "choices": ["puppet", "guitar", "bracelet", "watch"], "answer": "puppet", "exp": "ถูกต้อง! เจ้าชายเห็นหุ่นเชิด (puppet) ของเด็กหญิง", "options": ["puppet", "guitar", "bracelet", "watch"]}, {"num": 6, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "คำตอบเมื่อเจ้าชายอยากได้หุ่นเชิดของเด็กหญิง: 'No. It's hers.'", "q": "Why couldn't the prince take the girl's puppet?", "choices": ["Because 'It's hers.'", "Because it was dirty.", "Because the puppet could fly.", "Because it was too expensive."], "answer": "Because 'It's hers.'", "exp": "ถูกต้อง! เพราะเป็นของเด็กหญิง (It's hers)", "options": ["Because 'It's hers.'", "Because it was dirty.", "Because the puppet could fly.", "Because it was too expensive."]}, {"num": 7, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "ความรู้สึกของเจ้าชายในปราสาท: มีของเล่นเยอะแต่ไม่มีเพื่อน จึงเหงาและเศร้า", "q": "Inside his castle, the prince said: 'All these toys are mine. But I don't have ________.'", "choices": ["any friends", "any food", "any clothes", "any books"], "answer": "any friends", "exp": "ถูกต้อง! เจ้าชายพูดว่า 'But I don't have any friends.' (แต่ฉันไม่มีเพื่อนเลย)", "options": ["any friends", "any food", "any clothes", "any books"]}, {"num": 8, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "เด็กๆ เล่นลูกบอลกัน: 'Look! They have a ball!'", "q": "When the children outside saw the prince coming, what were they playing with?", "choices": ["a ball", "a kite", "a puzzle", "a video game"], "answer": "a ball", "exp": "ถูกต้อง! เด็กๆ กำลังเล่นลูกบอลสีแดงอยู่", "options": ["a ball", "a kite", "a puzzle", "a video game"]}, {"num": 9, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "เด็กๆ กังวลว่าเจ้าชายจะแย่งบอล: 'Oh, no! He wants our ball! But it's ours!'", "q": "What did the children say when they saw the prince?", "choices": ["'Oh, no! He wants our ball! But it's ours!'", "'Come play with us!'", "'Give us your money!'", "'The ball is his.'"], "answer": "'Oh, no! He wants our ball! But it's ours!'", "exp": "ถูกต้อง! เด็กๆ กลัวเจ้าชายจะมาแย่งบอลของพวกเขา", "options": ["'Oh, no! He wants our ball! But it's ours!'", "'Come play with us!'", "'Give us your money!'", "'The ball is his.'"]}, {"num": 10, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "จุดเปลี่ยนสำคัญ: เจ้าชายไม่ได้อยากแย่งบอล แต่อยากเล่นด้วยกัน!", "q": "What did the prince say to the children?", "choices": ["'I don't want the ball. I want to play with you!'", "'Give me the ball now!'", "'The ball is mine.'", "'Go away from my castle.'"], "answer": "'I don't want the ball. I want to play with you!'", "exp": "ถูกต้อง! เจ้าชายพูดว่า 'I don't want the ball. I want to play with you!' แสนอบอุ่น", "options": ["'I don't want the ball. I want to play with you!'", "'Give me the ball now!'", "'The ball is mine.'", "'Go away from my castle.'"]}, {"num": 11, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "ตอนจบของนิทาน: เจ้าชายมีความสุขมากเพราะได้เพื่อนใหม่", "q": "How did the prince feel at the end of the story?", "choices": ["He was happy because he had friends.", "He was angry and sad.", "He was sleepy and bored.", "He cried because he lost his boat."], "answer": "He was happy because he had friends.", "exp": "ถูกต้อง! ตอนจบเจ้าชายมีความสุขเพราะมีเพื่อนเล่นด้วยกัน ('The prince is happy!')", "options": ["He was happy because he had friends.", "He was angry and sad.", "He was sleepy and bored.", "He cried because he lost his boat."]}, {"num": 12, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "ข้อคิด Think, Feel, Grow: การหาเพื่อนใหม่ ทำได้โดยการแบ่งปัน (I share my toys.)", "q": "According to the story's moral (Think, Feel, Grow), how do you make new friends?", "choices": ["I share my toys and play nicely.", "I keep all toys for myself.", "I buy all the toys in the store.", "I yell at other children."], "answer": "I share my toys and play nicely.", "exp": "ถูกต้อง! ข้อคิดของเรื่องคือ 'I share my toys.' (ฉันแบ่งปันของเล่นกับเพื่อนๆ)", "options": ["I share my toys and play nicely.", "I keep all toys for myself.", "I buy all the toys in the store.", "I yell at other children."]}, {"num": 13, "part": "Unit 6 - Lesson 5 Culture", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "เรื่อง Bobby จาก London: Bobby is a doll from London.", "q": "In Lesson 5, who is Bobby?", "choices": ["A police officer doll from London", "A live pet dog", "A real police car", "A video game player"], "answer": "A police officer doll from London", "exp": "ถูกต้อง! Bobby คือตุ๊กตาตำรวจของเล่นจากเมือง London", "options": ["A police officer doll from London", "A live pet dog", "A real police car", "A video game player"]}, {"num": 14, "part": "Unit 6 - Lesson 5 Culture", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "ชุดของ Bobby: He's wearing black pants and a black jacket.", "q": "What is Bobby the doll wearing?", "choices": ["Black pants and a black jacket", "Pink pajamas and sandals", "A yellow swimsuit", "A green coat and boots"], "answer": "Black pants and a black jacket", "exp": "ถูกต้อง! ในหนังสือระบุว่า 'He's wearing black pants and a black jacket.'", "options": ["Black pants and a black jacket", "Pink pajamas and sandals", "A yellow swimsuit", "A green coat and boots"]}, {"num": 15, "part": "Unit 6 - Lesson 5 Culture", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "วัสดุชุดของ Bobby: His clothes aren't material. They're paint!", "q": "What are Bobby's clothes made of?", "choices": ["They are paint (not cloth material).", "They are soft cotton.", "They are silk and wool.", "They are paper."], "answer": "They are paint (not cloth material).", "exp": "ถูกต้อง! หนังสือบอกชัดเจนว่า 'His clothes aren't material. They're paint!'", "options": ["They are paint (not cloth material).", "They are soft cotton.", "They are silk and wool.", "They are paper."]}, {"num": 16, "part": "Unit 6 - Lesson 5 Culture", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "ตุ๊กตาหมีของน้องสาว: wearing a white shirt with a gray ribbon.", "q": "What is Jake's sister's teddy bear wearing?", "choices": ["A white shirt with a gray ribbon", "A black jacket", "Blue jeans and boots", "A chef hat"], "answer": "A white shirt with a gray ribbon", "exp": "ถูกต้อง! ตุ๊กตาหมีใส่เสื้อเชิ้ตสีขาวผูกริบบิ้นสีเทา", "options": ["A white shirt with a gray ribbon", "A black jacket", "Blue jeans and boots", "A chef hat"]}, {"num": 17, "part": "Unit 6 - Lesson 5 Culture", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "เมืองหลวงของประเทศอังกฤษคือ London (U.K.)", "q": "Where did Jake get the Bobby doll from?", "choices": ["London, U.K.", "Tokyo, Japan", "Bangkok, Thailand", "Paris, France"], "answer": "London, U.K.", "exp": "ถูกต้อง! ได้มาจากกรุง London สหราชอาณาจักร (U.K.)", "options": ["London, U.K.", "Tokyo, Japan", "Bangkok, Thailand", "Paris, France"]}, {"num": 18, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "ตรวจความถูกต้อง (True/False): The prince had a lot of toys.", "q": "'The prince has a lot of toys.' Is this statement TRUE or FALSE?", "choices": ["TRUE (ถูกต้อง)", "FALSE (ผิด)"], "answer": "TRUE (ถูกต้อง)", "exp": "ถูกต้อง! เจ้าชายมีของเล่นเยอะมาก (a lot of toys)", "options": ["TRUE (ถูกต้อง)", "FALSE (ผิด)"]}, {"num": 19, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "ตรวจความถูกต้อง (True/False): The girl has a boat. -> FALSE, the BOY has a boat, the girl has a puppet!", "q": "'The girl has a boat.' Is this statement TRUE or FALSE according to the story?", "choices": ["FALSE (ผิด)", "TRUE (ถูกต้อง)"], "answer": "FALSE (ผิด)", "exp": "ถูกต้อง! ในเรื่องเด็กผู้ชายเป็นคนมีเรือ (The boy has a boat) ส่วนเด็กผู้หญิงมีหุ่นเชิด (The girl has a puppet)", "options": ["FALSE (ผิด)", "TRUE (ถูกต้อง)"]}, {"num": 20, "part": "Unit 6 - Lesson 4 Story", "skill": "📖 ทักษะที่ 4: การอ่านจับใจความนิทาน & วัฒนธรรม (Story & Culture)", "remedy": "สรุปใจความสำคัญ: ของเล่นเยอะไม่ได้ทำให้มีความสุขถ้าไม่มีเพื่อน", "q": "What is the main lesson of 'The Prince's Toys'?", "choices": ["Friends and sharing are more important than having many toys alone.", "You should buy every toy you see in the store.", "Boats are better than puppets.", "Always play inside the castle."], "answer": "Friends and sharing are more important than having many toys alone.", "exp": "ถูกต้อง! มิตรภาพและการแบ่งปันสำคัญกว่าการมีของเล่นมากมายแต่เล่นคนเดียว", "options": ["Friends and sharing are more important than having many toys alone.", "You should buy every toy you see in the store.", "Boats are better than puppets.", "Always play inside the castle."]}], "badge": "📖 📖 ด่านที่ 4"}, {"id": "quest_buzz6_5", "title": "🏆 ด่านที่ 5: ด่านปราบเซียนข้อสอบสาธิตฯ (School Hard Exam)", "subtitle": "รวมโจทย์ประยุกต์ วิเคราะห์ข้อผิด จับคู่บทสนทนา และข้อสอบหลอกระดับสาธิต มศว ประสานมิตร", "bossName": "ดรากอนคริสตัลมหาเวทย์ (Grand Crystal Dragon)", "bossSub": "บอสใหญ่สุดของบทที่ 6 ใช้ความรู้ทั้งหมดพิชิต 3 ดาว!", "bossIcon": "🐲", "bossMaxHp": 5, "questions": [{"num": 1, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "กับดักข้อสอบสาธิตฯ: สับสนระหว่าง he's (he is) กับ his (ของเขา)", "q": "Look at the sentence: 'Tim lost ________ watch. ________ very sad.' Which pair is CORRECT?", "choices": ["his / He's", "he's / His", "his / His", "he / He's"], "answer": "his / He's", "exp": "ถูกต้อง! นาฬิกาของเขาใช้ his watch และ 'เขาเศร้ามาก' ประธาน + กริยาใช้ He's (He is)", "options": ["his / He's", "he's / His", "his / His", "he / He's"]}, {"num": 2, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "กับดักข้อสอบสาธิตฯ: สับสนระหว่าง it's (it is) กับ its (ของมัน)", "q": "'Whose guitar is this?' -> '________ Eva's.'", "choices": ["It's", "Its", "It", "Is"], "answer": "It's", "exp": "ถูกต้อง! It's = It is (มันคือกีตาร์ของเอวา)", "options": ["It's", "Its", "It", "Is"]}, {"num": 3, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "กับดักข้อสอบสาธิตฯ: การเติม 'a' หน้าคำนามพหูพจน์ของเสื้อผ้า", "q": "Which sentence has an ERROR (มีจุดผิด)?", "choices": ["I'm wearing a boots.", "I'm wearing a hoodie.", "I'm wearing a coat.", "I'm wearing pajamas."], "answer": "I'm wearing a boots.", "exp": "ถูกต้อง! 'a boots' ผิดไวยากรณ์อย่างแรง เพราะ boots มี 2 ข้าง เป็นพหูพจน์ ห้ามใส่ a", "options": ["I'm wearing a boots.", "I'm wearing a hoodie.", "I'm wearing a coat.", "I'm wearing pajamas."]}, {"num": 4, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "สรรพนามแสดงความเป็นเจ้าของที่ถูกต้อง: mine, yours, his, hers, ours, theirs", "q": "'Is this your helicopter, boys?' -> 'Yes, it's ________.'", "choices": ["ours", "mine", "theirs", "yours"], "answer": "ours", "exp": "ถูกต้อง! ถาม boys (เด็กๆ หลายคน = พวกเธอ) ตอบ Yes, it's ours (ของพวกเรา)", "options": ["ours", "mine", "theirs", "yours"]}, {"num": 5, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "ประธานพหูพจน์กับสรรพนามเจ้าของ: The children have puppets. The puppets are theirs.", "q": "The children bought two puppets. The puppets are ________.", "choices": ["theirs", "their", "thems", "they"], "answer": "theirs", "exp": "ถูกต้อง! The children (พวกเขา) เมื่ออยู่ท้ายประโยคใช้ theirs", "options": ["theirs", "their", "thems", "they"]}, {"num": 6, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "วิเคราะห์บริบท: ฝนตกเฉอะแฉะ (rainy day) ควรใส่ boots และ coat", "q": "Context: 'It is raining heavily outside and there are puddles everywhere.' What should you wear?", "choices": ["A coat and rain boots", "Sandals and shorts", "Pajamas and sunglasses", "A bracelet and a watch"], "answer": "A coat and rain boots", "exp": "ถูกต้อง! ฝนตกหนักและมีแอ่งน้ำ ต้องใส่เสื้อโค้ตกันฝนและรองเท้าบูท", "options": ["A coat and rain boots", "Sandals and shorts", "Pajamas and sunglasses", "A bracelet and a watch"]}, {"num": 7, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "การถามคำถาม Who vs Whose: Whose ใช้ถามความเป็นเจ้าของ", "q": "A: '________ is wearing a red hoodie?' \nB: 'Dan is.' \nA: '________ hoodie is it?' \nB: 'It's his.'", "choices": ["Who / Whose", "Whose / Who", "Who / Who", "Whose / Whose"], "answer": "Who / Whose", "exp": "ถูกต้อง! ใครกำลังสวมใส่ใช้ 'Who is wearing...?' ส่วนเสื้อฮู้ดของใครใช้ 'Whose hoodie is it?'", "options": ["Who / Whose", "Whose / Who", "Who / Who", "Whose / Whose"]}, {"num": 8, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "การสร้างประโยค: ประธาน + กริยา + กรรม", "q": "Put the words in the correct order: \n'wearing / I / sandals / hot / am / today / because / it / is / .'", "choices": ["I am wearing sandals because it is hot today.", "Sandals I am wearing hot because it is today.", "Because it is hot today sandals I am wearing.", "I am sandals wearing because hot it is today."], "answer": "I am wearing sandals because it is hot today.", "exp": "ถูกต้อง! โครงสร้างประโยคสมบูรณ์: I am wearing sandals because it is hot today.", "options": ["I am wearing sandals because it is hot today.", "Sandals I am wearing hot because it is today.", "Because it is hot today sandals I am wearing.", "I am sandals wearing because hot it is today."]}, {"num": 9, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "คำเชื่อม but / and / or", "q": "'I have a guitar ________ a poster, ________ I don't have a video game.'", "choices": ["and / but", "but / and", "or / but", "and / or"], "answer": "and / but", "exp": "ถูกต้อง! มีกีตาร์และโปสเตอร์ (and) แต่ไม่มีวิดีโอเกม (but ขัดแย้ง)", "options": ["and / but", "but / and", "or / but", "and / or"]}, {"num": 10, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "แยกความหมายของคำศัพท์ที่คล้ายกัน: bracelet (กำไล) vs necklace (สร้อยคอ) vs watch (นาฬิกา)", "q": "Diamond's sister wears a pretty gold ring on her finger and a silver ________ on her wrist.", "choices": ["bracelet", "hoodie", "jeans", "trophy"], "answer": "bracelet", "exp": "ถูกต้อง! สวมใส่ที่ข้อมือ (wrist) คู่กับแหวนคือ bracelet (กำไล)", "options": ["bracelet", "hoodie", "jeans", "trophy"]}, {"num": 11, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "การตอบคำถาม Can you...?: ถาม Can ตอบ can/can't", "q": "'Can you play the guitar?' -> 'No, I ________, but I can fly a helicopter toy.'", "choices": ["can't", "can", "don't", "am not"], "answer": "can't", "exp": "ถูกต้อง! ปฏิเสธการเล่นกีตาร์ใช้ No, I can't", "options": ["can't", "can", "don't", "am not"]}, {"num": 12, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "ทบทวนสัตว์ Unit 5 ผสมสิ่งของ Unit 6 (ข้อสอบบูรณาการ)", "q": "Integration: 'A monkey likes to eat bananas, but what does an elephant CANNOT do?'", "choices": ["jump", "walk", "swim", "eat grass"], "answer": "jump", "exp": "ถูกต้อง! ช้างกระโดดไม่ได้ (An elephant can't jump!) คีย์เวิร์ดสำคัญของ Unit 5", "options": ["jump", "walk", "swim", "eat grass"]}, {"num": 13, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "ทบทวนสัตว์บก/สัตว์น้ำ: crocodile lives on land and in water", "q": "Integration: 'Crocodiles live ________ land and ________ water.'", "choices": ["on / in", "in / on", "at / on", "under / over"], "answer": "on / in", "exp": "ถูกต้อง! บนบกใช้ ON land และในน้ำใช้ IN water", "options": ["on / in", "in / on", "at / on", "under / over"]}, {"num": 14, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "การใช้ apostrophe-s กับชื่อ 2 คน: 'Sam and Eva's classroom'", "q": "This is the classroom of Sam and Eva. It is ________ classroom.", "choices": ["Sam and Eva's", "Sam's and Eva's", "Sam and Evas", "Sams and Evas"], "answer": "Sam and Eva's", "exp": "ถูกต้อง! ถ้าเป็นเจ้าของร่วมกัน ใส่ 's ที่ชื่อคนหลังสุด (Sam and Eva's)", "options": ["Sam and Eva's", "Sam's and Eva's", "Sam and Evas", "Sams and Evas"]}, {"num": 15, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "ค้นหาประโยคที่ถูกต้องตามหลักไวยากรณ์", "q": "Which sentence is 100% CORRECT?", "choices": ["That blue hoodie is hers.", "That blue hoodie is her.", "That blue hoodie is she's.", "That blue hoodie is she."], "answer": "That blue hoodie is hers.", "exp": "ถูกต้อง! เป็นของเธอ อยู่ท้ายประโยคโดดเดี่ยวใช้ hers", "options": ["That blue hoodie is hers.", "That blue hoodie is her.", "That blue hoodie is she's.", "That blue hoodie is she."]}, {"num": 16, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "ค้นหาประโยคที่ถูกต้องตามหลักไวยากรณ์", "q": "Which sentence is 100% CORRECT?", "choices": ["These red boots are theirs.", "These red boots is theirs.", "This red boots are theirs.", "These red boots are their."], "answer": "These red boots are theirs.", "exp": "ถูกต้อง! boots เป็นพหูพจน์ใช้ These + are + theirs", "options": ["These red boots are theirs.", "These red boots is theirs.", "This red boots are theirs.", "These red boots are their."]}, {"num": 17, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "การถามความเห็น/ความชอบ: 'What's your favorite thing?'", "q": "A: 'What's your favorite thing?' \nB: '________ my new video game. It's awesome!'", "choices": ["It's", "Its", "I'm", "They're"], "answer": "It's", "exp": "ถูกต้อง! สิ่งของ 1 อย่างใช้ It's (It is)", "options": ["It's", "Its", "I'm", "They're"]}, {"num": 18, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "บทสนทนาสมบูรณ์: การยืมหรือปฏิเสธอย่างสุภาพ", "q": "Boy: 'Can I borrow your guitar?' \nGirl: 'Sorry, you can't. It's ________ brother's guitar, so it's ________.'", "choices": ["my / his", "mine / his", "me / him", "my / he's"], "answer": "my / his", "exp": "ถูกต้อง! หน้า brother ใช้ my brother's และท้ายประโยคของเขาใช้ his", "options": ["my / his", "mine / his", "me / him", "my / he's"]}, {"num": 19, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "การจัดหมวดหมู่คำศัพท์: สิ่งของที่เล่นคนเดียว vs เล่นกับเพื่อน", "q": "Which activity requires SHARING or playing together with friends?", "choices": ["Playing soccer with a ball", "Sleeping in pajamas", "Checking time on a watch", "Wearing a bracelet"], "answer": "Playing soccer with a ball", "exp": "ถูกต้อง! การเล่นฟุตบอลด้วยลูกบอลต้องอาศัยเพื่อนร่วมทีมและการแบ่งปัน (เหมือนในนิทาน)", "options": ["Playing soccer with a ball", "Sleeping in pajamas", "Checking time on a watch", "Wearing a bracelet"]}, {"num": 20, "part": "Unit 6 - School Hard Exam", "skill": "🏆 ทักษะที่ 5: ตะลุยโจทย์ปราบเซียน & วิเคราะห์ข้อสอบสาธิตฯ (Prasarnmit Exam & Traps)", "remedy": "หัวใจหลักของ Unit 6 Oxford Buzz 2", "q": "In Unit 6, we learned about 'My Favorite Things'. What makes our favorite things special?", "choices": ["Taking care of our things, dressing properly, and sharing fun with our friends!", "Keeping everything locked in a box away from everyone.", "Buying everything and never playing.", "Refusing to wear clothes."], "answer": "Taking care of our things, dressing properly, and sharing fun with our friends!", "exp": "ยอดเยี่ยมที่สุด! ดูแลของตนเอง แต่งกายถูกกาลเทศะ และแบ่งปันความสุขกับเพื่อนๆ", "options": ["Taking care of our things, dressing properly, and sharing fun with our friends!", "Keeping everything locked in a box away from everyone.", "Buying everything and never playing.", "Refusing to wear clothes."]}], "badge": "🐲 🏆 ด่านที่ 5"}];
+    const LANG_CODE = 'en-US';
+    const SUBJ_CODE = 'english';
+
+    // Thematic Bosses per subject
+    const SUBJECT_BOSS_POOLS = {
+      'english': [
+        { name: '🦁 ราชาสิงโตซาฟารี', maxHp: 5, title: 'เจ้าป่าผู้พิทักษ์คำศัพท์สัตว์' },
+        { name: '🐘 ช้างพลายไททัน', maxHp: 5, title: 'จอมพลังทุ่งหญ้าสะวันนา' },
+        { name: '🐊 จระเข้ยักษ์แม่น้ำไนล์', maxHp: 5, title: 'นักล่าสองอาณาจักร บนบกและในน้ำ' },
+        { name: '🦍 กอริลล่าคิงคอง', maxHp: 5, title: 'ยักษ์ใหญ่จอมพลังไวยากรณ์' },
+        { name: '🐉 มังกรซาฟารีไฟร์บอส', maxHp: 5, title: 'บอสใหญ่ผู้พิทักษ์ภาษาอังกฤษ' }
+      ],
+      'math': [
+        { name: '🤖 ไซบอร์กสูตรคูณเอไอ', maxHp: 5, title: 'หุ่นยนต์คิดเลขเร็วแสง' },
+        { name: '🧙‍♂️ พ่อมดแห่งการหารลงตัว', maxHp: 5, title: 'ผู้ร่ายเวทมนตร์แบ่งกลุ่มเท่าๆ กัน' },
+        { name: '🧮 ไดโนเสาร์ตวงปริมาตร', maxHp: 5, title: 'ผู้พิทักษ์ถังลิตรและมิลลิลิตร' },
+        { name: '👾 อสูรโจทย์ระคน 3 ขั้นตอน', maxHp: 5, title: 'มอนสเตอร์บวกลบคูณหารระคน' },
+        { name: '👑 ราชันย์แผนภูมิรูปภาพ', maxHp: 5, title: 'บอสใหญ่ผู้ครอบครองตารางสถิติ' }
+      ],
+      'science': [
+        { name: '🪨 โกเลมดินเหนียวเนื้อละเอียด', maxHp: 5, title: 'จอมอึดอุ้มน้ำดีเยี่ยม' },
+        { name: '🌱 ภูตฮิวมัสซากพืชซากสัตว์', maxHp: 5, title: 'ผู้พิทักษ์ดินร่วนปลูกพืช' },
+        { name: '🌪️ สัตว์ประหลาดพายุทราย', maxHp: 5, title: 'จอมว่องไวเนื้อดินหยาบ' },
+        { name: '🧪 ดอกเตอร์ดิน สสวท.', maxHp: 5, title: 'นักทดลองวิทยาศาสตร์ปราบเซียน' },
+        { name: '🌋 มังกรธรณีวิทยาใต้พิภพ', maxHp: 5, title: 'บอสใหญ่แห่งดินรอบตัวเรา' }
+      ],
+      'social': [
+        { name: '🏛️ ยักษ์พิทักษ์สถานที่สำคัญ', maxHp: 5, title: 'ผู้ดูแลสาธารณสมบัติชุมชน' },
+        { name: '🌾 ราชาเกษตรกรรมและชาวนา', maxHp: 5, title: 'ผู้ผลิตอาหารเลี้ยงชุมชน' },
+        { name: '👾 มอนสเตอร์ใช้เงินฟุ่มเฟือย', maxHp: 5, title: 'ปีศาจขัดขวางการออมเงิน' },
+        { name: '🔥 ปีศาจไฟไหม้สายด่วน 199', maxHp: 5, title: 'สัตว์ร้ายเพลิงผลาญแห่งชุมชน' },
+        { name: '👑 ผู้ว่าการเมืองน่าอยู่สาธิต', maxHp: 5, title: 'บอสใหญ่ผู้นำชุมชนตัวจริง' }
+      ]
+    };
+
+    let currentBossIdx = 0;
+    let bossHp = 5;
+    let bossMaxHp = 5;
+    let heroHearts = 3;
+
+    let currentQuestIdx = 0;
+    let currentQIdx = 0;
+    let streak = 0;
+
+    let activeQuestions = [];
+    let isRetryMode = false;
+    let userAnswers = {};
+
+    function getBossPool() {
+      return SUBJECT_BOSS_POOLS[SUBJ_CODE] || SUBJECT_BOSS_POOLS['english'];
+    }
+
+    function getCurrentBoss() {
+      const pool = getBossPool();
+      return pool[currentBossIdx % pool.length];
+    }
+
+    function syncHeroData() {
+      if (!window.DiamondEngine) return;
+      const save = DiamondEngine.getSave();
+      
+      const topAvatar = document.getElementById('topHeroAvatar');
+      if (topAvatar) topAvatar.innerHTML = DiamondEngine.renderHeroSVG(save.equipped, 46);
+
+      const topName = document.getElementById('topHeroName');
+      if (topName) topName.textContent = `${save.name} (ฮีโร่สาธิตฯ)`;
+
+      const topLvl = document.getElementById('topHeroLevel');
+      if (topLvl) topLvl.textContent = `Level ${save.level} • ${save.xp} / ${save.level * 100} XP`;
+
+      const topCoins = document.getElementById('topCoinsVal');
+      if (topCoins) topCoins.textContent = save.coins;
+
+      const topGems = document.getElementById('topGemsVal');
+      if (topGems) topGems.textContent = save.gems;
+
+      const starVal = document.getElementById('starVal');
+      if (starVal) starVal.textContent = save.coins;
+
+      const arenaAvatar = document.getElementById('arenaHeroAvatar');
+      if (arenaAvatar) arenaAvatar.innerHTML = DiamondEngine.renderHeroSVG(save.equipped, 105);
+    }
+
+    function renderBossDisplay() {
+      const boss = getCurrentBoss();
+      const bossSvgBox = document.getElementById('arenaBossSvgBox');
+      const bossName = document.getElementById('arenaBossName');
+      const bossHpBar = document.getElementById('arenaBossHpBar');
+      const bossHpText = document.getElementById('arenaBossHpText');
+      const roundText = document.getElementById('battleRoundText');
+
+      if (bossSvgBox && window.DiamondEngine) {
+        bossSvgBox.innerHTML = DiamondEngine.renderBossSVG(boss.name, 96);
+      }
+      if (bossName) bossName.textContent = boss.name;
+      if (bossHpBar) bossHpBar.style.width = `${Math.round((bossHp / bossMaxHp) * 100)}%`;
+      if (bossHpText) bossHpText.textContent = `${bossHp} / ${bossMaxHp} HP`;
+      if (roundText) roundText.textContent = `บอสตัวที่ ${currentBossIdx + 1}: ${boss.title}`;
+    }
+
+    function renderHeroBattleDisplay() {
+      const heroHpBar = document.getElementById('arenaHeroHpBar');
+      const heroHeartsEl = document.getElementById('arenaHeroHearts');
+      if (heroHpBar) heroHpBar.style.width = `${Math.round((heroHearts / 3) * 100)}%`;
+      if (heroHeartsEl) heroHeartsEl.textContent = '❤️'.repeat(heroHearts) + '🖤'.repeat(3 - heroHearts);
+    }
+
+    function spawnFloatNumber(parentEl, text, className) {
+      if (!parentEl) return;
+      const f = document.createElement('div');
+      f.className = `float-number ${className}`;
+      f.textContent = text;
+      f.style.left = '50%';
+      f.style.top = '10px';
+      f.style.transform = 'translateX(-50%)';
+      parentEl.appendChild(f);
+      setTimeout(() => f.remove(), 950);
+    }
+
+    function showBossVictoryModal(defeatedBoss) {
+      const existing = document.getElementById('bossVictoryModal');
+      if (existing) existing.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'bossVictoryModal';
+      modal.className = 'boss-victory-modal';
+      modal.innerHTML = `
+        <div class="boss-victory-card">
+          <div style="font-size:3.8rem;margin-bottom:6px;">🏆</div>
+          <h2 style="font-size:1.6rem;font-weight:900;color:#fde047;margin-bottom:6px;">
+            🎉 ยอดเยี่ยมมากน้องไดมอนด์!
+          </h2>
+          <p style="font-size:1.05rem;color:#e0e7ff;font-weight:800;margin-bottom:14px;">
+            ปราบ "${defeatedBoss.name}" สำเร็จแล้ว!
+          </p>
+          <div style="background:rgba(245,158,11,0.18);border:2px dashed #f59e0b;border-radius:18px;padding:16px;margin-bottom:22px;">
+            <div style="font-weight:800;font-size:0.95rem;color:#fcd34d;margin-bottom:4px;">🎁 กล่องสมบัติพิชิตบอส:</div>
+            <div style="font-size:1.45rem;font-weight:900;color:#fde047;">
+              +50 🪙 เหรียญทอง | +1 💎 เพชร | +50 XP
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button onclick="document.getElementById('bossVictoryModal').remove(); DiamondEngine.openShopModal('hat');" class="shop-btn-glow" style="padding:14px;font-size:1.05rem;justify-content:center;">
+              👑 ไปร้านแต่งตัวฮีโร่ทันที (มีเหรียญใหม่แล้ว!)
+            </button>
+            <button onclick="document.getElementById('bossVictoryModal').remove(); nextQuestion();" class="nav-btn" style="background:#3b82f6;color:white;padding:12px;font-size:1rem;justify-content:center;cursor:pointer;">
+              ⚔️ ลุยข้อต่อไป ท้าทายบอสตัวถัดไป ➔
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function speakText(txt) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const clean = txt.replace(/^\\d+[\\.)]\\s*/, '').replace(/_+/g, ' ');
+        const u = new SpeechSynthesisUtterance(clean);
+        u.lang = LANG_CODE;
+        u.rate = 0.92;
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    function renderQuestTabs() {
+      const container = document.getElementById('questSelector');
+      container.innerHTML = '';
+      const allMem = loadAllQuestMemory();
+
+      ALL_QUESTS.forEach((qst, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quest-card' + (idx === currentQuestIdx ? ' active' : '');
+        btn.onclick = () => selectQuest(idx);
+
+        const qMem = (allMem.quests && allMem.quests[idx]) ? allMem.quests[idx] : null;
+        let badgeHtml = '<span class="quest-status-badge new">🆕 ด่านใหม่</span>';
+        if (qMem) {
+          if (qMem.completed) {
+            badgeHtml = `<span class="quest-status-badge done">⭐ ผ่านแล้ว (${qMem.score}/${qst.questions.length})</span>`;
+          } else if (Object.keys(qMem.userAnswers || {}).length > 0) {
+            badgeHtml = `<span class="quest-status-badge playing">⚡ กำลังเล่นอยู่ (ข้อ ${qMem.currentQIdx + 1}/${qst.questions.length})</span>`;
+          }
+        }
+
+        btn.innerHTML = `
+          <div class="q-badge">${qst.badge}</div>
+          <div class="q-title">${qst.title}</div>
+          ${badgeHtml}
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+
+    // =========================================================================
+    // QUEST MEMORY & PERSISTENCE ENGINE (RESUME EXACT PROGRESS ACROSS SESSIONS)
+    // =========================================================================
+    const QUEST_STORAGE_KEY = 'diamond_quest_memory_v4_' + SUBJ_CODE;
+
+    function loadAllQuestMemory() {
+      try {
+        const raw = localStorage.getItem(QUEST_STORAGE_KEY);
+        if (!raw) return { lastActiveQuest: 0, quests: {} };
+        return JSON.parse(raw);
+      } catch (e) {
+        return { lastActiveQuest: 0, quests: {} };
+      }
+    }
+
+    function saveCurrentQuestProgress() {
+      if (isRetryMode) return; // Do not overwrite regular quest state in retry mode
+      try {
+        const allMem = loadAllQuestMemory();
+        allMem.lastActiveQuest = currentQuestIdx;
+        if (!allMem.quests) allMem.quests = {};
+
+        const answeredCount = Object.keys(userAnswers).length;
+        const correctCount = getCorrectCount();
+        const isDone = answeredCount >= activeQuestions.length;
+
+        allMem.quests[currentQuestIdx] = {
+          currentQIdx: currentQIdx,
+          userAnswers: userAnswers,
+          bossHp: bossHp,
+          bossMaxHp: bossMaxHp,
+          currentBossIdx: currentBossIdx,
+          heroHearts: heroHearts,
+          streak: streak,
+          completed: isDone,
+          score: correctCount,
+          total: activeQuestions.length,
+          timestamp: Date.now()
+        };
+        localStorage.setItem(QUEST_STORAGE_KEY, JSON.stringify(allMem));
+      } catch (e) {
+        console.warn('Failed to save quest progress:', e);
+      }
+    }
+
+    function resetCurrentQuest() {
+      if (confirm('น้องไดมอนด์ต้องการเริ่มเล่นด่านนี้ใหม่ตั้งแต่ข้อ 1 ใช่ไหมครับ? (คะแนนและเหรียญสะสมยังอยู่ครบ)')) {
+        const allMem = loadAllQuestMemory();
+        if (allMem.quests && allMem.quests[currentQuestIdx]) {
+          delete allMem.quests[currentQuestIdx];
+          localStorage.setItem(QUEST_STORAGE_KEY, JSON.stringify(allMem));
+        }
+        selectQuest(currentQuestIdx, null, true);
+      }
+    }
+
+    function selectQuest(idx, customQuestions = null, forceReset = false) {
+      currentQuestIdx = idx;
+
+      if (customQuestions) {
+        activeQuestions = customQuestions;
+        isRetryMode = true;
+        currentQIdx = 0;
+        userAnswers = {};
+        bossHp = 5;
+        bossMaxHp = 5;
+        currentBossIdx = 0;
+        heroHearts = 3;
+      } else {
+        activeQuestions = [...ALL_QUESTS[idx].questions];
+        isRetryMode = false;
+
+        const allMem = loadAllQuestMemory();
+        const saved = (!forceReset && allMem.quests && allMem.quests[idx]) ? allMem.quests[idx] : null;
+
+        if (saved) {
+          userAnswers = saved.userAnswers || {};
+          currentQIdx = Math.min(saved.currentQIdx || 0, activeQuestions.length - 1);
+          bossHp = (saved.bossHp !== undefined) ? saved.bossHp : 5;
+          bossMaxHp = saved.bossMaxHp || 5;
+          currentBossIdx = saved.currentBossIdx || 0;
+          heroHearts = (saved.heroHearts !== undefined) ? saved.heroHearts : 3;
+          streak = saved.streak || 0;
+        } else {
+          currentQIdx = 0;
+          userAnswers = {};
+          bossHp = 5;
+          bossMaxHp = 5;
+          currentBossIdx = 0;
+          heroHearts = 3;
+          streak = 0;
+        }
+      }
+
+      renderQuestTabs();
+      renderQuestion();
+      syncHeroData();
+      updateHeaderStats();
+    }
+
+    function getCorrectCount() {
+      return Object.values(userAnswers).filter(x => x.isCorrect).length;
+    }
+
+    function updateHeaderStats() {
+      document.getElementById('streakVal').textContent = streak;
+      document.getElementById('setScoreVal').textContent = `${getCorrectCount()} / ${activeQuestions.length}`;
+      syncHeroData();
+    }
+
+    function renderQuestion() {
+      const quest = ALL_QUESTS[currentQuestIdx];
+      const qObj = activeQuestions[currentQIdx];
+      const arena = document.getElementById('quizArena');
+      const prevAns = userAnswers[currentQIdx];
+
+      const answeredCount = Object.keys(userAnswers).length;
+      const pct = Math.round((answeredCount / activeQuestions.length) * 100);
+
+      arena.innerHTML = `
+        <!-- AAA RPG BOSS BATTLE ARENA -->
+        <div class="boss-arena-box" id="bossArenaBox">
+          <!-- Visual slash animation container -->
+          <div class="slash-effect" id="slashEffect"></div>
+
+          <div class="fighter-side hero-side" id="heroFighterSide">
+            <div id="arenaHeroAvatar"></div>
+            <div class="fighter-meta">
+              <div class="fighter-name">น้องไดมอนด์</div>
+              <div class="hp-frame">
+                <div class="hp-bar-fill" id="arenaHeroHpBar" style="width:100%;"></div>
+              </div>
+              <div class="hearts-row" id="arenaHeroHearts">❤️❤️❤️</div>
+            </div>
+          </div>
+
+          <div class="battle-center">
+            <div class="vs-medallion">VS</div>
+            <div class="battle-round-text" id="battleRoundText">บอสประจำด่าน</div>
+          </div>
+
+          <div class="fighter-side boss-side" id="bossFighterSide">
+            <div id="arenaBossSvgBox"></div>
+            <div class="fighter-meta">
+              <div class="fighter-name" id="arenaBossName">บอสประจำด่าน</div>
+              <div class="hp-frame boss">
+                <div class="hp-bar-fill boss" id="arenaBossHpBar" style="width:100%;"></div>
+              </div>
+              <div style="font-size:0.8rem;color:#fca5a5;font-weight:800;" id="arenaBossHpText">5 / 5 HP</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-bar-wrap">
+          <div class="progress-fill" style="width:${pct}%;"></div>
+        </div>
+        <div class="q-meta">
+          <span class="part-tag">📌 ${qObj.skill || qObj.part} ${isRetryMode ? ' (🔥 โหมดซ่อมข้อที่ผิด)' : ''}</span>
+          <span class="q-counter">ข้อที่ ${currentQIdx + 1} / ${activeQuestions.length} (ทำแล้ว ${answeredCount} ข้อ)</span>
+        </div>
+        
+        ${!isRetryMode && Object.keys(userAnswers).length > 0 ? `
+          <div class="quest-memory-bar">
+            <span>💾 เล่นต่อจากเดิม: ข้อที่ ${currentQIdx + 1} / ${activeQuestions.length} (ตอบแล้ว ${answeredCount} ข้อ)</span>
+            <button class="reset-q-btn" onclick="resetCurrentQuest()">🔄 เริ่มด่านนี้ใหม่ (Restart)</button>
+          </div>
+        ` : ''}
+
+        ${qObj.context_html || ''}
+        <div class="question-box">
+          <div class="question-text">${qObj.q}</div>
+          <button class="speak-btn" id="speakQBtn" title="ฟังเสียงอ่านโจทย์">🔊</button>
+        </div>
+        <div class="options-grid" id="optionsGrid"></div>
+        <div class="feedback-box" id="feedbackBox"></div>
+        <div class="nav-controls">
+          <div style="display:flex;gap:8px;">
+            <button class="ctrl-btn" onclick="prevQuestion()" ${currentQIdx === 0 ? 'style="visibility:hidden;"' : ''}>⬅ ข้อก่อนหน้า</button>
+            <button class="ctrl-btn report" onclick="showDiagnosticReport()">📊 ส่งตรวจ & วิเคราะห์จุดอ่อนทันที</button>
+          </div>
+          <button class="ctrl-btn next" onclick="nextQuestion()" id="nextBtn">
+            ${currentQIdx + 1 === activeQuestions.length ? '🏆 ส่งกระดาษคำตอบ & ดูผลวิเคราะห์ ➔' : 'ข้อถัดไป (Next) ➔'}
+          </button>
+        </div>
+      `;
+
+      document.getElementById('speakQBtn').onclick = () => speakText(qObj.q);
+
+      const grid = document.getElementById('optionsGrid');
+      qObj.options.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'opt-btn';
+        b.innerHTML = `<span>${opt}</span> <span>⭕</span>`;
+        b.onclick = () => checkAnswer(b, opt, qObj);
+        grid.appendChild(b);
+      });
+
+      renderBossDisplay();
+      renderHeroBattleDisplay();
+      syncHeroData();
+
+      if (prevAns) {
+        restoreAnsweredState(prevAns.chosen, qObj);
+      }
+    }
+
+    function restoreAnsweredState(chosenOpt, qObj) {
+      const allBtns = document.querySelectorAll('#optionsGrid .opt-btn');
+      const fb = document.getElementById('feedbackBox');
+      const isCorrect = chosenOpt.trim() === qObj.answer.trim();
+
+      allBtns.forEach(b => {
+        b.disabled = true;
+        const txt = b.firstElementChild.textContent.trim();
+        if (txt === qObj.answer.trim()) {
+          b.classList.add('correct');
+          b.lastElementChild.textContent = '✅';
+        } else if (txt === chosenOpt.trim() && !isCorrect) {
+          b.classList.add('wrong');
+          b.lastElementChild.textContent = '❌';
+        }
+      });
+
+      if (isCorrect) {
+        fb.className = 'feedback-box show ok';
+        fb.innerHTML = `<h4>🎉 ตอบถูกต้อง! รับ +20 🪙 และโจมตีบอส 1 ดาเมจ!</h4><p style="margin-top:6px;">💡 <strong>วิธีคิด / คำอธิบาย:</strong> ${qObj.exp}</p>`;
+      } else {
+        fb.className = 'feedback-box show err';
+        fb.innerHTML = `<h4>💪 ข้อนี้ตอบผิด! คำตอบที่ถูกต้องคือ: "${qObj.answer}"</h4><p style="margin-top:6px;">💡 <strong>เทคนิคจำเพื่ออุดช่องว่าง:</strong> ${qObj.exp}</p>`;
+      }
+    }
+
+    function checkAnswer(btn, chosenOpt, qObj) {
+      if (userAnswers[currentQIdx]) return;
+
+      const isCorrect = chosenOpt.trim() === qObj.answer.trim();
+      userAnswers[currentQIdx] = {
+        chosen: chosenOpt,
+        isCorrect: isCorrect,
+        qObj: qObj
+      };
+
+      const heroEl = document.getElementById('heroFighterSide');
+      const bossEl = document.getElementById('bossFighterSide');
+      const slashEl = document.getElementById('slashEffect');
+
+      if (isCorrect) {
+        streak++;
+        if (window.DiamondEngine) {
+          DiamondEngine.playSound('slash');
+          DiamondEngine.playSound('correct');
+          DiamondEngine.addRewards(20, 0, 25);
+        }
+
+        // Trigger Energy Slash effect & Animations
+        if (slashEl) {
+          slashEl.classList.remove('slash-active');
+          void slashEl.offsetWidth; // reflow
+          slashEl.classList.add('slash-active');
+        }
+        if (heroEl) {
+          heroEl.classList.add('hero-attack');
+          setTimeout(() => heroEl.classList.remove('hero-attack'), 450);
+          spawnFloatNumber(heroEl, '+20 🪙 +25 XP', 'float-loot');
+        }
+        if (bossEl) {
+          bossEl.classList.add('boss-hit');
+          setTimeout(() => bossEl.classList.remove('boss-hit'), 450);
+          spawnFloatNumber(bossEl, '-1 HP 💥', 'float-dmg');
+        }
+
+        bossHp = Math.max(0, bossHp - 1);
+        renderBossDisplay();
+
+        if (bossHp === 0) {
+          const defBoss = getCurrentBoss();
+          if (bossEl) bossEl.classList.add('boss-defeated');
+          if (window.DiamondEngine) {
+            DiamondEngine.playSound('boss_defeat');
+            DiamondEngine.launchConfetti();
+            DiamondEngine.addRewards(50, 1, 50);
+          }
+          setTimeout(() => {
+            showBossVictoryModal(defBoss);
+            currentBossIdx++;
+            bossHp = 5;
+            bossMaxHp = 5;
+            renderBossDisplay();
+            if (bossEl) bossEl.classList.remove('boss-defeated');
+          }, 550);
+        }
+      } else {
+        streak = 0;
+        if (window.DiamondEngine) {
+          DiamondEngine.playSound('hit');
+        }
+
+        if (bossEl) {
+          bossEl.classList.add('boss-attack');
+          setTimeout(() => bossEl.classList.remove('boss-attack'), 450);
+        }
+        if (heroEl) {
+          heroEl.classList.add('hero-hit');
+          setTimeout(() => heroEl.classList.remove('hero-hit'), 450);
+          spawnFloatNumber(heroEl, '💔 MISS!', 'float-miss');
+        }
+
+        heroHearts = Math.max(0, heroHearts - 1);
+        renderHeroBattleDisplay();
+
+        if (heroHearts === 0) {
+          setTimeout(() => {
+            if (window.DiamondEngine) {
+              DiamondEngine.playSound('levelup');
+              DiamondEngine.showToast('🧪 คุณพ่อคุณแม่ส่งยาวิเศษมาช่วยฮีโร่ฟื้นพลัง! กลับมามี 3 หัวใจเต็มแล้ว สู้ต่อนะน้องไดมอนด์!');
+            }
+            heroHearts = 3;
+            renderHeroBattleDisplay();
+          }, 400);
+        }
+      }
+
+      updateHeaderStats();
+      restoreAnsweredState(chosenOpt, qObj);
+      saveCurrentQuestProgress();
+    }
+
+    function nextQuestion() {
+      if (currentQIdx + 1 < activeQuestions.length) {
+        currentQIdx++;
+        saveCurrentQuestProgress();
+        renderQuestion();
+      } else {
+        showDiagnosticReport();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQIdx > 0) {
+        currentQIdx--;
+        renderQuestion();
+      }
+    }
+
+    // =========================================================================
+    // COMPREHENSIVE GRADING & DIAGNOSTIC GAP ANALYSIS ENGINE
+    // =========================================================================
+    function showDiagnosticReport() {
+      saveCurrentQuestProgress();
+      const quest = ALL_QUESTS[currentQuestIdx];
+      const totalQ = activeQuestions.length;
+      const answeredList = Object.values(userAnswers);
+      const answeredCount = answeredList.length;
+      const correctCount = answeredList.filter(x => x.isCorrect).length;
+      const wrongList = answeredList.filter(x => !x.isCorrect);
+      const unansweredCount = totalQ - answeredCount;
+      const accuracyPct = totalQ > 0 ? Math.round((correctCount / totalQ) * 100) : 0;
+
+      // Bonus coins based on final accuracy tier
+      let bonusCoins = 0;
+      let bonusGems = 0;
+      if (accuracyPct >= 90) {
+        bonusCoins = 100;
+        bonusGems = 3;
+      } else if (accuracyPct >= 75) {
+        bonusCoins = 60;
+        bonusGems = 2;
+      } else if (accuracyPct >= 55) {
+        bonusCoins = 30;
+        bonusGems = 1;
+      }
+      if (bonusCoins > 0 && window.DiamondEngine) {
+        DiamondEngine.addRewards(bonusCoins, bonusGems, bonusCoins);
+        DiamondEngine.playSound('boss_defeat');
+        DiamondEngine.launchConfetti();
+      }
+
+      // Save cleared status if >= 70%
+      if (accuracyPct >= 70 && !isRetryMode) {
+        const cleared = JSON.parse(localStorage.getItem('diamond_cleared_quests') || '[]');
+        if (!cleared.includes(quest.id)) {
+          cleared.push(quest.id);
+          localStorage.setItem('diamond_cleared_quests', JSON.stringify(cleared));
+        }
+      }
+
+      // Save exam history record for parent dashboard
+      const history = JSON.parse(localStorage.getItem('diamond_exam_history') || '[]');
+      history.unshift({
+        questId: quest.id,
+        title: quest.title,
+        score: correctCount,
+        total: totalQ,
+        pct: accuracyPct,
+        time: new Date().toLocaleString('th-TH')
+      });
+      localStorage.setItem('diamond_exam_history', JSON.stringify(history.slice(0, 30)));
+
+      // Grade Tier
+      let gradeText = '';
+      if (accuracyPct >= 90) gradeText = '🏆 ระดับเหรียญทอง (Mastery Excellence - พร้อมสอบ 100%!)';
+      else if (accuracyPct >= 75) gradeText = '🥈 ระดับเหรียญเงิน (เก่งมาก! เก็บตกจุดหลอกอีกนิดคะแนนเต็มแน่นอน)';
+      else if (accuracyPct >= 55) gradeText = '🥉 ระดับเหรียญทองแดง (พื้นฐานดี แต่ยังมีช่องว่างบางหัวข้อที่ต้องอุด)';
+      else gradeText = '🌱 ระดับเริ่มต้นฝึกฝน (แนะนำให้ทบทวนคู่มือสรุปและกดปุ่ม "ซ่อมเฉพาะข้อที่ผิด")';
+
+      // Skill / Sub-topic Breakdown
+      const skillMap = {};
+      activeQuestions.forEach((q, idx) => {
+        const sk = q.skill || q.part || 'หัวข้อทั่วไป';
+        if (!skillMap[sk]) skillMap[sk] = { total: 0, correct: 0, answered: 0, remedy: q.remedy || 'ทบทวนหลักการและคีย์เวิร์ดสำคัญในหัวข้อนี้' };
+        skillMap[sk].total++;
+        if (userAnswers[idx]) {
+          skillMap[sk].answered++;
+          if (userAnswers[idx].isCorrect) skillMap[sk].correct++;
+        }
+      });
+
+      let skillBarsHtml = '';
+      let gapRecommendationsHtml = '';
+
+      Object.entries(skillMap).forEach(([skName, data]) => {
+        const skPct = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
+        const barColor = skPct >= 80 ? '#2b9348' : (skPct >= 55 ? '#ff9f1c' : '#d62828');
+        skillBarsHtml += `
+          <div class="skill-row">
+            <div class="skill-top">
+              <span>${skName}</span>
+              <span style="color:${barColor};">${data.correct} / ${data.total} ข้อ (${skPct}%)</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" style="width:${skPct}%;background:${barColor};"></div>
+            </div>
+          </div>
+        `;
+
+        if (skPct < 80) {
+          gapRecommendationsHtml += `
+            <div class="gap-alert">
+              <strong>⚠️ จุดที่ต้องอุดช่องว่าง: ${skName} (ได้ ${skPct}%)</strong><br>
+              🎯 <strong>แนวทางแก้ไข & เทคนิคจำ:</strong> ${data.remedy}
+            </div>
+          `;
+        } else {
+          gapRecommendationsHtml += `
+            <div class="gap-good">
+              <strong>✅ แม่นยำมาก: ${skName} (ได้ ${skPct}%)</strong> — น้องไดมอนด์เข้าใจหัวข้อนี้ได้อย่างยอดเยี่ยม!
+            </div>
+          `;
+        }
+      });
+
+      let wrongReviewHtml = '';
+      if (wrongList.length === 0) {
+        wrongReviewHtml = '<div style="background:#d8f3dc;color:#1b4332;padding:16px;border-radius:14px;font-weight:800;text-align:center;">🎉 ไร้ที่ติ! น้องไดมอนด์ตอบถูกต้อง 100% ไม่มีข้อผิดเลย เก่งระดับเทพ!</div>';
+      } else {
+        wrongList.forEach(item => {
+          const q = item.qObj;
+          wrongReviewHtml += `
+            <div class="wrong-item">
+              <div class="wq">❌ ข้อที่ ${q.num || '?'}: ${q.q}</div>
+              <div style="margin-bottom:4px;"><strong>คำตอบที่น้องไดมอนด์เลือก:</strong> <span style="color:#b91c1c;">${item.chosen}</span></div>
+              <div style="margin-bottom:6px;"><strong>คำตอบที่ถูกต้อง:</strong> <span style="color:#15803d;font-weight:900;">${q.answer}</span></div>
+              <div style="background:#fff;padding:8px 12px;border-radius:8px;border-left:3px solid #2b9348;font-size:0.92rem;">
+                💡 <strong>เฉลยละเอียด & เคล็ดลับ:</strong> ${q.exp}
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      const arena = document.getElementById('quizArena');
+      arena.innerHTML = `
+        <div class="report-card">
+          <div class="report-hero">
+            <h2 style="font-size:1.85rem;margin-bottom:6px;">📊 ผลการประเมินและการวิเคราะห์จุดบกพร่อง</h2>
+            <p style="font-size:1.05rem;opacity:0.95;">${quest.title}</p>
+            <div style="display:flex;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap;">
+              <div style="background:rgba(255,255,255,0.2);padding:10px 22px;border-radius:16px;">
+                <div style="font-size:0.85rem;">คะแนนที่ได้</div>
+                <div style="font-size:2rem;font-weight:900;color:#ffd166;">${correctCount} / ${totalQ}</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.2);padding:10px 22px;border-radius:16px;">
+                <div style="font-size:0.85rem;">ความแม่นยำ (Accuracy)</div>
+                <div style="font-size:2rem;font-weight:900;color:#ffd166;">${accuracyPct}%</div>
+              </div>
+            </div>
+            <div class="grade-badge">${gradeText}</div>
+            ${bonusCoins > 0 ? `<div style="margin-top:12px;font-size:1.15rem;font-weight:900;color:#ffd166;">🎉 ได้รับโบนัสจบด่าน: +${bonusCoins} 🪙 +${bonusGems} 💎</div>` : ''}
+          </div>
+
+          <!-- QUICK ACTION BUTTONS -->
+          <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
+            <button onclick="DiamondEngine.openShopModal('hat')" class="shop-btn-glow" style="padding:12px 22px;font-size:1.05rem;">
+              👑 นำเหรียญไปช้อปปิ้งของแต่งตัวฮีโร่!
+            </button>
+            <button onclick="DiamondEngine.openShopModal('coupons')" class="shop-btn-glow" style="background:linear-gradient(135deg, #10b981, #059669);padding:12px 22px;font-size:1.05rem;">
+              🎁 แลกคูปองรางวัลชีวิตจริงกับพ่อแม่
+            </button>
+            ${wrongList.length > 0 ? `
+              <button onclick="retryWeakQuestions()" class="ctrl-btn" style="background:#e07a00;padding:12px 22px;font-size:1.05rem;">
+                🔥 ซ่อมเฉพาะข้อที่ตอบผิด (${wrongList.length} ข้อ)
+              </button>
+            ` : ''}}
+            <button onclick="selectQuest(currentQuestIdx)" class="ctrl-btn" style="background:#2b9348;padding:12px 22px;font-size:1.05rem;">
+              🔄 ทำชุดนี้ใหม่อีกครั้ง
+            </button>
+          </div>
+
+          <div class="report-grid">
+            <div class="diag-box">
+              <h3>📈 1. วิเคราะห์ความแม่นยำรายทักษะ (Skill Breakdown)</h3>
+              ${skillBarsHtml}
+            </div>
+
+            <div class="diag-box">
+              <h3>🩺 2. แผนอุดช่องว่างรายหัวข้อ (Gap Analysis & Action Plan)</h3>
+              ${gapRecommendationsHtml}
+            </div>
+          </div>
+
+          <div class="diag-box">
+            <h3>🔍 3. รายการข้อที่ตอบผิด พร้อมเฉลยวิธีคิดละเอียดเพื่อทบทวน (${wrongList.length} ข้อ)</h3>
+            ${wrongReviewHtml}
+          </div>
+        </div>
+      `;
+      syncHeroData();
+    }
+
+    function retryWeakQuestions() {
+      const weakQs = [];
+      activeQuestions.forEach((q, idx) => {
+        if (!userAnswers[idx] || !userAnswers[idx].isCorrect) {
+          weakQs.push(q);
+        }
+      });
+      if (weakQs.length > 0) {
+        selectQuest(currentQuestIdx, weakQs);
+      }
+    }
+
+    window.onload = () => {
+      renderQuestTabs();
+      const allMem = loadAllQuestMemory();
+      const initialQuest = (allMem.lastActiveQuest !== undefined && allMem.lastActiveQuest < ALL_QUESTS.length) ? allMem.lastActiveQuest : 0;
+      selectQuest(initialQuest);
+      syncHeroData();
+    };
+  </script>
+</body>
+</html>
