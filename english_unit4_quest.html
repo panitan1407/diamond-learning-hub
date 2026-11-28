@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🥪 Buzz 2 Unit 4: Mealtime (60 ข้อ + ตรวจ & วิเคราะห์จุดอ่อน)</title>
+  <script src="diamond_game_engine.js?v=4.2"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --secondary: #d97706;
+      --light: #fef3c7;
+      --accent: #ff9f1c;
+      --success: #2b9348;
+      --danger: #d62828;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', 'Prompt', 'Tahoma', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      color: #1b263b;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .container { max-width: 1160px; margin: 0 auto; }
+
+    /* --- HERO TOP BAR WITH WALLET & SHOP TRIGGER --- */
+    .hero-top-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #172554 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 10px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border: 1.5px solid rgba(255,255,255,0.18);
+      box-shadow: 0 8px 24px rgba(15,23,42,0.3);
+    }
+    .hero-info-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-info-group .name {
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: #f8fafc;
+    }
+    .hero-info-group .lvl {
+      font-size: 0.82rem;
+      color: #93c5fd;
+      font-weight: 700;
+    }
+    .hero-wallet-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .wallet-tag {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #ffd166;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .shop-btn-glow {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(245,158,11,0.4);
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .shop-btn-glow:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .nav-btn {
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover { transform: translateY(-2px); }
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      border-radius: 22px;
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.16);
+    }
+    .header h1 { font-size: 1.5rem; font-weight: 900; }
+    .header p { color: rgba(255,255,255,0.88); font-size: 0.93rem; margin-top: 4px; }
+    .stats { display: flex; gap: 10px; flex-wrap: wrap; }
+    .stat-box {
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 8px 14px;
+      border-radius: 14px;
+      text-align: center;
+      min-width: 95px;
+    }
+    .stat-box .lbl { font-size: 0.72rem; color: rgba(255,255,255,0.85); text-transform: uppercase; }
+    .stat-box .val { font-size: 1.3rem; font-weight: 900; color: #ffd166; }
+
+    /* --- AAA RPG BOSS BATTLE ARENA (SCI-FI / FANTASY STADIUM) --- */
+    .boss-arena-box {
+      background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #0f172a 70%, #020617 100%);
+      color: white;
+      border-radius: 26px;
+      padding: 20px 26px;
+      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 18px;
+      border: 2px solid rgba(99, 102, 241, 0.4);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), inset 0 0 30px rgba(99, 102, 241, 0.2);
+      position: relative;
+      overflow: visible;
+    }
+    @media (max-width: 768px) {
+      .boss-arena-box {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 14px;
+      }
+    }
+    .fighter-side {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+    .hero-side { justify-content: flex-start; }
+    .boss-side { justify-content: flex-end; flex-direction: row-reverse; }
+    @media (max-width: 768px) {
+      .hero-side, .boss-side { justify-content: center; flex-direction: row; }
+    }
+    .fighter-meta { display: flex; flex-direction: column; gap: 5px; }
+    .fighter-name { font-weight: 900; font-size: 1.1rem; }
+    .hero-side .fighter-name { color: #93c5fd; text-shadow: 0 0 10px rgba(147,197,253,0.5); }
+    .boss-side .fighter-name { color: #fca5a5; text-shadow: 0 0 10px rgba(252,165,165,0.5); }
+
+    /* Authentic Fighting Game HP Bar with Metallic Chrome/Gold Borders */
+    .hp-frame {
+      background: #020617;
+      border: 2px solid #3b82f6;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
+      border-radius: 99px;
+      height: 16px;
+      width: 155px;
+      overflow: hidden;
+      padding: 2px;
+    }
+    .hp-frame.boss {
+      border-color: #ef4444;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+    }
+    .hp-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+      transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 0 10px #10b981;
+    }
+    .hp-bar-fill.boss {
+      background: linear-gradient(90deg, #dc2626 0%, #f87171 50%, #fca5a5 100%);
+      box-shadow: 0 0 10px #dc2626;
+    }
+    .hearts-row { font-size: 1.15rem; letter-spacing: 2px; }
+
+    /* Center VS Medallion */
+    .battle-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+    }
+    .vs-medallion {
+      width: 54px; height: 54px;
+      background: radial-gradient(circle, #dc2626 0%, #7f1d1d 100%);
+      border: 3px solid #facc15;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.15rem; color: #fef08a;
+      box-shadow: 0 0 20px rgba(220, 38, 38, 0.7), inset 0 2px 6px rgba(255, 255, 255, 0.4);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+    .battle-round-text { font-size: 0.82rem; color: #cbd5e1; font-weight: 700; }
+
+    /* Visual Slash Effect */
+    .slash-effect {
+      position: absolute;
+      top: 25%; right: 18%;
+      width: 130px; height: 6px;
+      background: linear-gradient(90deg, transparent, #38bdf8, #ffffff, #38bdf8, transparent);
+      transform: rotate(-35deg) scaleX(0);
+      box-shadow: 0 0 22px #38bdf8, 0 0 35px #ffffff;
+      border-radius: 99px;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .slash-active {
+      animation: slashAnim 0.35s ease-out forwards;
+    }
+    @keyframes slashAnim {
+      0% { transform: rotate(-35deg) scaleX(0) translateX(-50px); opacity: 1; }
+      50% { transform: rotate(-35deg) scaleX(1.4) translateX(0); opacity: 1; }
+      100% { transform: rotate(-35deg) scaleX(1.8) translateX(60px); opacity: 0; }
+    }
+
+    /* Attack & Hit Animations */
+    .hero-attack { animation: heroAttackAnim 0.4s ease; }
+    .boss-attack { animation: bossAttackAnim 0.4s ease; }
+    .boss-hit { animation: bossHitAnim 0.4s ease; }
+    .hero-hit { animation: heroHitAnim 0.4s ease; }
+    .boss-defeated { animation: bossDefeatedAnim 0.6s ease forwards; }
+
+    @keyframes heroAttackAnim {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(45px) scale(1.18); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes bossAttackAnim {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(-45px) scale(1.18); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes bossHitAnim {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(0.9) rotate(-14deg); filter: brightness(2) drop-shadow(0 0 20px red); }
+      75% { transform: scale(0.9) rotate(14deg); }
+    }
+    @keyframes heroHitAnim {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(0.9) rotate(10deg); filter: brightness(1.7) drop-shadow(0 0 15px red); }
+      75% { transform: scale(0.9) rotate(-10deg); }
+    }
+    @keyframes bossDefeatedAnim {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4) rotate(180deg); filter: brightness(3); }
+      100% { transform: scale(0) rotate(360deg); opacity: 0; }
+    }
+
+    /* Floating numbers */
+    .float-number {
+      position: absolute;
+      font-weight: 900;
+      font-size: 1.35rem;
+      pointer-events: none;
+      animation: floatFadeAnim 0.95s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      z-index: 9999;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+    .float-loot { color: #fde047; }
+    .float-dmg { color: #f87171; }
+    .float-miss { color: #cbd5e1; }
+
+    @keyframes floatFadeAnim {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-55px); opacity: 0; }
+    }
+
+    /* Boss Victory Modal with Chest Opening */
+    .boss-victory-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 16px;
+    }
+    .boss-victory-card {
+      background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+      border: 2px solid #f59e0b;
+      color: white;
+      border-radius: 28px;
+      max-width: 480px;
+      width: 100%;
+      padding: 32px 26px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 35px rgba(245,158,11,0.4);
+      animation: popInAnim 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popInAnim {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Quest Selector */
+    .quest-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .quest-card {
+      background: white;
+      border: 2.5px solid var(--light);
+      border-radius: 16px;
+      padding: 12px 15px;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-align: left;
+    }
+    .quest-card:hover { transform: translateY(-2px); border-color: var(--secondary); }
+    .quest-card.active {
+      background: linear-gradient(135deg, #ff9f1c 0%, #f77f00 100%);
+      color: white;
+      border-color: #f77f00;
+      box-shadow: 0 6px 16px rgba(247,127,0,0.3);
+    }
+    .quest-card .q-badge { font-size: 0.76rem; font-weight: 800; opacity: 0.9; margin-bottom: 3px; }
+    .quest-card .q-title { font-size: 0.96rem; font-weight: 800; line-height: 1.3; }
+
+    /* Quiz Arena */
+    .arena {
+      background: white;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+    }
+    .progress-bar-wrap {
+      background: #edf2f7;
+      height: 12px;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .part-tag {
+      background: #eef4fb;
+      color: #1e6091;
+      border: 1px solid #bde0fe;
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-weight: 800;
+      font-size: 0.88rem;
+    }
+    .q-counter { font-weight: 900; color: var(--primary); font-size: 1.02rem; }
+
+    .clue-banner {
+      background: #fff8eb;
+      border: 2px solid #ff9f1c;
+      color: #9a3412;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 1.04rem;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .story-box {
+      background: #f8fdf9;
+      border: 2px solid #95d5b2;
+      padding: 16px 20px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      line-height: 1.65;
+      font-size: 1.02rem;
+    }
+    .story-box h4 { color: #1b4332; margin-bottom: 8px; font-size: 1.12rem; }
+    .mini-tbl {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 0.96rem;
+    }
+    .mini-tbl th, .mini-tbl td {
+      border: 1.5px solid #cbd5e1;
+      padding: 9px 12px;
+      text-align: center;
+    }
+    .mini-tbl th { background: var(--light); color: var(--primary); font-weight: 800; }
+
+    .question-box {
+      background: #f8fafc;
+      border-left: 6px solid var(--secondary);
+      padding: 18px 20px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+    .question-text {
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: #1b263b;
+      line-height: 1.48;
+    }
+    .speak-btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .speak-btn:hover { transform: scale(1.08); }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .opt-btn {
+      background: #ffffff;
+      border: 2.5px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: #1b263b;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.16s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      line-height: 1.4;
+    }
+    .opt-btn:hover:not(:disabled) {
+      border-color: var(--secondary);
+      background: #f0fdf4;
+      transform: translateY(-2px);
+    }
+    .opt-btn.correct {
+      background: #2b9348 !important;
+      color: white !important;
+      border-color: #1b4332 !important;
+      box-shadow: 0 6px 16px rgba(43,147,72,0.3);
+    }
+    .opt-btn.wrong {
+      background: #d62828 !important;
+      color: white !important;
+      border-color: #9b2226 !important;
+    }
+
+    .feedback-box {
+      display: none;
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-top: 12px;
+      line-height: 1.55;
+    }
+    .feedback-box.show { display: block; }
+    .feedback-box.ok { background: #e8f8ed; border: 2px solid #2b9348; color: #1b4332; }
+    .feedback-box.err { background: #ffe5e5; border: 2px solid #d62828; color: #780000; }
+
+    .nav-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 2px dashed #e2e8f0;
+    }
+    .ctrl-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 0.98rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .ctrl-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+    .ctrl-btn.next { background: linear-gradient(135deg, #ff9f1c, #e07a00); font-size: 1.05rem; }
+    .ctrl-btn.report { background: #6a4c93; }
+
+    /* DIAGNOSTIC REPORT CARD & GAP ANALYSIS STYLES */
+    .report-card { padding: 10px; }
+    .report-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .grade-badge {
+      display: inline-block;
+      background: #ffd166;
+      color: #1b263b;
+      font-weight: 900;
+      font-size: 1.25rem;
+      padding: 8px 22px;
+      border-radius: 99px;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    .diag-box {
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 18px;
+      background: #f8fafc;
+    }
+    .diag-box h3 {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .skill-row { margin-bottom: 12px; }
+    .skill-top {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 0.92rem;
+      margin-bottom: 4px;
+    }
+    .skill-bar-bg {
+      background: #e2e8f0;
+      height: 11px;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+    .gap-alert {
+      background: #fff3cd;
+      border-left: 5px solid #f77f00;
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+    .gap-good {
+      background: #d8f3dc;
+      border-left: 5px solid #2b9348;
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+    .wrong-item {
+      border: 1.5px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .wrong-item .wq { font-weight: 800; color: #991b1b; margin-bottom: 6px; }
+
+    /* QUEST MEMORY & PROGRESS RESUME STYLES */
+    .quest-memory-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #eff6ff;
+      border: 1.5px solid #93c5fd;
+      border-radius: 12px;
+      padding: 8px 14px;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #1e40af;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .reset-q-btn {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #f87171;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .reset-q-btn:hover {
+      background: #ef4444;
+      color: white;
+      transform: scale(1.04);
+    }
+    .quest-status-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 99px;
+      margin-top: 4px;
+    }
+    .quest-status-badge.done { background: #dcfce7; color: #15803d; }
+    .quest-status-badge.playing { background: #fef3c7; color: #b45309; }
+    .quest-status-badge.new { background: #e0f2fe; color: #0369a1; }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HERO STATUS TOP BAR -->
+    <div class="hero-top-banner">
+      <div class="hero-info-group">
+        <div id="topHeroAvatar"></div>
+        <div>
+          <div class="name" id="topHeroName">น้องไดมอนด์ (ฮีโร่สาธิตฯ)</div>
+          <div class="lvl" id="topHeroLevel">Level 1 • 0 XP</div>
+        </div>
+      </div>
+      <div class="hero-wallet-group">
+        <div class="wallet-tag">🪙 <span id="topCoinsVal">100</span></div>
+        <div class="wallet-tag">💎 <span id="topGemsVal">3</span></div>
+        <button onclick="DiamondEngine.openShopModal('hat')" class="shop-btn-glow">👑 แต่งตัวฮีโร่</button>
+        <button onclick="DiamondEngine.openShopModal('coupons')" class="shop-btn-glow" style="background:linear-gradient(135deg, #10b981, #059669);">🎁 แลกคูปอง</button>
+      </div>
+    </div>
+
+    <div class="top-bar">
+      <a href="index.html" class="nav-btn" style="background:#1b263b;color:white;">🏠 กลับหน้าศูนย์กลางวิชา (Main Hub)</a>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="english_exam_quest.html" class="nav-btn" style="background:#1b4332;color:white;">🦁 Unit 5 (Wild Animals)</a><a href="english_unit6_quest.html" class="nav-btn" style="background:#86198f;color:white;">🎁 Unit 6 (My Favorite Things)</a>
+        <a href="english_exam_quest.html" class="nav-btn" style="background:#2b9348;color:white;">🦁 อังกฤษ</a>
+        <a href="math_exam_quest.html" class="nav-btn" style="background:#0077b6;color:white;">🔢 คณิต</a>
+        <a href="science_exam_quest.html" class="nav-btn" style="background:#e07a00;color:white;">🌱 วิทย์</a>
+        <a href="social_exam_quest.html" class="nav-btn" style="background:#7209b7;color:white;">🏘️ สังคม</a>
+      </div>
+    </div>
+
+    <header class="header">
+      <div>
+        <h1>🥪 English Unit 4: Mealtime (60 ข้อ 3 ด่าน)</h1>
+        <p>Oxford Buzz 2 ป.2 — คำศัพท์อาหารมื้อต่างๆ, อาหารนับได้/นับไม่ได้, Do you like...?, Would you like...?, Healthy Diets</p>
+      </div>
+      <div class="stats">
+        <div class="stat-box">
+          <div class="lbl">⭐ แต้มสะสม</div>
+          <div class="val" id="starVal">100</div>
+        </div>
+        <div class="stat-box">
+          <div class="lbl">🔥 คอมโบ</div>
+          <div class="val" id="streakVal">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="lbl">🎯 คะแนนด่านนี้</div>
+          <div class="val" id="setScoreVal">0 / 0</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="quest-selector" id="questTabs"></div>
+
+    <main class="arena" id="quizArena"></main>
+  </div>
+
+  <script>
+    const ALL_QUESTS = [{"id": "quest_eng4_1", "badge": "🥪 Unit 4 Quest 1", "title": "Unit 4 ด่านที่ 1: Mealtime & Delicious Food (20 ข้อ)", "subtitle": "คำศัพท์อาหาร cereal, yogurt, chicken, cookies, meatballs, sandwiches และ 3 มื้ออาหาร", "bossName": "เชฟยักษ์ลูกชิ้นไฟบรรลัยกัลป์ (The Fiery Meatball Chef)", "bossSub": "บอสเชฟจอมตะกละ ท่องคำศัพท์อาหารเพื่อหยุดยั้งหม้อต้มยักษ์!", "bossIcon": "🥪", "bossMaxHp": 5, "questions": [{"num": 1, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "cereal = ซีเรียล/ธัญพืชกรอบ (often eaten with milk for breakfast)", "q": "Look at the picture clue: 'A crunchy grain food eaten in a bowl with cold milk for breakfast.' What is it?", "choices": ["cereal", "chicken", "yogurt", "meatballs"], "answer": "cereal", "exp": "Correct! cereal คือธัญพืชกรอบใส่นม นิยมกินมื้อเช้า"}, {"num": 2, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "yogurt = โยเกิร์ต (creamy dairy snack made from fermented milk)", "q": "A creamy dairy food in a small cup, made from milk and healthy fruit. What is it?", "choices": ["yogurt", "cookies", "sandwiches", "chicken"], "answer": "yogurt", "exp": "Correct! yogurt คือโยเกิร์ต ทำจากนม มีประโยชน์"}, {"num": 3, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "meatballs = ลูกชิ้นเนื้อกลมๆ (round balls of seasoned meat)", "q": "Round balls of meat cooked in soup or with pasta are called ________.", "choices": ["meatballs", "cereal", "yogurt", "cookies"], "answer": "meatballs", "exp": "Correct! meatballs คือลูกชิ้นเนื้อกลมๆ"}, {"num": 4, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "cookies = คุกกี้ (sweet baked snacks with chocolate chips)", "q": "Sweet baked round snacks, often with chocolate chips inside. What are they?", "choices": ["cookies", "chicken", "sandwiches", "cereal"], "answer": "cookies", "exp": "Correct! cookies คือขนมคุกกี้อบกรอบหวานอร่อย"}, {"num": 5, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "sandwiches = แซนด์วิช (bread slices with meat, cheese, or vegetables in between)", "q": "Two slices of bread with ham, cheese, and lettuce in the middle are called ________.", "choices": ["sandwiches", "meatballs", "yogurt", "cereal"], "answer": "sandwiches", "exp": "Correct! sandwiches คือแซนด์วิชขนมปังประกบไส้"}, {"num": 6, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "chicken = เนื้อไก่ (poultry meat)", "q": "Roasted or fried poultry meat that is very popular for lunch and dinner is ________.", "choices": ["chicken", "cereal", "yogurt", "cookies"], "answer": "chicken", "exp": "Correct! chicken คือเนื้อไก่"}, {"num": 7, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "มื้ออาหาร 3 มื้อ: breakfast (เช้า), lunch (กลางวัน), dinner (เย็น)", "q": "The first meal of the day eaten in the morning is called ________.", "choices": ["breakfast", "lunch", "dinner", "midnight snack"], "answer": "breakfast", "exp": "Correct! breakfast คืออาหารมื้อเช้า"}, {"num": 8, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "lunch = อาหารมื้อกลางวัน (meal eaten at noon)", "q": "The meal you eat at school at 12:00 noon is called ________.", "choices": ["lunch", "breakfast", "dinner", "supper"], "answer": "lunch", "exp": "Correct! lunch คืออาหารมื้อกลางวัน"}, {"num": 9, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "dinner = อาหารมื้อเย็น/ค่ำ (meal eaten in the evening)", "q": "The family meal eaten together at home in the evening is called ________.", "choices": ["dinner", "breakfast", "lunch", "brunch"], "answer": "dinner", "exp": "Correct! dinner คืออาหารมื้อเย็นค่ำ"}, {"num": 10, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "ไวยากรณ์: have + food + for [meal] เช่น 'She has cereal for breakfast.'", "q": "Sasha eats cereal in the morning. Complete the sentence: 'She ________ cereal for breakfast.'", "choices": ["has", "have", "having", "is"], "answer": "has", "exp": "Correct! ประธานเอกพจน์ She ใช้ has (She has cereal for breakfast.)"}, {"num": 11, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "ไวยากรณ์: Marcus (he) has sandwiches for lunch.", "q": "Marcus eats sandwiches at noon. Complete: 'Marcus has sandwiches ________ lunch.'", "choices": ["for", "at", "on", "in"], "answer": "for", "exp": "Correct! ใช้คำบุพบท 'for' นำหน้าชื่อมื้ออาหาร (for breakfast, for lunch, for dinner)"}, {"num": 12, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "คำนามพหูพจน์ของ sandwich คือ sandwiches (ลงท้าย ch เติม es)", "q": "What is the plural form of 'sandwich' (แซนด์วิชหลายชิ้น)?", "choices": ["sandwiches", "sandwichs", "sandwichies", "sandwich"], "answer": "sandwiches", "exp": "Correct! sandwich ลงท้ายด้วย -ch เติม -es เป็น sandwiches"}, {"num": 13, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "คำนามพหูพจน์ของ cookie คือ cookies", "q": "There are three ________ on the plate.", "choices": ["cookies", "cookyes", "cookiess", "cookys"], "answer": "cookies", "exp": "Correct! cookies เติม -s"}, {"num": 14, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "คำนามนับไม่ได้: cereal และ yogurt เป็นคำนามนับไม่ได้ ไม่ต้องเติม s ในรูปปกติ", "q": "Which food is usually an UNCOUNTABLE noun (คำนามนับไม่ได้)?", "choices": ["yogurt", "meatballs", "cookies", "sandwiches"], "answer": "yogurt", "exp": "Correct! yogurt และ cereal เป็นคำนามนับไม่ได้ (uncountable)"}, {"num": 15, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "สะกดคำศัพท์: c-e-r-e-a-l", "q": "Which is the correct spelling for 'ซีเรียล'?", "choices": ["cereal", "cereel", "ceral", "cerial"], "answer": "cereal", "exp": "Correct! cereal สะกด c-e-r-e-a-l"}, {"num": 16, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "สะกดคำศัพท์: y-o-g-u-r-t", "q": "Which is the correct spelling for 'โยเกิร์ต'?", "choices": ["yogurt", "yoghert", "yugurt", "yogart"], "answer": "yogurt", "exp": "Correct! yogurt สะกด y-o-g-u-r-t"}, {"num": 17, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "สะกดคำศัพท์: m-e-a-t-b-a-l-l-s", "q": "Which is the correct spelling for 'ลูกชิ้น'?", "choices": ["meatballs", "meetballs", "meatbals", "mitballs"], "answer": "meatballs", "exp": "Correct! meatballs สะกด m-e-a-t-b-a-l-l-s"}, {"num": 18, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "แยกประเภท: อาหารเช้า vs อาหารคาว", "q": "Which of these is commonly eaten with milk for breakfast?", "choices": ["cereal", "meatballs", "chicken", "salad"], "answer": "cereal", "exp": "Correct! cereal นิยมกินกับนมเป็นอาหารเช้า"}, {"num": 19, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "โครงสร้างคำถาม: 'What do you have for breakfast?' -> 'I have cereal and milk.'", "q": "'What do you have for breakfast?' -> 'I ________ yogurt and cookies.'", "choices": ["have", "has", "am", "do"], "answer": "have", "exp": "Correct! ประธาน I ใช้กริยา have (I have...)"}, {"num": 20, "part": "Unit 4 - Lesson 1 Words", "skill": "🥪 ทักษะที่ 1: คำศัพท์อาหารและมื้ออาหาร (Food & Mealtime Vocabulary)", "remedy": "Odd one out: หาคำที่ไม่เข้าพวก", "q": "Find the odd one out (คำที่ไม่เข้าพวก):", "choices": ["breakfast", "chicken", "meatballs", "sandwiches"], "answer": "breakfast", "exp": "Correct! breakfast คือชื่อมื้ออาหาร ส่วนข้ออื่นคือชื่ออาหารคาว"}]}, {"id": "quest_eng4_2", "badge": "🥦 Unit 4 Quest 2", "title": "Unit 4 ด่านที่ 2: Healthy Vegetables & Do/Does Grammar (20 ข้อ)", "subtitle": "คำศัพท์ผัก carrots, peppers, peas, cucumbers, potatoes และไวยากรณ์ถาม-ตอบ Do / Does", "bossName": "ยักษ์ผักปีศาจแห่งความเกลียดผัก (The Veggie Ogre)", "bossSub": "บอสยักษ์ผู้ไม่ยอมกินผัก ตอบคำถามไวยากรณ์ Do/Does เพื่อให้เขาสุขภาพดี!", "bossIcon": "🥦", "bossMaxHp": 5, "questions": [{"num": 1, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "carrots = แครอท (orange root vegetable rabbits love)", "q": "Long orange crunchy vegetables that rabbits love to eat are called ________.", "choices": ["carrots", "peppers", "beans", "peas"], "answer": "carrots", "exp": "Correct! carrots คือแครอทสีส้ม"}, {"num": 2, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "peppers = พริกหวาน/พริกหยวก (bell peppers: red, green, yellow)", "q": "Colorful crunchy bell-shaped vegetables (green, red, yellow) are called ________.", "choices": ["peppers", "carrots", "peas", "potatoes"], "answer": "peppers", "exp": "Correct! peppers คือพริกหวานหลากสี"}, {"num": 3, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "peas = เมล็ดถั่วลันเตาเม็ดกลมสีเขียว (small round green seeds in a pod)", "q": "Small round green vegetables that grow inside a pod are called ________.", "choices": ["peas", "potatoes", "cucumbers", "carrots"], "answer": "peas", "exp": "Correct! peas คือถั่วลันเตาเม็ดกลมสีเขียว"}, {"num": 4, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "cucumbers = แตงกวา (long green juicy vegetables eaten raw in salads)", "q": "Long green juicy vegetables sliced in salads or eaten with fried rice are called ________.", "choices": ["cucumbers", "beans", "peppers", "meatballs"], "answer": "cucumbers", "exp": "Correct! cucumbers คือแตงกวา"}, {"num": 5, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "potatoes = มันฝรั่ง (starchy vegetables used to make French fries)", "q": "Brown starchy vegetables used to make French fries and mashed soup are called ________.", "choices": ["potatoes", "carrots", "peas", "yogurt"], "answer": "potatoes", "exp": "Correct! potatoes คือมันฝรั่ง"}, {"num": 6, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "ไวยากรณ์: ประธาน you ใช้ Do -> 'Do you like potatoes?'", "q": "Complete the question: '________ you like potatoes?'", "choices": ["Do", "Does", "Are", "Is"], "answer": "Do", "exp": "Correct! ประธาน you ใช้กริยาช่วย Do (Do you like...?)"}, {"num": 7, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "ไวยากรณ์: ประธาน she/he ใช้ Does -> 'Does she like carrots?'", "q": "Complete the question: '________ she like carrots?'", "choices": ["Does", "Do", "Is", "Has"], "answer": "Does", "exp": "Correct! ประธานเอกพจน์ she ใช้กริยาช่วย Does"}, {"num": 8, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "การตอบรับ: 'Does she like carrots?' -> 'Yes, she does.'", "q": "Look at the happy face: 'Does she like carrots?' -> 'Yes, she ________.'", "choices": ["does", "do", "likes", "is"], "answer": "does", "exp": "Correct! ถาม Does she ตอบ Yes, she does."}, {"num": 9, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "การปฏิเสธ: 'Does he like peppers?' -> 'No, he doesn't.'", "q": "Look at the sad face: 'Does he like peppers?' -> 'No, he ________.'", "choices": ["doesn't", "don't", "isn't", "not"], "answer": "doesn't", "exp": "Correct! ตอบปฏิเสธ No, he doesn't."}, {"num": 10, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "คำถาม: 'Does he have sandwiches for breakfast?'", "q": "'________ he have sandwiches for breakfast?'", "choices": ["Does", "Do", "Has", "Is"], "answer": "Does", "exp": "Correct! ประธาน he ในประโยคคำถามใช้กริยาช่วย Does"}, {"num": 11, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "ประธานเอกพจน์ vs พหูพจน์: Do they like beans? / Does she like beans?", "q": "'Do you have yogurt ________ dinner?'", "choices": ["for", "at", "to", "with"], "answer": "for", "exp": "Correct! 'for dinner' (สำหรับมื้อเย็น)"}, {"num": 12, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "ประโยคบอกเล่าประธาน She: กริยาเติม s -> 'She has chicken and fries for lunch.'", "q": "'She ________ chicken and fries for lunch.'", "choices": ["has", "have", "eats not", "having"], "answer": "has", "exp": "Correct! ประธาน She ใช้ has"}, {"num": 13, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "สะกดคำศัพท์: c-a-r-r-o-t-s", "q": "Which is the correct spelling for 'แครอท'?", "choices": ["carrots", "carots", "carrotss", "carrotes"], "answer": "carrots", "exp": "Correct! carrots มี double r (r 2 ตัว)"}, {"num": 14, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "สะกดคำศัพท์: p-e-p-p-e-r-s", "q": "Which is the correct spelling for 'พริกหวาน'?", "choices": ["peppers", "pepers", "peppars", "pepres"], "answer": "peppers", "exp": "Correct! peppers มี double p (p 2 ตัว)"}, {"num": 15, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "สะกดคำศัพท์: p-o-t-a-t-o-e-s", "q": "What is the plural of 'potato' (มันฝรั่งหลายหัว)?", "choices": ["potatoes", "potatos", "potatoeses", "potatose"], "answer": "potatoes", "exp": "Correct! potato ลงท้ายด้วย o เติม es เป็น potatoes"}, {"num": 16, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "ถาม Do you...? ตอบ Yes, I do. / No, I don't.", "q": "'Do you like peas?' -> 'No, I ________.'", "choices": ["don't", "doesn't", "not", "am not"], "answer": "don't", "exp": "Correct! ถาม you ตอบ I don't."}, {"num": 17, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "ถาม Does he...? ตอบ Yes, he does.", "q": "'Does he like cucumbers?' -> 'Yes, he ________.'", "choices": ["does", "do", "likes", "is"], "answer": "does", "exp": "Correct! ถาม Does he ตอบ Yes, he does."}, {"num": 18, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "จับคู่สีผัก: carrots are orange, peas are green", "q": "What color are carrots and peas?", "choices": ["Carrots are orange, peas are green.", "Carrots are blue, peas are red.", "Carrots are white, peas are black.", "Carrots are pink, peas are purple."], "answer": "Carrots are orange, peas are green.", "exp": "Correct! แครอทสีส้ม และถั่วลันเตาสีเขียว"}, {"num": 19, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "ประโยคบอกความชอบ: I like... / I don't like...", "q": "If you DISLIKE vegetables, what do you say?", "choices": ["I don't like vegetables.", "I like vegetables.", "I has vegetables.", "I am vegetables."], "answer": "I don't like vegetables.", "exp": "Correct! ไม่ชอบใช้ 'I don't like...'"}, {"num": 20, "part": "Unit 4 - Lesson 2 Vegetables & Grammar", "skill": "🥦 ทักษะที่ 2: คำศัพท์ผัก & ไวยากรณ์ Do / Does", "remedy": "ประโยชน์ของผัก: Vegetables are healthy and full of vitamins.", "q": "Why is eating carrots and peas good for children?", "choices": ["Because they have vitamins and keep our body healthy and strong!", "Because they make us sleepy all day.", "Because they have too much sugar.", "Because they are made of plastic."], "answer": "Because they have vitamins and keep our body healthy and strong!", "exp": "Correct! ผักอุดมด้วยวิตามินและสารอาหารช่วยให้ร่างกายแข็งแรง"}]}, {"id": "quest_eng4_3", "badge": "📖 Unit 4 Quest 3", "title": "Unit 4 ด่านที่ 3: Today's Meal & Reading Master (20 ข้อ)", "subtitle": "เนื้อเรื่อง Today's Meal อาหารของ Ivy, การจับใจความ Yes/No และการแต่งประโยค", "bossName": "จอมมารขนมหวานสตรอว์เบอร์รี (The Sweet Strawberry Golem)", "bossSub": "บอสเค้กสตรอว์เบอร์รียักษ์ อ่านจับใจความเนื้อเรื่องเพื่อพิชิตคะแนนเต็ม!", "bossIcon": "📖", "bossMaxHp": 5, "questions": [{"num": 1, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "เนื้อเรื่อง Today's Meal: 'I'm Ivy, and I'm going to tell you about my meals today!'", "q": "Who is the girl telling about her meals in the story?", "choices": ["Ivy", "Eva", "Sasha", "Emma"], "answer": "Ivy", "exp": "Correct! เด็กหญิงชื่อ Ivy เล่าเรื่องอาหารของเธอวันนี้"}, {"num": 2, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "อาหารเช้าของ Ivy: 'I have cereal with milk and three cookies for breakfast this morning.'", "q": "What does Ivy have for breakfast?", "choices": ["Cereal with milk and three cookies", "Pasta and peppers", "Chicken and rice", "Pizza and ice cream"], "answer": "Cereal with milk and three cookies", "exp": "Correct! Ivy กินซีเรียลใส่นมและคุกกี้ 3 ชิ้นในมื้อเช้า"}, {"num": 3, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "จำนวนคุกกี้: 'three cookies'", "q": "How many cookies does Ivy eat for breakfast?", "choices": ["three cookies", "two cookies", "five cookies", "ten cookies"], "answer": "three cookies", "exp": "Correct! ในเรื่องระบุว่า three cookies (คุกกี้ 3 ชิ้น)"}, {"num": 4, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "อาหารกลางวันของ Ivy: 'At noon, I have pasta with peppers and cucumbers for lunch...'", "q": "What does Ivy have for lunch at noon?", "choices": ["Pasta with peppers and cucumbers", "Cereal and milk", "Chicken and rice", "Meatballs and fries"], "answer": "Pasta with peppers and cucumbers", "exp": "Correct! มื้อกลางวัน Ivy กินพาสต้าใส่พริกหวานและแตงกวา"}, {"num": 5, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "สิ่งที่ไม่ชอบ: 'I don't like cucumbers. :('", "q": "Which vegetable does Ivy NOT like?", "choices": ["cucumbers", "peppers", "carrots", "peas"], "answer": "cucumbers", "exp": "Correct! Ivy เขียนไว้ชัดเจนว่า 'I don't like cucumbers. :('"}, {"num": 6, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "อาหารเย็นของ Ivy: 'In the evening, I have chicken with rice and strawberry cake!'", "q": "What does Ivy have for dinner in the evening?", "choices": ["Chicken with rice and strawberry cake", "Cereal with milk", "Pasta with cucumbers", "Sandwiches and yogurt"], "answer": "Chicken with rice and strawberry cake", "exp": "Correct! มื้อเย็นกินไก่กับข้าว และเค้กสตรอว์เบอร์รี"}, {"num": 7, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "ของหวานของ Ivy: 'strawberry cake' (ไม่ใช่ chocolate cake!)", "q": "What cake does Ivy have for dessert?", "choices": ["strawberry cake", "chocolate cake", "vanilla ice cream", "cookies"], "answer": "strawberry cake", "exp": "Correct! ในเรื่องระบุว่า 'strawberry cake' (เค้กสตรอว์เบอร์รี)"}, {"num": 8, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "ประโยคจบ: 'I can't wait for tomorrow's meal!!'", "q": "How does Ivy feel about tomorrow's food?", "choices": ["She is excited: 'I can't wait for tomorrow's meal!!'", "She is sad and cries.", "She refuses to eat tomorrow.", "She is angry."], "answer": "She is excited: 'I can't wait for tomorrow's meal!!'", "exp": "Correct! Ivy ตื่นเต้นรอคอยอาหารของวันพรุ่งนี้"}, {"num": 9, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "ตรวจความถูกต้อง (Yes/No): 'Ivy has cereal for breakfast.' -> Yes", "q": "'Ivy has cereal for breakfast.' -> Yes or No?", "choices": ["Yes", "No"], "answer": "Yes", "exp": "Correct! Ivy กินซีเรียลเป็นอาหารเช้าจริง (Yes)"}, {"num": 10, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "ตรวจความถูกต้อง (Yes/No): 'Ivy doesn't have cookies today.' -> No (She has 3 cookies!)", "q": "'Ivy doesn't have cookies today.' -> Yes or No?", "choices": ["No", "Yes"], "answer": "No", "exp": "Correct! ผิด เพราะ Ivy กินคุกกี้ 3 ชิ้นตอนเช้า ดังนั้นตอบ No"}, {"num": 11, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "ตรวจความถูกต้อง (Yes/No): 'Ivy doesn't like peppers.' -> No (She doesn't like cucumbers!)", "q": "'Ivy doesn't like peppers.' -> Yes or No?", "choices": ["No", "Yes"], "answer": "No", "exp": "Correct! ในเรื่องสิ่งที่ไม่ชอบคือแตงกวา (cucumbers) ไม่ใช่พริกหวาน"}, {"num": 12, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "ตรวจความถูกต้อง (Yes/No): 'Ivy has chicken with rice for dinner.' -> Yes", "q": "'Ivy has chicken with rice for dinner.' -> Yes or No?", "choices": ["Yes", "No"], "answer": "Yes", "exp": "Correct! มื้อเย็น Ivy กินไก่กับข้าว (Yes)"}, {"num": 13, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "ตรวจความถูกต้อง (Yes/No): 'Ivy has chocolate cake for dessert.' -> No (She has strawberry cake!)", "q": "'Ivy has chocolate cake for dessert.' -> Yes or No?", "choices": ["No", "Yes"], "answer": "No", "exp": "Correct! ข้อสอบหลอกยอดฮิต! Ivy กิน strawberry cake ไม่ใช่ chocolate cake ตอบ No"}, {"num": 14, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "เรียงประโยค: She / has / cereal / for / breakfast / .", "q": "Unscramble: 'cereal / has / She / breakfast / for / .'", "choices": ["She has cereal for breakfast.", "Cereal she has breakfast for.", "For breakfast cereal she has.", "She cereal has for breakfast."], "answer": "She has cereal for breakfast.", "exp": "Correct! ประโยคสมบูรณ์คือ 'She has cereal for breakfast.'"}, {"num": 15, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "เรียงประโยค: Does / he / like / carrots / ?", "q": "Unscramble the question: 'like / he / Does / carrots / ?'", "choices": ["Does he like carrots?", "Does carrots he like?", "He does like carrots?", "Like he does carrots?"], "answer": "Does he like carrots?", "exp": "Correct! โครงสร้างคำถามคือ Does + ประธาน + like + คำนาม?"}, {"num": 16, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "หาประโยคที่มีจุดผิดไวยากรณ์: She have (ผิด ต้องเป็น She has)", "q": "Which sentence has an ERROR?", "choices": ["She have cereal for breakfast. (Error: should be 'has')", "He has chicken for lunch.", "They have sandwiches for dinner.", "I have yogurt for dessert."], "answer": "She have cereal for breakfast. (Error: should be 'has')", "exp": "Correct! ประธาน She เป็นเอกพจน์ ต้องใช้ has ไม่ใช่ have"}, {"num": 17, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "หาประโยคที่ถูกต้อง 100%: Does she like...", "q": "Which sentence is 100% CORRECT?", "choices": ["Does she like cucumbers?", "Does she likes cucumbers?", "Do she like cucumbers?", "Is she like cucumbers?"], "answer": "Does she like cucumbers?", "exp": "Correct! เมื่อมี Does กริยา like ต้องเป็นรูปเดิม ไม่เติม s"}, {"num": 18, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "เวลาของมื้ออาหาร: breakfast in the morning, lunch at noon, dinner in the evening", "q": "When do people usually eat 'lunch'?", "choices": ["at noon (12:00 PM)", "early in the morning", "at midnight", "before sunrise"], "answer": "at noon (12:00 PM)", "exp": "Correct! lunch กินตอนเที่ยงวัน (at noon)"}, {"num": 19, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "อาหารเพื่อสุขภาพ 5 หมู่: ครบทั้งโปรตีน คาร์โบไฮเดรต วิตามิน", "q": "Which meal is the MOST healthy and balanced?", "choices": ["Rice, grilled chicken, steamed vegetables, and fruit", "Eating only 10 cookies and soda", "Eating only candy", "Drinking only water and no food"], "answer": "Rice, grilled chicken, steamed vegetables, and fruit", "exp": "Correct! อาหารครบ 5 หมู่มีข้าว ไก่ ผัก และผลไม้"}, {"num": 20, "part": "Unit 4 - Lesson 3 Story & Reading", "skill": "📖 ทักษะที่ 3: การอ่านจับใจความ Today's Meal & Review", "remedy": "หัวใจหลักของ Buzz 2 Unit 4: Mealtime", "q": "What is the key takeaway of Unit 4 Mealtime?", "choices": ["Eat healthy balanced meals on time every day, and enjoy food with family!", "Skip breakfast every day.", "Eat only sweets and potato chips.", "Never drink milk."], "answer": "Eat healthy balanced meals on time every day, and enjoy food with family!", "exp": "ยอดเยี่ยมที่สุด! รับประทานอาหารตรงเวลา ครบ 5 หมู่ และมีความสุขกับครอบครัว"}]}];
+    const LANG_CODE = 'en-US';
+    const SUBJ_CODE = 'eng4';
+
+    // Thematic Bosses per subject
+    const SUBJECT_BOSS_POOLS = {
+      'english': [
+        { name: '🦁 ราชาสิงโตซาฟารี', maxHp: 5, title: 'เจ้าป่าผู้พิทักษ์คำศัพท์สัตว์' },
+        { name: '🐘 ช้างพลายไททัน', maxHp: 5, title: 'จอมพลังทุ่งหญ้าสะวันนา' },
+        { name: '🐊 จระเข้ยักษ์แม่น้ำไนล์', maxHp: 5, title: 'นักล่าสองอาณาจักร บนบกและในน้ำ' },
+        { name: '🦍 กอริลล่าคิงคอง', maxHp: 5, title: 'ยักษ์ใหญ่จอมพลังไวยากรณ์' },
+        { name: '🐉 มังกรซาฟารีไฟร์บอส', maxHp: 5, title: 'บอสใหญ่ผู้พิทักษ์ภาษาอังกฤษ' }
+      ],
+      'math': [
+        { name: '🤖 ไซบอร์กสูตรคูณเอไอ', maxHp: 5, title: 'หุ่นยนต์คิดเลขเร็วแสง' },
+        { name: '🧙‍♂️ พ่อมดแห่งการหารลงตัว', maxHp: 5, title: 'ผู้ร่ายเวทมนตร์แบ่งกลุ่มเท่าๆ กัน' },
+        { name: '🧮 ไดโนเสาร์ตวงปริมาตร', maxHp: 5, title: 'ผู้พิทักษ์ถังลิตรและมิลลิลิตร' },
+        { name: '👾 อสูรโจทย์ระคน 3 ขั้นตอน', maxHp: 5, title: 'มอนสเตอร์บวกลบคูณหารระคน' },
+        { name: '👑 ราชันย์แผนภูมิรูปภาพ', maxHp: 5, title: 'บอสใหญ่ผู้ครอบครองตารางสถิติ' }
+      ],
+      'science': [
+        { name: '🪨 โกเลมดินเหนียวเนื้อละเอียด', maxHp: 5, title: 'จอมอึดอุ้มน้ำดีเยี่ยม' },
+        { name: '🌱 ภูตฮิวมัสซากพืชซากสัตว์', maxHp: 5, title: 'ผู้พิทักษ์ดินร่วนปลูกพืช' },
+        { name: '🌪️ สัตว์ประหลาดพายุทราย', maxHp: 5, title: 'จอมว่องไวเนื้อดินหยาบ' },
+        { name: '🧪 ดอกเตอร์ดิน สสวท.', maxHp: 5, title: 'นักทดลองวิทยาศาสตร์ปราบเซียน' },
+        { name: '🌋 มังกรธรณีวิทยาใต้พิภพ', maxHp: 5, title: 'บอสใหญ่แห่งดินรอบตัวเรา' }
+      ],
+      'social': [
+        { name: '🏛️ ยักษ์พิทักษ์สถานที่สำคัญ', maxHp: 5, title: 'ผู้ดูแลสาธารณสมบัติชุมชน' },
+        { name: '🌾 ราชาเกษตรกรรมและชาวนา', maxHp: 5, title: 'ผู้ผลิตอาหารเลี้ยงชุมชน' },
+        { name: '👾 มอนสเตอร์ใช้เงินฟุ่มเฟือย', maxHp: 5, title: 'ปีศาจขัดขวางการออมเงิน' },
+        { name: '🔥 ปีศาจไฟไหม้สายด่วน 199', maxHp: 5, title: 'สัตว์ร้ายเพลิงผลาญแห่งชุมชน' },
+        { name: '👑 ผู้ว่าการเมืองน่าอยู่สาธิต', maxHp: 5, title: 'บอสใหญ่ผู้นำชุมชนตัวจริง' }
+      ]
+    };
+
+    let currentBossIdx = 0;
+    let bossHp = 5;
+    let bossMaxHp = 5;
+    let heroHearts = 3;
+
+    let currentQuestIdx = 0;
+    let currentQIdx = 0;
+    let streak = 0;
+
+    let activeQuestions = [];
+    let isRetryMode = false;
+    let userAnswers = {};
+
+    function getBossPool() {
+      return SUBJECT_BOSS_POOLS[SUBJ_CODE] || SUBJECT_BOSS_POOLS['english'];
+    }
+
+    function getCurrentBoss() {
+      const pool = getBossPool();
+      return pool[currentBossIdx % pool.length];
+    }
+
+    function syncHeroData() {
+      if (!window.DiamondEngine) return;
+      const save = DiamondEngine.getSave();
+      
+      const topAvatar = document.getElementById('topHeroAvatar');
+      if (topAvatar) topAvatar.innerHTML = DiamondEngine.renderHeroSVG(save.equipped, 46);
+
+      const topName = document.getElementById('topHeroName');
+      if (topName) topName.textContent = `${save.name} (ฮีโร่สาธิตฯ)`;
+
+      const topLvl = document.getElementById('topHeroLevel');
+      if (topLvl) topLvl.textContent = `Level ${save.level} • ${save.xp} / ${save.level * 100} XP`;
+
+      const topCoins = document.getElementById('topCoinsVal');
+      if (topCoins) topCoins.textContent = save.coins;
+
+      const topGems = document.getElementById('topGemsVal');
+      if (topGems) topGems.textContent = save.gems;
+
+      const starVal = document.getElementById('starVal');
+      if (starVal) starVal.textContent = save.coins;
+
+      const arenaAvatar = document.getElementById('arenaHeroAvatar');
+      if (arenaAvatar) arenaAvatar.innerHTML = DiamondEngine.renderHeroSVG(save.equipped, 105);
+    }
+
+    function renderBossDisplay() {
+      const boss = getCurrentBoss();
+      const bossSvgBox = document.getElementById('arenaBossSvgBox');
+      const bossName = document.getElementById('arenaBossName');
+      const bossHpBar = document.getElementById('arenaBossHpBar');
+      const bossHpText = document.getElementById('arenaBossHpText');
+      const roundText = document.getElementById('battleRoundText');
+
+      if (bossSvgBox && window.DiamondEngine) {
+        bossSvgBox.innerHTML = DiamondEngine.renderBossSVG(boss.name, 96);
+      }
+      if (bossName) bossName.textContent = boss.name;
+      if (bossHpBar) bossHpBar.style.width = `${Math.round((bossHp / bossMaxHp) * 100)}%`;
+      if (bossHpText) bossHpText.textContent = `${bossHp} / ${bossMaxHp} HP`;
+      if (roundText) roundText.textContent = `บอสตัวที่ ${currentBossIdx + 1}: ${boss.title}`;
+    }
+
+    function renderHeroBattleDisplay() {
+      const heroHpBar = document.getElementById('arenaHeroHpBar');
+      const heroHeartsEl = document.getElementById('arenaHeroHearts');
+      if (heroHpBar) heroHpBar.style.width = `${Math.round((heroHearts / 3) * 100)}%`;
+      if (heroHeartsEl) heroHeartsEl.textContent = '❤️'.repeat(heroHearts) + '🖤'.repeat(3 - heroHearts);
+    }
+
+    function spawnFloatNumber(parentEl, text, className) {
+      if (!parentEl) return;
+      const f = document.createElement('div');
+      f.className = `float-number ${className}`;
+      f.textContent = text;
+      f.style.left = '50%';
+      f.style.top = '10px';
+      f.style.transform = 'translateX(-50%)';
+      parentEl.appendChild(f);
+      setTimeout(() => f.remove(), 950);
+    }
+
+    function showBossVictoryModal(defeatedBoss) {
+      const existing = document.getElementById('bossVictoryModal');
+      if (existing) existing.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'bossVictoryModal';
+      modal.className = 'boss-victory-modal';
+      modal.innerHTML = `
+        <div class="boss-victory-card">
+          <div style="font-size:3.8rem;margin-bottom:6px;">🏆</div>
+          <h2 style="font-size:1.6rem;font-weight:900;color:#fde047;margin-bottom:6px;">
+            🎉 ยอดเยี่ยมมากน้องไดมอนด์!
+          </h2>
+          <p style="font-size:1.05rem;color:#e0e7ff;font-weight:800;margin-bottom:14px;">
+            ปราบ "${defeatedBoss.name}" สำเร็จแล้ว!
+          </p>
+          <div style="background:rgba(245,158,11,0.18);border:2px dashed #f59e0b;border-radius:18px;padding:16px;margin-bottom:22px;">
+            <div style="font-weight:800;font-size:0.95rem;color:#fcd34d;margin-bottom:4px;">🎁 กล่องสมบัติพิชิตบอส:</div>
+            <div style="font-size:1.45rem;font-weight:900;color:#fde047;">
+              +50 🪙 เหรียญทอง | +1 💎 เพชร | +50 XP
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button onclick="document.getElementById('bossVictoryModal').remove(); DiamondEngine.openShopModal('hat');" class="shop-btn-glow" style="padding:14px;font-size:1.05rem;justify-content:center;">
+              👑 ไปร้านแต่งตัวฮีโร่ทันที (มีเหรียญใหม่แล้ว!)
+            </button>
+            <button onclick="document.getElementById('bossVictoryModal').remove(); nextQuestion();" class="nav-btn" style="background:#3b82f6;color:white;padding:12px;font-size:1rem;justify-content:center;cursor:pointer;">
+              ⚔️ ลุยข้อต่อไป ท้าทายบอสตัวถัดไป ➔
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function speakText(txt) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const clean = txt.replace(/^\\d+[\\.)]\\s*/, '').replace(/_+/g, ' ');
+        const u = new SpeechSynthesisUtterance(clean);
+        u.lang = LANG_CODE;
+        u.rate = 0.92;
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    function renderQuestTabs() {
+      const container = document.getElementById('questSelector');
+      container.innerHTML = '';
+      const allMem = loadAllQuestMemory();
+
+      ALL_QUESTS.forEach((qst, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quest-card' + (idx === currentQuestIdx ? ' active' : '');
+        btn.onclick = () => selectQuest(idx);
+
+        const qMem = (allMem.quests && allMem.quests[idx]) ? allMem.quests[idx] : null;
+        let badgeHtml = '<span class="quest-status-badge new">🆕 ด่านใหม่</span>';
+        if (qMem) {
+          if (qMem.completed) {
+            badgeHtml = `<span class="quest-status-badge done">⭐ ผ่านแล้ว (${qMem.score}/${qst.questions.length})</span>`;
+          } else if (Object.keys(qMem.userAnswers || {}).length > 0) {
+            badgeHtml = `<span class="quest-status-badge playing">⚡ กำลังเล่นอยู่ (ข้อ ${qMem.currentQIdx + 1}/${qst.questions.length})</span>`;
+          }
+        }
+
+        btn.innerHTML = `
+          <div class="q-badge">${qst.badge}</div>
+          <div class="q-title">${qst.title}</div>
+          ${badgeHtml}
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+
+    // =========================================================================
+    // QUEST MEMORY & PERSISTENCE ENGINE (RESUME EXACT PROGRESS ACROSS SESSIONS)
+    // =========================================================================
+    const QUEST_STORAGE_KEY = 'diamond_quest_memory_v4_' + SUBJ_CODE;
+
+    function loadAllQuestMemory() {
+      try {
+        const raw = localStorage.getItem(QUEST_STORAGE_KEY);
+        if (!raw) return { lastActiveQuest: 0, quests: {} };
+        return JSON.parse(raw);
+      } catch (e) {
+        return { lastActiveQuest: 0, quests: {} };
+      }
+    }
+
+    function saveCurrentQuestProgress() {
+      if (isRetryMode) return; // Do not overwrite regular quest state in retry mode
+      try {
+        const allMem = loadAllQuestMemory();
+        allMem.lastActiveQuest = currentQuestIdx;
+        if (!allMem.quests) allMem.quests = {};
+
+        const answeredCount = Object.keys(userAnswers).length;
+        const correctCount = getCorrectCount();
+        const isDone = answeredCount >= activeQuestions.length;
+
+        allMem.quests[currentQuestIdx] = {
+          currentQIdx: currentQIdx,
+          userAnswers: userAnswers,
+          bossHp: bossHp,
+          bossMaxHp: bossMaxHp,
+          currentBossIdx: currentBossIdx,
+          heroHearts: heroHearts,
+          streak: streak,
+          completed: isDone,
+          score: correctCount,
+          total: activeQuestions.length,
+          timestamp: Date.now()
+        };
+        localStorage.setItem(QUEST_STORAGE_KEY, JSON.stringify(allMem));
+      } catch (e) {
+        console.warn('Failed to save quest progress:', e);
+      }
+    }
+
+    function resetCurrentQuest() {
+      if (confirm('น้องไดมอนด์ต้องการเริ่มเล่นด่านนี้ใหม่ตั้งแต่ข้อ 1 ใช่ไหมครับ? (คะแนนและเหรียญสะสมยังอยู่ครบ)')) {
+        const allMem = loadAllQuestMemory();
+        if (allMem.quests && allMem.quests[currentQuestIdx]) {
+          delete allMem.quests[currentQuestIdx];
+          localStorage.setItem(QUEST_STORAGE_KEY, JSON.stringify(allMem));
+        }
+        selectQuest(currentQuestIdx, null, true);
+      }
+    }
+
+    function selectQuest(idx, customQuestions = null, forceReset = false) {
+      currentQuestIdx = idx;
+
+      if (customQuestions) {
+        activeQuestions = customQuestions;
+        isRetryMode = true;
+        currentQIdx = 0;
+        userAnswers = {};
+        bossHp = 5;
+        bossMaxHp = 5;
+        currentBossIdx = 0;
+        heroHearts = 3;
+      } else {
+        activeQuestions = [...ALL_QUESTS[idx].questions];
+        isRetryMode = false;
+
+        const allMem = loadAllQuestMemory();
+        const saved = (!forceReset && allMem.quests && allMem.quests[idx]) ? allMem.quests[idx] : null;
+
+        if (saved) {
+          userAnswers = saved.userAnswers || {};
+          currentQIdx = Math.min(saved.currentQIdx || 0, activeQuestions.length - 1);
+          bossHp = (saved.bossHp !== undefined) ? saved.bossHp : 5;
+          bossMaxHp = saved.bossMaxHp || 5;
+          currentBossIdx = saved.currentBossIdx || 0;
+          heroHearts = (saved.heroHearts !== undefined) ? saved.heroHearts : 3;
+          streak = saved.streak || 0;
+        } else {
+          currentQIdx = 0;
+          userAnswers = {};
+          bossHp = 5;
+          bossMaxHp = 5;
+          currentBossIdx = 0;
+          heroHearts = 3;
+          streak = 0;
+        }
+      }
+
+      renderQuestTabs();
+      renderQuestion();
+      syncHeroData();
+      updateHeaderStats();
+    }
+
+    function getCorrectCount() {
+      return Object.values(userAnswers).filter(x => x.isCorrect).length;
+    }
+
+    function updateHeaderStats() {
+      document.getElementById('streakVal').textContent = streak;
+      document.getElementById('setScoreVal').textContent = `${getCorrectCount()} / ${activeQuestions.length}`;
+      syncHeroData();
+    }
+
+    function renderQuestion() {
+      const quest = ALL_QUESTS[currentQuestIdx];
+      const qObj = activeQuestions[currentQIdx];
+      const arena = document.getElementById('quizArena');
+      const prevAns = userAnswers[currentQIdx];
+
+      const answeredCount = Object.keys(userAnswers).length;
+      const pct = Math.round((answeredCount / activeQuestions.length) * 100);
+
+      arena.innerHTML = `
+        <!-- AAA RPG BOSS BATTLE ARENA -->
+        <div class="boss-arena-box" id="bossArenaBox">
+          <!-- Visual slash animation container -->
+          <div class="slash-effect" id="slashEffect"></div>
+
+          <div class="fighter-side hero-side" id="heroFighterSide">
+            <div id="arenaHeroAvatar"></div>
+            <div class="fighter-meta">
+              <div class="fighter-name">น้องไดมอนด์</div>
+              <div class="hp-frame">
+                <div class="hp-bar-fill" id="arenaHeroHpBar" style="width:100%;"></div>
+              </div>
+              <div class="hearts-row" id="arenaHeroHearts">❤️❤️❤️</div>
+            </div>
+          </div>
+
+          <div class="battle-center">
+            <div class="vs-medallion">VS</div>
+            <div class="battle-round-text" id="battleRoundText">บอสประจำด่าน</div>
+          </div>
+
+          <div class="fighter-side boss-side" id="bossFighterSide">
+            <div id="arenaBossSvgBox"></div>
+            <div class="fighter-meta">
+              <div class="fighter-name" id="arenaBossName">บอสประจำด่าน</div>
+              <div class="hp-frame boss">
+                <div class="hp-bar-fill boss" id="arenaBossHpBar" style="width:100%;"></div>
+              </div>
+              <div style="font-size:0.8rem;color:#fca5a5;font-weight:800;" id="arenaBossHpText">5 / 5 HP</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-bar-wrap">
+          <div class="progress-fill" style="width:${pct}%;"></div>
+        </div>
+        <div class="q-meta">
+          <span class="part-tag">📌 ${qObj.skill || qObj.part} ${isRetryMode ? ' (🔥 โหมดซ่อมข้อที่ผิด)' : ''}</span>
+          <span class="q-counter">ข้อที่ ${currentQIdx + 1} / ${activeQuestions.length} (ทำแล้ว ${answeredCount} ข้อ)</span>
+        </div>
+        
+        ${!isRetryMode && Object.keys(userAnswers).length > 0 ? `
+          <div class="quest-memory-bar">
+            <span>💾 เล่นต่อจากเดิม: ข้อที่ ${currentQIdx + 1} / ${activeQuestions.length} (ตอบแล้ว ${answeredCount} ข้อ)</span>
+            <button class="reset-q-btn" onclick="resetCurrentQuest()">🔄 เริ่มด่านนี้ใหม่ (Restart)</button>
+          </div>
+        ` : ''}
+
+        ${qObj.context_html || ''}
+        <div class="question-box">
+          <div class="question-text">${qObj.q}</div>
+          <button class="speak-btn" id="speakQBtn" title="ฟังเสียงอ่านโจทย์">🔊</button>
+        </div>
+        <div class="options-grid" id="optionsGrid"></div>
+        <div class="feedback-box" id="feedbackBox"></div>
+        <div class="nav-controls">
+          <div style="display:flex;gap:8px;">
+            <button class="ctrl-btn" onclick="prevQuestion()" ${currentQIdx === 0 ? 'style="visibility:hidden;"' : ''}>⬅ ข้อก่อนหน้า</button>
+            <button class="ctrl-btn report" onclick="showDiagnosticReport()">📊 ส่งตรวจ & วิเคราะห์จุดอ่อนทันที</button>
+          </div>
+          <button class="ctrl-btn next" onclick="nextQuestion()" id="nextBtn">
+            ${currentQIdx + 1 === activeQuestions.length ? '🏆 ส่งกระดาษคำตอบ & ดูผลวิเคราะห์ ➔' : 'ข้อถัดไป (Next) ➔'}
+          </button>
+        </div>
+      `;
+
+      document.getElementById('speakQBtn').onclick = () => speakText(qObj.q);
+
+      const grid = document.getElementById('optionsGrid');
+      qObj.options.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'opt-btn';
+        b.innerHTML = `<span>${opt}</span> <span>⭕</span>`;
+        b.onclick = () => checkAnswer(b, opt, qObj);
+        grid.appendChild(b);
+      });
+
+      renderBossDisplay();
+      renderHeroBattleDisplay();
+      syncHeroData();
+
+      if (prevAns) {
+        restoreAnsweredState(prevAns.chosen, qObj);
+      }
+    }
+
+    function restoreAnsweredState(chosenOpt, qObj) {
+      const allBtns = document.querySelectorAll('#optionsGrid .opt-btn');
+      const fb = document.getElementById('feedbackBox');
+      const isCorrect = chosenOpt.trim() === qObj.answer.trim();
+
+      allBtns.forEach(b => {
+        b.disabled = true;
+        const txt = b.firstElementChild.textContent.trim();
+        if (txt === qObj.answer.trim()) {
+          b.classList.add('correct');
+          b.lastElementChild.textContent = '✅';
+        } else if (txt === chosenOpt.trim() && !isCorrect) {
+          b.classList.add('wrong');
+          b.lastElementChild.textContent = '❌';
+        }
+      });
+
+      if (isCorrect) {
+        fb.className = 'feedback-box show ok';
+        fb.innerHTML = `<h4>🎉 ตอบถูกต้อง! รับ +20 🪙 และโจมตีบอส 1 ดาเมจ!</h4><p style="margin-top:6px;">💡 <strong>วิธีคิด / คำอธิบาย:</strong> ${qObj.exp}</p>`;
+      } else {
+        fb.className = 'feedback-box show err';
+        fb.innerHTML = `<h4>💪 ข้อนี้ตอบผิด! คำตอบที่ถูกต้องคือ: "${qObj.answer}"</h4><p style="margin-top:6px;">💡 <strong>เทคนิคจำเพื่ออุดช่องว่าง:</strong> ${qObj.exp}</p>`;
+      }
+    }
+
+    function checkAnswer(btn, chosenOpt, qObj) {
+      if (userAnswers[currentQIdx]) return;
+
+      const isCorrect = chosenOpt.trim() === qObj.answer.trim();
+      userAnswers[currentQIdx] = {
+        chosen: chosenOpt,
+        isCorrect: isCorrect,
+        qObj: qObj
+      };
+
+      const heroEl = document.getElementById('heroFighterSide');
+      const bossEl = document.getElementById('bossFighterSide');
+      const slashEl = document.getElementById('slashEffect');
+
+      if (isCorrect) {
+        streak++;
+        if (window.DiamondEngine) {
+          DiamondEngine.playSound('slash');
+          DiamondEngine.playSound('correct');
+          DiamondEngine.addRewards(20, 0, 25);
+        }
+
+        // Trigger Energy Slash effect & Animations
+        if (slashEl) {
+          slashEl.classList.remove('slash-active');
+          void slashEl.offsetWidth; // reflow
+          slashEl.classList.add('slash-active');
+        }
+        if (heroEl) {
+          heroEl.classList.add('hero-attack');
+          setTimeout(() => heroEl.classList.remove('hero-attack'), 450);
+          spawnFloatNumber(heroEl, '+20 🪙 +25 XP', 'float-loot');
+        }
+        if (bossEl) {
+          bossEl.classList.add('boss-hit');
+          setTimeout(() => bossEl.classList.remove('boss-hit'), 450);
+          spawnFloatNumber(bossEl, '-1 HP 💥', 'float-dmg');
+        }
+
+        bossHp = Math.max(0, bossHp - 1);
+        renderBossDisplay();
+
+        if (bossHp === 0) {
+          const defBoss = getCurrentBoss();
+          if (bossEl) bossEl.classList.add('boss-defeated');
+          if (window.DiamondEngine) {
+            DiamondEngine.playSound('boss_defeat');
+            DiamondEngine.launchConfetti();
+            DiamondEngine.addRewards(50, 1, 50);
+          }
+          setTimeout(() => {
+            showBossVictoryModal(defBoss);
+            currentBossIdx++;
+            bossHp = 5;
+            bossMaxHp = 5;
+            renderBossDisplay();
+            if (bossEl) bossEl.classList.remove('boss-defeated');
+          }, 550);
+        }
+      } else {
+        streak = 0;
+        if (window.DiamondEngine) {
+          DiamondEngine.playSound('hit');
+        }
+
+        if (bossEl) {
+          bossEl.classList.add('boss-attack');
+          setTimeout(() => bossEl.classList.remove('boss-attack'), 450);
+        }
+        if (heroEl) {
+          heroEl.classList.add('hero-hit');
+          setTimeout(() => heroEl.classList.remove('hero-hit'), 450);
+          spawnFloatNumber(heroEl, '💔 MISS!', 'float-miss');
+        }
+
+        heroHearts = Math.max(0, heroHearts - 1);
+        renderHeroBattleDisplay();
+
+        if (heroHearts === 0) {
+          setTimeout(() => {
+            if (window.DiamondEngine) {
+              DiamondEngine.playSound('levelup');
+              DiamondEngine.showToast('🧪 คุณพ่อคุณแม่ส่งยาวิเศษมาช่วยฮีโร่ฟื้นพลัง! กลับมามี 3 หัวใจเต็มแล้ว สู้ต่อนะน้องไดมอนด์!');
+            }
+            heroHearts = 3;
+            renderHeroBattleDisplay();
+          }, 400);
+        }
+      }
+
+      updateHeaderStats();
+      restoreAnsweredState(chosenOpt, qObj);
+      saveCurrentQuestProgress();
+    }
+
+    function nextQuestion() {
+      if (currentQIdx + 1 < activeQuestions.length) {
+        currentQIdx++;
+        saveCurrentQuestProgress();
+        renderQuestion();
+      } else {
+        showDiagnosticReport();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQIdx > 0) {
+        currentQIdx--;
+        renderQuestion();
+      }
+    }
+
+    // =========================================================================
+    // COMPREHENSIVE GRADING & DIAGNOSTIC GAP ANALYSIS ENGINE
+    // =========================================================================
+    function showDiagnosticReport() {
+      saveCurrentQuestProgress();
+      const quest = ALL_QUESTS[currentQuestIdx];
+      const totalQ = activeQuestions.length;
+      const answeredList = Object.values(userAnswers);
+      const answeredCount = answeredList.length;
+      const correctCount = answeredList.filter(x => x.isCorrect).length;
+      const wrongList = answeredList.filter(x => !x.isCorrect);
+      const unansweredCount = totalQ - answeredCount;
+      const accuracyPct = totalQ > 0 ? Math.round((correctCount / totalQ) * 100) : 0;
+
+      // Bonus coins based on final accuracy tier
+      let bonusCoins = 0;
+      let bonusGems = 0;
+      if (accuracyPct >= 90) {
+        bonusCoins = 100;
+        bonusGems = 3;
+      } else if (accuracyPct >= 75) {
+        bonusCoins = 60;
+        bonusGems = 2;
+      } else if (accuracyPct >= 55) {
+        bonusCoins = 30;
+        bonusGems = 1;
+      }
+      if (bonusCoins > 0 && window.DiamondEngine) {
+        DiamondEngine.addRewards(bonusCoins, bonusGems, bonusCoins);
+        DiamondEngine.playSound('boss_defeat');
+        DiamondEngine.launchConfetti();
+      }
+
+      // Save cleared status if >= 70%
+      if (accuracyPct >= 70 && !isRetryMode) {
+        const cleared = JSON.parse(localStorage.getItem('diamond_cleared_quests') || '[]');
+        if (!cleared.includes(quest.id)) {
+          cleared.push(quest.id);
+          localStorage.setItem('diamond_cleared_quests', JSON.stringify(cleared));
+        }
+      }
+
+      // Save exam history record for parent dashboard
+      const history = JSON.parse(localStorage.getItem('diamond_exam_history') || '[]');
+      history.unshift({
+        questId: quest.id,
+        title: quest.title,
+        score: correctCount,
+        total: totalQ,
+        pct: accuracyPct,
+        time: new Date().toLocaleString('th-TH')
+      });
+      localStorage.setItem('diamond_exam_history', JSON.stringify(history.slice(0, 30)));
+
+      // Grade Tier
+      let gradeText = '';
+      if (accuracyPct >= 90) gradeText = '🏆 ระดับเหรียญทอง (Mastery Excellence - พร้อมสอบ 100%!)';
+      else if (accuracyPct >= 75) gradeText = '🥈 ระดับเหรียญเงิน (เก่งมาก! เก็บตกจุดหลอกอีกนิดคะแนนเต็มแน่นอน)';
+      else if (accuracyPct >= 55) gradeText = '🥉 ระดับเหรียญทองแดง (พื้นฐานดี แต่ยังมีช่องว่างบางหัวข้อที่ต้องอุด)';
+      else gradeText = '🌱 ระดับเริ่มต้นฝึกฝน (แนะนำให้ทบทวนคู่มือสรุปและกดปุ่ม "ซ่อมเฉพาะข้อที่ผิด")';
+
+      // Skill / Sub-topic Breakdown
+      const skillMap = {};
+      activeQuestions.forEach((q, idx) => {
+        const sk = q.skill || q.part || 'หัวข้อทั่วไป';
+        if (!skillMap[sk]) skillMap[sk] = { total: 0, correct: 0, answered: 0, remedy: q.remedy || 'ทบทวนหลักการและคีย์เวิร์ดสำคัญในหัวข้อนี้' };
+        skillMap[sk].total++;
+        if (userAnswers[idx]) {
+          skillMap[sk].answered++;
+          if (userAnswers[idx].isCorrect) skillMap[sk].correct++;
+        }
+      });
+
+      let skillBarsHtml = '';
+      let gapRecommendationsHtml = '';
+
+      Object.entries(skillMap).forEach(([skName, data]) => {
+        const skPct = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
+        const barColor = skPct >= 80 ? '#2b9348' : (skPct >= 55 ? '#ff9f1c' : '#d62828');
+        skillBarsHtml += `
+          <div class="skill-row">
+            <div class="skill-top">
+              <span>${skName}</span>
+              <span style="color:${barColor};">${data.correct} / ${data.total} ข้อ (${skPct}%)</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fill" style="width:${skPct}%;background:${barColor};"></div>
+            </div>
+          </div>
+        `;
+
+        if (skPct < 80) {
+          gapRecommendationsHtml += `
+            <div class="gap-alert">
+              <strong>⚠️ จุดที่ต้องอุดช่องว่าง: ${skName} (ได้ ${skPct}%)</strong><br>
+              🎯 <strong>แนวทางแก้ไข & เทคนิคจำ:</strong> ${data.remedy}
+            </div>
+          `;
+        } else {
+          gapRecommendationsHtml += `
+            <div class="gap-good">
+              <strong>✅ แม่นยำมาก: ${skName} (ได้ ${skPct}%)</strong> — น้องไดมอนด์เข้าใจหัวข้อนี้ได้อย่างยอดเยี่ยม!
+            </div>
+          `;
+        }
+      });
+
+      let wrongReviewHtml = '';
+      if (wrongList.length === 0) {
+        wrongReviewHtml = '<div style="background:#d8f3dc;color:#1b4332;padding:16px;border-radius:14px;font-weight:800;text-align:center;">🎉 ไร้ที่ติ! น้องไดมอนด์ตอบถูกต้อง 100% ไม่มีข้อผิดเลย เก่งระดับเทพ!</div>';
+      } else {
+        wrongList.forEach(item => {
+          const q = item.qObj;
+          wrongReviewHtml += `
+            <div class="wrong-item">
+              <div class="wq">❌ ข้อที่ ${q.num || '?'}: ${q.q}</div>
+              <div style="margin-bottom:4px;"><strong>คำตอบที่น้องไดมอนด์เลือก:</strong> <span style="color:#b91c1c;">${item.chosen}</span></div>
+              <div style="margin-bottom:6px;"><strong>คำตอบที่ถูกต้อง:</strong> <span style="color:#15803d;font-weight:900;">${q.answer}</span></div>
+              <div style="background:#fff;padding:8px 12px;border-radius:8px;border-left:3px solid #2b9348;font-size:0.92rem;">
+                💡 <strong>เฉลยละเอียด & เคล็ดลับ:</strong> ${q.exp}
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      const arena = document.getElementById('quizArena');
+      arena.innerHTML = `
+        <div class="report-card">
+          <div class="report-hero">
+            <h2 style="font-size:1.85rem;margin-bottom:6px;">📊 ผลการประเมินและการวิเคราะห์จุดบกพร่อง</h2>
+            <p style="font-size:1.05rem;opacity:0.95;">${quest.title}</p>
+            <div style="display:flex;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap;">
+              <div style="background:rgba(255,255,255,0.2);padding:10px 22px;border-radius:16px;">
+                <div style="font-size:0.85rem;">คะแนนที่ได้</div>
+                <div style="font-size:2rem;font-weight:900;color:#ffd166;">${correctCount} / ${totalQ}</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.2);padding:10px 22px;border-radius:16px;">
+                <div style="font-size:0.85rem;">ความแม่นยำ (Accuracy)</div>
+                <div style="font-size:2rem;font-weight:900;color:#ffd166;">${accuracyPct}%</div>
+              </div>
+            </div>
+            <div class="grade-badge">${gradeText}</div>
+            ${bonusCoins > 0 ? `<div style="margin-top:12px;font-size:1.15rem;font-weight:900;color:#ffd166;">🎉 ได้รับโบนัสจบด่าน: +${bonusCoins} 🪙 +${bonusGems} 💎</div>` : ''}
+          </div>
+
+          <!-- QUICK ACTION BUTTONS -->
+          <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
+            <button onclick="DiamondEngine.openShopModal('hat')" class="shop-btn-glow" style="padding:12px 22px;font-size:1.05rem;">
+              👑 นำเหรียญไปช้อปปิ้งของแต่งตัวฮีโร่!
+            </button>
+            <button onclick="DiamondEngine.openShopModal('coupons')" class="shop-btn-glow" style="background:linear-gradient(135deg, #10b981, #059669);padding:12px 22px;font-size:1.05rem;">
+              🎁 แลกคูปองรางวัลชีวิตจริงกับพ่อแม่
+            </button>
+            ${wrongList.length > 0 ? `
+              <button onclick="retryWeakQuestions()" class="ctrl-btn" style="background:#e07a00;padding:12px 22px;font-size:1.05rem;">
+                🔥 ซ่อมเฉพาะข้อที่ตอบผิด (${wrongList.length} ข้อ)
+              </button>
+            ` : ''}}
+            <button onclick="selectQuest(currentQuestIdx)" class="ctrl-btn" style="background:#2b9348;padding:12px 22px;font-size:1.05rem;">
+              🔄 ทำชุดนี้ใหม่อีกครั้ง
+            </button>
+          </div>
+
+          <div class="report-grid">
+            <div class="diag-box">
+              <h3>📈 1. วิเคราะห์ความแม่นยำรายทักษะ (Skill Breakdown)</h3>
+              ${skillBarsHtml}
+            </div>
+
+            <div class="diag-box">
+              <h3>🩺 2. แผนอุดช่องว่างรายหัวข้อ (Gap Analysis & Action Plan)</h3>
+              ${gapRecommendationsHtml}
+            </div>
+          </div>
+
+          <div class="diag-box">
+            <h3>🔍 3. รายการข้อที่ตอบผิด พร้อมเฉลยวิธีคิดละเอียดเพื่อทบทวน (${wrongList.length} ข้อ)</h3>
+            ${wrongReviewHtml}
+          </div>
+        </div>
+      `;
+      syncHeroData();
+    }
+
+    function retryWeakQuestions() {
+      const weakQs = [];
+      activeQuestions.forEach((q, idx) => {
+        if (!userAnswers[idx] || !userAnswers[idx].isCorrect) {
+          weakQs.push(q);
+        }
+      });
+      if (weakQs.length > 0) {
+        selectQuest(currentQuestIdx, weakQs);
+      }
+    }
+
+    window.onload = () => {
+      renderQuestTabs();
+      const allMem = loadAllQuestMemory();
+      const initialQuest = (allMem.lastActiveQuest !== undefined && allMem.lastActiveQuest < ALL_QUESTS.length) ? allMem.lastActiveQuest : 0;
+      selectQuest(initialQuest);
+      syncHeroData();
+    };
+  </script>
+</body>
+</html>
