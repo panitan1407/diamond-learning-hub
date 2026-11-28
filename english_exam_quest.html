@@ -715,7 +715,7 @@
       </div>
     </header>
 
-    <div class="quest-selector" id="questTabs"></div>
+    <div class="quest-selector" id="questSelector"></div>
 
     <main class="arena" id="quizArena"></main>
   </div>
@@ -727,12 +727,23 @@
 
     // Thematic Bosses per subject
     const SUBJECT_BOSS_POOLS = {
-      'english': [
+      'eng': [
         { name: '🦁 ราชาสิงโตซาฟารี', maxHp: 5, title: 'เจ้าป่าผู้พิทักษ์คำศัพท์สัตว์' },
         { name: '🐘 ช้างพลายไททัน', maxHp: 5, title: 'จอมพลังทุ่งหญ้าสะวันนา' },
         { name: '🐊 จระเข้ยักษ์แม่น้ำไนล์', maxHp: 5, title: 'นักล่าสองอาณาจักร บนบกและในน้ำ' },
         { name: '🦍 กอริลล่าคิงคอง', maxHp: 5, title: 'ยักษ์ใหญ่จอมพลังไวยากรณ์' },
         { name: '🐉 มังกรซาฟารีไฟร์บอส', maxHp: 5, title: 'บอสใหญ่ผู้พิทักษ์ภาษาอังกฤษ' }
+      ],
+      'eng6': [
+        { name: '🎁 เจ้าชายของเล่นจอมซน', maxHp: 5, title: 'ผู้ครอบครองของเล่นล้ำค่า' },
+        { name: '🧸 ตุ๊กตาหมีเวทมนตร์', maxHp: 5, title: 'ผู้พิทักษ์ Whose is it?' },
+        { name: '👗 ภูตเสื้อผ้าหลากสีสัน', maxHp: 5, title: 'จอมแปลงกาย Present Continuous' },
+        { name: '👑 ราชันย์ของโปรด Buzz 2', maxHp: 5, title: 'บอสใหญ่แห่ง My Favorite Things' }
+      ],
+      'eng4': [
+        { name: '🍔 เบอร์เกอร์ยักษ์จอมเขมือบ', maxHp: 5, title: 'ราชาอาหารมื้อด่วน' },
+        { name: '🥪 แซนด์วิชมหัศจรรย์', maxHp: 5, title: 'ผู้พิทักษ์ Mealtime' },
+        { name: '🍎 มังกรผลไม้เพื่อสุขภาพ', maxHp: 5, title: 'บอสใหญ่โภชนาการ' }
       ],
       'math': [
         { name: '🤖 ไซบอร์กสูตรคูณเอไอ', maxHp: 5, title: 'หุ่นยนต์คิดเลขเร็วแสง' },
@@ -741,21 +752,42 @@
         { name: '👾 อสูรโจทย์ระคน 3 ขั้นตอน', maxHp: 5, title: 'มอนสเตอร์บวกลบคูณหารระคน' },
         { name: '👑 ราชันย์แผนภูมิรูปภาพ', maxHp: 5, title: 'บอสใหญ่ผู้ครอบครองตารางสถิติ' }
       ],
-      'science': [
+      'sci': [
         { name: '🪨 โกเลมดินเหนียวเนื้อละเอียด', maxHp: 5, title: 'จอมอึดอุ้มน้ำดีเยี่ยม' },
         { name: '🌱 ภูตฮิวมัสซากพืชซากสัตว์', maxHp: 5, title: 'ผู้พิทักษ์ดินร่วนปลูกพืช' },
         { name: '🌪️ สัตว์ประหลาดพายุทราย', maxHp: 5, title: 'จอมว่องไวเนื้อดินหยาบ' },
         { name: '🧪 ดอกเตอร์ดิน สสวท.', maxHp: 5, title: 'นักทดลองวิทยาศาสตร์ปราบเซียน' },
         { name: '🌋 มังกรธรณีวิทยาใต้พิภพ', maxHp: 5, title: 'บอสใหญ่แห่งดินรอบตัวเรา' }
       ],
-      'social': [
+      'soc': [
         { name: '🏛️ ยักษ์พิทักษ์สถานที่สำคัญ', maxHp: 5, title: 'ผู้ดูแลสาธารณสมบัติชุมชน' },
         { name: '🌾 ราชาเกษตรกรรมและชาวนา', maxHp: 5, title: 'ผู้ผลิตอาหารเลี้ยงชุมชน' },
         { name: '👾 มอนสเตอร์ใช้เงินฟุ่มเฟือย', maxHp: 5, title: 'ปีศาจขัดขวางการออมเงิน' },
         { name: '🔥 ปีศาจไฟไหม้สายด่วน 199', maxHp: 5, title: 'สัตว์ร้ายเพลิงผลาญแห่งชุมชน' },
         { name: '👑 ผู้ว่าการเมืองน่าอยู่สาธิต', maxHp: 5, title: 'บอสใหญ่ผู้นำชุมชนตัวจริง' }
+      ],
+      'thai': [
+        { name: '👹 ยักษ์บันทึก บัน/บรร', maxHp: 5, title: 'ผู้พิทักษ์หลักภาษาไทย' },
+        { name: '📜 พ่อมด ร หัน รร', maxHp: 5, title: 'จอมคาถาอ่านออกเสียง อัน/อัม' },
+        { name: '🦅 พญานกมาตราไม่ตรงแม่', maxHp: 5, title: 'ผู้เชี่ยวชาญ แม่กน กบ กด กก' },
+        { name: '🐉 มังกรอักษรนำ & ควบกล้ำ', maxHp: 5, title: 'บอสใหญ่พยัญชนะไทย' }
+      ],
+      'dictation': [
+        { name: '📖 พจนานุกรมทองคำสาธิต', maxHp: 5, title: 'ผู้พิทักษ์ 300 คำศัพท์ทางการ' },
+        { name: '🦉 นกฮูกจับผิดคำเขียนผิด', maxHp: 5, title: 'จอมมองทะลุคำสะกดผิด' },
+        { name: '✍️ อัศวินดินสอเพชร', maxHp: 5, title: 'ผู้สะกดคำถูกต้อง 100%' },
+        { name: '👑 ปราชญ์เขียนไทย ป.2/4', maxHp: 5, title: 'บอสใหญ่แห่งการเขียนไทย' }
+      ],
+      'agri': [
+        { name: '🌾 ราชาแปลงผักสวนครัว', maxHp: 5, title: 'ผู้พิทักษ์พืชสวนพืชไร่' },
+        { name: '🌱 ภูตเมล็ดพันธุ์ SEED & GRAIN', maxHp: 5, title: 'จอมแยกแยะเมล็ดพันธุ์พืช' },
+        { name: '🚜 หุ่นยนต์เครื่องมือเกษตร', maxHp: 5, title: 'ผู้ดูแลจอบ เสียม และบัวรดน้ำ' },
+        { name: '🌳 ผู้เฒ่าป่าเกษตรยั่งยืน', maxHp: 5, title: 'บอสใหญ่ปรัชญาเศรษฐกิจพอเพียง' }
       ]
     };
+    SUBJECT_BOSS_POOLS['english'] = SUBJECT_BOSS_POOLS['eng'];
+    SUBJECT_BOSS_POOLS['science'] = SUBJECT_BOSS_POOLS['sci'];
+    SUBJECT_BOSS_POOLS['social'] = SUBJECT_BOSS_POOLS['soc'];
 
     let currentBossIdx = 0;
     let bossHp = 5;
@@ -888,7 +920,8 @@
     }
 
     function renderQuestTabs() {
-      const container = document.getElementById('questSelector');
+      const container = document.getElementById('questSelector') || document.getElementById('questTabs');
+      if (!container) return;
       container.innerHTML = '';
       const allMem = loadAllQuestMemory();
 
@@ -1459,11 +1492,24 @@
     }
 
     window.onload = () => {
-      renderQuestTabs();
-      const allMem = loadAllQuestMemory();
-      const initialQuest = (allMem.lastActiveQuest !== undefined && allMem.lastActiveQuest < ALL_QUESTS.length) ? allMem.lastActiveQuest : 0;
-      selectQuest(initialQuest);
-      syncHeroData();
+      try {
+        renderQuestTabs();
+      } catch (e) {
+        console.error('renderQuestTabs error:', e);
+      }
+      try {
+        const allMem = loadAllQuestMemory();
+        const initialQuest = (allMem.lastActiveQuest !== undefined && allMem.lastActiveQuest < ALL_QUESTS.length) ? allMem.lastActiveQuest : 0;
+        selectQuest(initialQuest);
+      } catch (e) {
+        console.error('selectQuest error:', e);
+        if (typeof selectQuest === 'function') selectQuest(0, null, true);
+      }
+      try {
+        syncHeroData();
+      } catch (e) {
+        console.error('syncHeroData error:', e);
+      }
     };
   </script>
 </body>
